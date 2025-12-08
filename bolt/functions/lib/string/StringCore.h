@@ -979,11 +979,16 @@ FOLLY_ALWAYS_INLINE static bool isDecimal(const StringView& str) {
   return isDecimal(str.data(), str.size());
 }
 
+FOLLY_ALWAYS_INLINE static const icu::Locale& getDefaultLocale() {
+  static const icu::Locale locale = icu::Locale::getRoot();
+  return locale;
+}
+
 template <bool isAscii = true>
 FOLLY_ALWAYS_INLINE static std::string toLower(
     const char* str,
     size_t length,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   if (str == nullptr || length == 0) {
     return "";
   }
@@ -1014,21 +1019,21 @@ FOLLY_ALWAYS_INLINE static std::string toLower(
 template <bool isAscii = true>
 FOLLY_ALWAYS_INLINE static std::string toLower(
     const std::string& str,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   return toLower<isAscii>(str.data(), str.size(), locale);
 }
 
 template <bool isAscii = true>
 FOLLY_ALWAYS_INLINE static std::string toLower(
     const std::string_view& str,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   return toLower<isAscii>(str.data(), str.size(), locale);
 }
 
 template <bool isAscii = true>
 FOLLY_ALWAYS_INLINE static std::string toLower(
     const StringView& str,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   return toLower<isAscii>(str.data(), str.size(), locale);
 }
 
@@ -1036,7 +1041,7 @@ template <bool isAscii = true>
 FOLLY_ALWAYS_INLINE static std::string toUpper(
     const char* str,
     size_t length,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   if (str == nullptr || length == 0) {
     return "";
   }
@@ -1067,28 +1072,28 @@ FOLLY_ALWAYS_INLINE static std::string toUpper(
 template <bool isAscii = true>
 FOLLY_ALWAYS_INLINE static std::string toUpper(
     const std::string& str,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   return toUpper<isAscii>(str.data(), str.size(), locale);
 }
 
 template <bool isAscii = true>
 FOLLY_ALWAYS_INLINE static std::string toUpper(
     const std::string_view& str,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   return toUpper<isAscii>(str.data(), str.size(), locale);
 }
 
 template <bool isAscii = true>
 FOLLY_ALWAYS_INLINE static std::string toUpper(
     const StringView& str,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   return toUpper<isAscii>(str.data(), str.size(), locale);
 }
 
 FOLLY_ALWAYS_INLINE static std::string toTitle(
     const char* str,
     size_t length,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   if (str == nullptr || length == 0) {
     return "";
   }
@@ -1112,19 +1117,19 @@ FOLLY_ALWAYS_INLINE static std::string toTitle(
 
 FOLLY_ALWAYS_INLINE static std::string toTitle(
     const std::string& str,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   return toTitle(str.data(), str.size(), locale);
 }
 
 FOLLY_ALWAYS_INLINE static std::string toTitle(
     const std::string_view& str,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   return toTitle(str.data(), str.size(), locale);
 }
 
 FOLLY_ALWAYS_INLINE static std::string toTitle(
     const StringView& str,
-    const icu::Locale& locale = icu::Locale::getDefault()) {
+    const icu::Locale& locale = getDefaultLocale()) {
   return toTitle(str.data(), str.size(), locale);
 }
 

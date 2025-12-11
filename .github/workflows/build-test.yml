@@ -1,5 +1,4 @@
 name: Build and Test
-
 on:
   push:
     branches: [ main ]
@@ -13,7 +12,25 @@ env:
   CI_NUM_THREADS: "16"
 
 jobs:
+  changes:
+    runs-on:  [ self-hosted, small ]
+    outputs:
+      source_code: ${{ steps.filter.outputs.source_code }}
+    steps:
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            source_code:
+              - 'bolt/**'
+              - '!bolt/**/*.md'
+              - 'Makefile'
+              - 'conanfile.py'
+              - 'CMakeLists.txt'
+              - 'scripts/**'
   build-test:
+    needs: changes
+    if: ${{ needs.changes.outputs.source_code == 'true' }}
     runs-on: [ self-hosted, medium ]
     container: 
       image: bolt-registry:5000/bolt-ci:latest

@@ -41,25 +41,6 @@ ENABLE_COLOR ?= True
 ENABLE_CRC ?= False
 ENABLE_EXCEPTION_TRACE ?= True
 ENABLE_PERF ?= False
-# collect system info
-UNAME_S := $(shell uname -s)
-ifeq ($(UNAME_S),Darwin)
-    OS_DETAILED   := $(shell sw_vers -productName) $(shell sw_vers -productVersion) ($(shell sw_vers -buildVersion))
-    CPU_MODEL     := $(shell sysctl -n machdep.cpu.brand_string)
-    CPU_CORES     := $(shell sysctl -n hw.physicalcpu) Phys / $(shell sysctl -n hw.logicalcpu) Log
-    MEM_TOTAL     := $(shell sysctl -n hw.memsize | awk '{print int($$1/1024/1024/1024) " GB"}')
-else
-    OS_DETAILED   := $(shell uname -o 2>/dev/null || uname -s) $(shell uname -r)
-    DISTRO_NAME   := $(shell grep -E '^(PRETTY_NAME)=' /etc/os-release 2>/dev/null | cut -d '"' -f 2)
-    ifneq ($(DISTRO_NAME),)
-        OS_DETAILED += [$(DISTRO_NAME)]
-    endif
-    CPU_MODEL     := $(shell grep "model name" /proc/cpuinfo | head -n1 | cut -d: -f2 | xargs)
-    CPU_CORES     := $(shell nproc) Cores
-    MEM_TOTAL     := $(shell grep MemTotal /proc/meminfo | awk '{print int($$2/1024/1024) " GB"}')
-endif
-CONAN_EXE := $(shell command -v conan 2> /dev/null)
-CMAKE_EXE := $(shell command -v cmake 2> /dev/null)
 
 ifeq ($(shell arch), aarch64)
 ENABLE_EXCEPTION_TRACE = False
@@ -92,6 +73,23 @@ MEMORY ?=$(shell free -g | grep 'Mem:' | awk '{print $$2}')
 FREE_MEMORY ?=$(shell free -g | grep 'Mem:' | awk '{print $$4}')
 CPU_CORES ?=$(shell grep -c 'processor' /proc/cpuinfo)
 
+# collect system info
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+    OS_DETAILED   := $(shell sw_vers -productName) $(shell sw_vers -productVersion) ($(shell sw_vers -buildVersion))
+    CPU_MODEL     := $(shell sysctl -n machdep.cpu.brand_string)
+    MEM_TOTAL     := $(shell sysctl -n hw.memsize | awk '{print int($$1/1024/1024/1024) " GB"}')
+else
+    OS_DETAILED   := $(shell uname -o 2>/dev/null || uname -s) $(shell uname -r)
+    DISTRO_NAME   := $(shell grep -E '^(PRETTY_NAME)=' /etc/os-release 2>/dev/null | cut -d '"' -f 2)
+    ifneq ($(DISTRO_NAME),)
+        OS_DETAILED += [$(DISTRO_NAME)]
+    endif
+    CPU_MODEL     := $(shell grep "model name" /proc/cpuinfo | head -n1 | cut -d: -f2 | xargs)
+    MEM_TOTAL     := $(shell grep MemTotal /proc/meminfo | awk '{print int($$2/1024/1024) " GB"}')
+endif
+CONAN_EXE := $(shell command -v conan 2> /dev/null)
+CMAKE_EXE := $(shell command -v cmake 2> /dev/null)
 
 # Option to make a minimal build. By default set to "OFF"; set to
 # "ON" to only build a minimal set of components. This may override

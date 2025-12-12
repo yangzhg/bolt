@@ -41,7 +41,7 @@ Issue Number: close #xxx
 Describe your changes in detail. 
 For complex logic, explain the "Why" and "How". 
 
-### Performance Impact (Critical for Bolt)
+### Performance Impact
 <!--
 REQUIRED for Performance PRs and Core Engine changes.
 Please verify that your change does not introduce performance regressions.

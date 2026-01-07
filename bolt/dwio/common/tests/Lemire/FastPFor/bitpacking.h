@@ -12,9 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-/* --------------------------------------------------------------------------
- * Copyright (c) 2025 ByteDance Ltd. and/or its affiliates.
+ *
+ * --------------------------------------------------------------------------
+ * Copyright (c) ByteDance Ltd. and/or its affiliates.
  * SPDX-License-Identifier: Apache-2.0
  *
  * This file has been modified by ByteDance Ltd. and/or its affiliates on
@@ -26,9 +26,7 @@
  *
  * This modified file is released under the same license.
  * --------------------------------------------------------------------------
- */
-
-/**
+ *
  * This code is released under the
  * Apache License Version 2.0 http://www.apache.org/licenses/.
  *

@@ -12,10 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
-
-/* --------------------------------------------------------------------------
- * Copyright (c) 2025 ByteDance Ltd. and/or its affiliates.
+ *
+ * --------------------------------------------------------------------------
+ * Copyright (c) ByteDance Ltd. and/or its affiliates.
  * SPDX-License-Identifier: Apache-2.0
  *
  * This file has been modified by ByteDance Ltd. and/or its affiliates on
@@ -27,24 +26,20 @@
  *
  * This modified file is released under the same license.
  * --------------------------------------------------------------------------
- */
-
-// This file was copied from
-// https://github.com/lemire/LittleIntPacker/blob/master/src/bmipacking32.c for
-// benchmarking use only.
-
-// Only supports x86 and x64 architecture due to inclusion of
-// <immintrin.h> and <x86intrin.h>.
-
-/**
+ *
+ * This file was copied from
+ * https://github.com/lemire/LittleIntPacker/blob/master/src/bmipacking32.c for
+ * benchmarking use only.
+ *
+ * Only supports x86 and x64 architecture due to inclusion of
+ * <immintrin.h> and <x86intrin.h>.
+ *
  * This is conventional bit packing using portable C
+ *
+ * The strategy we pursue is simple and inspired by
+ * https://github.com/powturbo/TurboPFor We take as inputs 64-bit words and we
+ * always unpack them fully.
  */
-
-/***
-The strategy we pursue is simple and inspired by
-https://github.com/powturbo/TurboPFor We take as inputs 64-bit words and we
-always unpack them fully.
-*/
 
 #pragma once
 

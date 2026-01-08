@@ -521,5 +521,31 @@ TEST_F(MapSumAggTest, castTruncate) {
       {makeRowVector({expectedVec})});
 }
 
+TEST_F(MapSumAggTest, simpleStringValue) {
+  auto data = std::vector<
+      std::vector<std::pair<StringView, std::optional<StringView>>>>{
+      {{"0", "1"}}, {{"0", "2"}}};
+  auto expected = getExpectedResult(
+      std::vector<std::vector<std::pair<StringView, std::optional<int64_t>>>>{
+          {{"0", 1}}, {{"0", 2}}});
+  testGlobal<false, StringView>(data, expected);
+}
+
+TEST_F(MapSumAggTest, stringCastTruncate) {
+  auto data = std::vector<
+      std::vector<std::pair<StringView, std::optional<StringView>>>>{
+      {{"0", "1.9"}}};
+  auto expected =
+      std::vector<std::vector<std::pair<StringView, std::optional<int64_t>>>>{
+          {{"0", 1}}};
+  auto inputVec = makeMapVector(data);
+  auto expectedVec = makeMapVector(expected);
+  testAggregations(
+      {makeRowVector({inputVec})},
+      {},
+      {"aggregate_map_sum(c0)"},
+      {makeRowVector({expectedVec})});
+}
+
 }; // namespace
 }; // namespace bytedance::bolt::aggregate::test

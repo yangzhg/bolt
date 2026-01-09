@@ -115,16 +115,18 @@ T rand(FuzzerGenerator& rng) {
       std::is_same_v<T, uint8_t> || std::is_same_v<T, int8_t> ||
       std::is_same_v<T, int16_t> || std::is_same_v<T, int32_t> ||
       std::is_same_v<T, int64_t> || std::is_same_v<T, uint32_t> ||
-      std::is_same_v<T, uint64_t>) {
+      // on macos uint64_t is unsigned long long not unsigned long
+      std::is_same_v<T, uint64_t> || std::is_same_v<T, unsigned long>) {
     return boost::random::uniform_int_distribution<T>()(rng);
   } else if constexpr (std::is_same_v<T, int128_t>) {
     return HugeInt::build(rand<int64_t>(rng), rand<uint64_t>(rng));
-  } else if constexpr (std::is_same_v<T, float> || std::is_same_v<T, double>) {
+  } else if constexpr (std::is_floating_point_v<T>) {
     return boost::random::uniform_01<T>()(rng);
   } else if constexpr (std::is_same_v<T, bool>) {
     return boost::random::uniform_int_distribution<uint32_t>(0, 1)(rng) != 0;
   } else {
-    BOLT_NYI();
+    BOLT_NYI(
+        "Unsupported type for random value generation: {}", typeid(T).name());
   }
 }
 

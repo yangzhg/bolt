@@ -29,6 +29,7 @@ class FieldProductAgg : public AggregateFunction {
 
  public:
   FieldProductAgg() : product_(1) {}
+  virtual ~FieldProductAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     if (value->isNullAt(rowIndex))
@@ -59,6 +60,7 @@ class DecimalFieldProductAgg : public AggregateFunction {
     powerOf10_ = bolt::DecimalUtil::getPowersOfTen(scale_);
     product_ = powerOf10_;
   }
+  virtual ~DecimalFieldProductAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     if (value->isNullAt(rowIndex))

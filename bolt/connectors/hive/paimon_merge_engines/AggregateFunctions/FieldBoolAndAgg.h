@@ -29,7 +29,7 @@ class FieldBoolAndAgg : public AggregateFunction {
   FieldBoolAndAgg() {
     val = nullptr;
   }
-
+  virtual ~FieldBoolAndAgg() = default;
   void add(VectorPtr value, size_t rowIndex) override {
     if (value->isNullAt(rowIndex))
       return;

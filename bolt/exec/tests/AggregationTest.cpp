@@ -3133,7 +3133,7 @@ DEBUG_ONLY_TEST_P(AggregationTest, reclaimDuringAllocation) {
   auto batches = makeVectors(rowType, 1000, 10);
 
   const std::vector<bool> enableSpillings = {false, true};
-  for (const auto enableSpilling : enableSpillings) {
+  for (bool enableSpilling : enableSpillings) {
     SCOPED_TRACE(fmt::format("enableSpilling {}", enableSpilling));
 
     auto tempDirectory = exec::test::TempDirectoryPath::create();
@@ -3263,7 +3263,7 @@ DEBUG_ONLY_TEST_P(AggregationTest, reclaimDuringOutputProcessing) {
   auto batches = makeVectors(rowType, 1000, 10);
 
   const std::vector<bool> enableSpillings = {false, true};
-  for (const auto enableSpilling : enableSpillings) {
+  for (bool enableSpilling : enableSpillings) {
     SCOPED_TRACE(fmt::format("enableSpilling {}", enableSpilling));
 
     auto tempDirectory = exec::test::TempDirectoryPath::create();
@@ -3567,7 +3567,7 @@ DEBUG_ONLY_TEST_P(AggregationTest, reclaimWithEmptyAggregationTable) {
   auto batches = makeVectors(rowType, 1000, 10);
 
   const std::vector<bool> enableSpillings = {false, true};
-  for (const auto enableSpilling : enableSpillings) {
+  for (bool enableSpilling : enableSpillings) {
     SCOPED_TRACE(fmt::format("enableSpilling {}", enableSpilling));
 
     auto tempDirectory = exec::test::TempDirectoryPath::create();

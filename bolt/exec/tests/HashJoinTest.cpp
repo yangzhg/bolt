@@ -1021,7 +1021,7 @@ TEST_P(MultiThreadedHashJoinTest, outOfJoinKeyColumnOrder) {
 
 TEST_P(MultiThreadedHashJoinTest, emptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (const auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     HashJoinBuilder(*pool_, duckDbQueryRunner_, driverExecutor_.get())
@@ -1496,7 +1496,7 @@ TEST_P(MultiThreadedHashJoinTest, joinSidesDifferentSchema) {
 
 TEST_P(MultiThreadedHashJoinTest, innerJoinWithEmptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     std::vector<RowVectorPtr> probeVectors = makeBatches(5, [&](int32_t batch) {
@@ -1567,7 +1567,7 @@ TEST_P(MultiThreadedHashJoinTest, leftSemiJoinFilter) {
 
 TEST_P(MultiThreadedHashJoinTest, leftSemiJoinFilterWithEmptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (const auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     std::vector<RowVectorPtr> probeVectors =
@@ -1676,7 +1676,7 @@ TEST_P(MultiThreadedHashJoinTest, rightSemiJoinFilter) {
 
 TEST_P(MultiThreadedHashJoinTest, rightSemiJoinFilterWithEmptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (const auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     // probeVectors size is greater than buildVector size.
@@ -2087,7 +2087,7 @@ TEST_P(MultiThreadedHashJoinTest, nullAwareAntiJoinWithFilter) {
 
 TEST_P(MultiThreadedHashJoinTest, nullAwareAntiJoinWithFilterAndEmptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (const auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     auto probeVectors = makeBatches(4, [&](int32_t /*unused*/) {
@@ -2409,7 +2409,7 @@ TEST_P(MultiThreadedHashJoinTest, antiJoin) {
 
 TEST_P(MultiThreadedHashJoinTest, antiJoinWithFilterAndEmptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (const auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     auto probeVectors = makeBatches(4, [&](int32_t /*unused*/) {
@@ -2595,7 +2595,7 @@ TEST_P(MultiThreadedHashJoinTest, nullStatsWithEmptyBuild) {
 
 TEST_P(MultiThreadedHashJoinTest, leftJoinWithEmptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (const auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     // Left side keys are [0, 1, 2,..10].
@@ -2956,7 +2956,7 @@ TEST_P(MultiThreadedHashJoinTest, rightJoin) {
 
 TEST_P(MultiThreadedHashJoinTest, rightJoinWithEmptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (const auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     // Left side keys are [0, 1, 2,..10].
@@ -3190,7 +3190,7 @@ TEST_P(MultiThreadedHashJoinTest, fullJoin) {
 
 TEST_P(MultiThreadedHashJoinTest, fullJoinWithEmptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (const auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     // Left side keys are [0, 1, 2,..10].
@@ -6451,7 +6451,7 @@ DEBUG_ONLY_TEST_F(HashJoinTest, reclaimDuringAllocation) {
   createDuckDbTable("u", buildVectors);
 
   const std::vector<bool> enableSpillings = {false, true};
-  for (const auto enableSpilling : enableSpillings) {
+  for (bool enableSpilling : enableSpillings) {
     SCOPED_TRACE(fmt::format("enableSpilling {}", enableSpilling));
 
     auto tempDirectory = exec::test::TempDirectoryPath::create();
@@ -6583,7 +6583,7 @@ DEBUG_ONLY_TEST_F(HashJoinTest, reclaimDuringOutputProcessing) {
   createDuckDbTable("u", buildVectors);
 
   const std::vector<bool> enableSpillings = {false, true};
-  for (const auto enableSpilling : enableSpillings) {
+  for (bool enableSpilling : enableSpillings) {
     SCOPED_TRACE(fmt::format("enableSpilling {}", enableSpilling));
     auto tempDirectory = exec::test::TempDirectoryPath::create();
     auto queryPool = memory::memoryManager()->addRootPool(

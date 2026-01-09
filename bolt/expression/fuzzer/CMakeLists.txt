@@ -61,9 +61,9 @@ add_executable(spark_double_to_decimal_fuzzer_test DoubleToDecimalFuzzerTest.cpp
 
 target_link_libraries(spark_double_to_decimal_fuzzer_test
                       bolt_type
-                      -Wl,--whole-archive bolt_process
+                      bolt_process
                       bolt_functions_spark
-                      -Wl,--no-whole-archive arrow::arrow
+                      arrow::arrow
                       folly::folly
                       GTest::gtest GTest::gtest_main)
 

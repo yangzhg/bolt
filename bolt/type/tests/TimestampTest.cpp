@@ -334,7 +334,10 @@ TEST(TimestampTest, CivilDateTimeMatchesChrono) {
   for (const auto& ts : samples) {
     const auto civil = util::toCivilDateTime(ts, true, true);
 
-    auto chronoTimePoint = std::chrono::system_clock::time_point(
+    using SysTimeNanos = std::chrono::
+        time_point<std::chrono::system_clock, std::chrono::nanoseconds>;
+
+    auto chronoTimePoint = SysTimeNanos(
         std::chrono::seconds(ts.getSeconds()) +
         std::chrono::nanoseconds(ts.getNanos()));
     auto days = ::date::floor<::date::days>(chronoTimePoint);

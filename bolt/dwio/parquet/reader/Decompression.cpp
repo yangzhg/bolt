@@ -15,16 +15,19 @@
  */
 
 #include "bolt/dwio/parquet/reader/Decompression.h"
+
+#include "bolt/common/compression/LzoDecompressor.h"
 #include "bolt/dwio/common/BufferUtil.h"
 #include "bolt/dwio/common/IntCodecCommon.h"
 #include "bolt/dwio/common/SeekableInputStream.h"
 #include "bolt/dwio/common/compression/Compression.h"
 #include "bolt/dwio/parquet/reader/PageReader.h"
 #include "bolt/dwio/parquet/reader/ParquetReaderUtil.h"
+#include "bolt/dwio/parquet/thrift/FmtParquetFormatters.h"
 
-#include "bolt/common/compression/LzoDecompressor.h"
-#include "lz4.h"
-#include "zstd.h"
+#include <lz4.h>
+#include <zstd.h>
+
 namespace bytedance::bolt::parquet {
 
 static inline std::uint32_t reverse_bytes(std::uint32_t i) {

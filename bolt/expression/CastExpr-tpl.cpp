@@ -15,7 +15,16 @@
  */
 
 #include "bolt/expression/CastExpr-tpl.h"
+
+#if defined(__linux__)
 #include <byteswap.h>
+#elif defined(__APPLE__)
+#include <machine/endian.h>
+#define bswap_16(x) __builtin_bswap16(x)
+#define bswap_32(x) __builtin_bswap32(x)
+#define bswap_64(x) __builtin_bswap64(x)
+#endif
+
 #include "bolt/functions/InlineFlatten.h"
 #include "bolt/functions/lib/RowsTranslationUtil.h"
 #include "bolt/functions/lib/StringUtil.h"
@@ -578,10 +587,10 @@ class Converter {
             from, fromScale_, StringView::kInlineSize, inlined);
         to.setNoCopy(std::string_view(inlined, strSize));
       } else {
-        char cached[fromDecimalMaxSize_];
+        std::vector<char> cached(fromDecimalMaxSize_);
         auto strSize = DecimalUtil::convertToString(
-            from, fromScale_, fromDecimalMaxSize_, cached);
-        to.set(std::string_view(cached, strSize));
+            from, fromScale_, fromDecimalMaxSize_, cached.data());
+        to.set(std::string_view(cached.data(), strSize));
       }
     } else if constexpr (fromKind == PrimitiveKind::DATE) {
       try {
@@ -821,14 +830,14 @@ class VectorConverter : public ConverterBase {
         context, input.type(), result->type());
     auto outArray = OutType<toKind>::getOutArray(resultFlatVector);
     if (FOLLY_LIKELY(errorPolicy == CastErrorPolicy::NullOnFailure)) {
-      rows.template applyToSelected([&](auto row) INLINE_LAMBDA {
+      rows.applyToSelected([&](auto row) INLINE_LAMBDA {
         if (converter.convert(sourceVector->valueAt(row), outArray[row]) !=
             ConvertStatus::SUCCESS) {
           result->setNull(row, true);
         }
       });
     } else if (errorPolicy == CastErrorPolicy::ThrowOnFailure) {
-      rows.template applyToSelected([&](auto row) INLINE_LAMBDA {
+      rows.applyToSelected([&](auto row) INLINE_LAMBDA {
         if (converter.convert(sourceVector->valueAt(row), outArray[row]) !=
             ConvertStatus::SUCCESS) {
           context.setBoltExceptionError(
@@ -836,7 +845,7 @@ class VectorConverter : public ConverterBase {
         }
       });
     } else if (errorPolicy == CastErrorPolicy::SparkCastPolicy) {
-      rows.template applyToSelected([&](auto row) INLINE_LAMBDA {
+      rows.applyToSelected([&](auto row) INLINE_LAMBDA {
         ConvertStatus status =
             converter.convert(sourceVector->valueAt(row), outArray[row]);
         if (status != ConvertStatus::SUCCESS &&

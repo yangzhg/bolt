@@ -87,7 +87,6 @@ target_link_libraries(
   ${FOLLY_BENCHMARK}
   gflags::gflags)
 
-find_package(gfx-timsort REQUIRED CONFIG)
 if(${BOLT_ENABLE_PARQUET})
   add_executable(bolt_sort_benchmark RowContainerSortBenchmark.cpp)
   find_package(Thrift CONFIG REQUIRED)

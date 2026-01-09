@@ -1566,7 +1566,7 @@ TEST_F(VectorTest, wrapInConstantWithCopy) {
       std::dynamic_pointer_cast<ConstantVector<ComplexType>>(
           BaseVector::wrapInConstant(size, 22, constBaseVector, true));
   EXPECT_NE(constArrayVector->valueVector(), nullptr);
-  EXPECT_TRUE(constArrayVector->valueVector().unique());
+  EXPECT_EQ(constArrayVector->valueVector().use_count(), 1);
   for (auto i = 0; i < size; i++) {
     ASSERT_FALSE(constArrayVector->isNullAt(i));
     ASSERT_TRUE(constArrayVector->equalValueAt(arrayVector.get(), i, 3));
@@ -1578,7 +1578,7 @@ TEST_F(VectorTest, wrapInConstantWithCopy) {
   constArrayVector = std::dynamic_pointer_cast<ConstantVector<ComplexType>>(
       BaseVector::wrapInConstant(size, 22, constBaseVector, true));
   EXPECT_NE(constArrayVector->valueVector(), nullptr);
-  EXPECT_TRUE(constArrayVector->valueVector().unique());
+  EXPECT_EQ(constArrayVector->valueVector().use_count(), 1);
   for (auto i = 0; i < size; i++) {
     ASSERT_TRUE(constArrayVector->isNullAt(i));
   }
@@ -1588,7 +1588,7 @@ TEST_F(VectorTest, rowResize) {
   auto testRowResize = [&](const VectorPtr& vector, bool setNotNull) {
     auto rowVector = vector->as<RowVector>();
     for (auto& child : rowVector->children()) {
-      BOLT_CHECK(child.unique());
+      BOLT_CHECK_EQ(child.use_count(), 1);
     }
     auto oldSize = rowVector->size();
     auto newSize = oldSize * 2;

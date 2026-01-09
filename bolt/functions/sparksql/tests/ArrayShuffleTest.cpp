@@ -38,6 +38,17 @@ using namespace bytedance::bolt::test;
 
 class ArrayShuffleTest : public SparkFunctionBaseTest {
  protected:
+#ifndef __GLIBCXX__
+  void SetUp() override {
+    // std::shuffle implementation is distinct between libstdc++ (Linux) and
+    // libc++ (macOS). Even with the same deterministic seed for std::mt19937,
+    // the resulting permutation differs across platforms. Since these tests
+    // verify against hardcoded Linux libstdc++ results, they are skipped when
+    // compiled against libc++.
+    GTEST_SKIP()
+        << "Skipping: std::shuffle output differs between libc++ and libstdc++.";
+  }
+#endif
   void testShuffle(
       const VectorPtr& input,
       const VectorPtr& expected,

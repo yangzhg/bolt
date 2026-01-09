@@ -2177,14 +2177,14 @@ TEST_F(ExprTest, memo) {
       100, [](auto row) { return (8 + row * 2) % 3 == 1; });
   assertEqualVectors(expectedResult, result);
   BOLT_CHECK_EQ(stats["eq"].numProcessedRows, 100);
-  BOLT_CHECK(base.unique());
+  BOLT_CHECK(base.use_count() == 1);
 
   // After this results would be cached
   std::tie(result, stats) = evaluateWithStats(
       exprSet.get(), makeRowVector({wrapInDictionary(evenIndices, 100, base)}));
   assertEqualVectors(expectedResult, result);
   BOLT_CHECK_EQ(stats["eq"].numProcessedRows, 200);
-  BOLT_CHECK(!base.unique());
+  BOLT_CHECK_NE(base.use_count(), 1);
 
   // Unevaluated rows are processed
   std::tie(result, stats) = evaluateWithStats(
@@ -2193,7 +2193,7 @@ TEST_F(ExprTest, memo) {
       100, [](auto row) { return (9 + row * 2) % 3 == 1; });
   assertEqualVectors(expectedResult, result);
   BOLT_CHECK_EQ(stats["eq"].numProcessedRows, 300);
-  BOLT_CHECK(!base.unique());
+  BOLT_CHECK_NE(base.use_count(), 1);
 
   auto everyFifth = makeIndices(100, [](auto row) { return row * 5; });
   std::tie(result, stats) = evaluateWithStats(
@@ -2205,7 +2205,7 @@ TEST_F(ExprTest, memo) {
       stats["eq"].numProcessedRows,
       360,
       "Fewer rows expected as memoization should have kicked in.");
-  BOLT_CHECK(!base.unique());
+  BOLT_CHECK_NE(base.use_count(), 1);
 
   // Create a new base
   base = makeArrayVector<int64_t>(
@@ -2219,7 +2219,7 @@ TEST_F(ExprTest, memo) {
       100, [](auto row) { return (9 + row * 2) % 3 == 1; });
   assertEqualVectors(expectedResult, result);
   BOLT_CHECK_EQ(stats["eq"].numProcessedRows, 460);
-  BOLT_CHECK(base.unique());
+  BOLT_CHECK(base.use_count() == 1);
 }
 
 // This test triggers the situation when peelEncodings() produces an empty

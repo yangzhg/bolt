@@ -17,6 +17,8 @@ repos:
     rev: 'v14.0.6'
     hooks:
       - id: clang-format
+        name: clang-format C++ files
+        types_or: [c++, c]
 
   - repo: https://github.com/gitleaks/gitleaks
     rev: v8.24.2

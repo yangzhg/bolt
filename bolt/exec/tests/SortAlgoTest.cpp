@@ -39,10 +39,9 @@ TEST(SortAlgo, basic) {
       for (auto i = 0; i < BATCH_SIZE; ++i) {
         data[i] = i;
       }
-      sorter.template sort(
-          std::begin(data), std::end(data), [](int64_t l, int64_t r) {
-            return l < r;
-          });
+      sorter.sort(std::begin(data), std::end(data), [](int64_t l, int64_t r) {
+        return l < r;
+      });
       ASSERT_TRUE(std::is_sorted(std::begin(data), std::end(data)));
     }
     ASSERT_TRUE(sorter.getSortAlgo() == SortAlgo::kTimSort);
@@ -55,10 +54,9 @@ TEST(SortAlgo, basic) {
       for (auto i = 0; i < BATCH_SIZE; ++i) {
         data[i] = BATCH_SIZE - i;
       }
-      sorter.template sort(
-          std::begin(data), std::end(data), [](int64_t l, int64_t r) {
-            return l < r;
-          });
+      sorter.sort(std::begin(data), std::end(data), [](int64_t l, int64_t r) {
+        return l < r;
+      });
       ASSERT_TRUE(std::is_sorted(std::begin(data), std::end(data)));
     }
     ASSERT_TRUE(sorter.getSortAlgo() == SortAlgo::kTimSort);
@@ -76,10 +74,9 @@ TEST(SortAlgo, basic) {
         }
         data[i] = isAsc ? i : (i + SAW_SIZE - 1 - 2 * (i % SAW_SIZE));
       }
-      sorter.template sort(
-          std::begin(data), std::end(data), [](int64_t l, int64_t r) {
-            return l < r;
-          });
+      sorter.sort(std::begin(data), std::end(data), [](int64_t l, int64_t r) {
+        return l < r;
+      });
       ASSERT_TRUE(std::is_sorted(std::begin(data), std::end(data)));
     }
     ASSERT_TRUE(sorter.getSortAlgo() == SortAlgo::kTimSort);
@@ -94,10 +91,9 @@ TEST(SortAlgo, basic) {
     for (auto i = 0; i < 50; ++i) {
       std::shuffle(data.begin(), data.end(), g);
 
-      sorter.template sort(
-          std::begin(data), std::end(data), [](int64_t l, int64_t r) {
-            return l < r;
-          });
+      sorter.sort(std::begin(data), std::end(data), [](int64_t l, int64_t r) {
+        return l < r;
+      });
       ASSERT_TRUE(std::is_sorted(std::begin(data), std::end(data)));
     }
     ASSERT_TRUE(sorter.getSortAlgo() != SortAlgo::kAuto);
@@ -108,10 +104,9 @@ TEST(SortAlgo, basic) {
     exec::HybridSorter sorter{SortAlgo::kTimSort};
     for (auto i = 0; i < 10; ++i) {
       std::shuffle(data.begin(), data.end(), g);
-      sorter.template sort(
-          std::begin(data), std::end(data), [](int64_t l, int64_t r) {
-            return l < r;
-          });
+      sorter.sort(std::begin(data), std::end(data), [](int64_t l, int64_t r) {
+        return l < r;
+      });
       ASSERT_TRUE(std::is_sorted(std::begin(data), std::end(data)));
     }
     ASSERT_TRUE(sorter.getSortAlgo() == SortAlgo::kTimSort);
@@ -130,10 +125,9 @@ TEST(SortAlgo, probeAgain) {
       for (auto i = 0; i < BATCH_SIZE; ++i) {
         data[i] = i;
       }
-      sorter.template sort(
-          std::begin(data), std::end(data), [](int64_t l, int64_t r) {
-            return l < r;
-          });
+      sorter.sort(std::begin(data), std::end(data), [](int64_t l, int64_t r) {
+        return l < r;
+      });
       ASSERT_TRUE(std::is_sorted(std::begin(data), std::end(data)));
     }
     ASSERT_TRUE(sorter.getSortAlgo() == SortAlgo::kTimSort);
@@ -141,10 +135,9 @@ TEST(SortAlgo, probeAgain) {
     // after many batches, we try to probe again
     for (auto i = 0; i < 200; ++i) {
       std::shuffle(data.begin(), data.end(), g);
-      sorter.template sort(
-          std::begin(data), std::end(data), [](int64_t l, int64_t r) {
-            return l < r;
-          });
+      sorter.sort(std::begin(data), std::end(data), [](int64_t l, int64_t r) {
+        return l < r;
+      });
       ASSERT_TRUE(std::is_sorted(std::begin(data), std::end(data)));
     }
     ASSERT_TRUE(sorter.getSortAlgo() != SortAlgo::kAuto);

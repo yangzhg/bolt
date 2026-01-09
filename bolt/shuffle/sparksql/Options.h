@@ -34,6 +34,7 @@
 #include <arrow/ipc/options.h>
 #include <arrow/util/compression.h>
 #include <bolt/common/base/Exceptions.h>
+#include <fmt/format.h>
 #include <cstdint>
 #include "bolt/shuffle/sparksql/partition_writer/rss/RssClient.h"
 #include "bolt/shuffle/sparksql/partitioner/Partitioning.h"

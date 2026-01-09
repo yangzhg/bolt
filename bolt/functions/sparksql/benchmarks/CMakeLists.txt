@@ -47,7 +47,7 @@ target_link_libraries(
   bolt_sparksql_benchmarks_regex
   Folly::folly 
   ${FOLLY_BENCHMARK}
-  -Wl,--whole-archive bolt_process -Wl,--no-whole-archive  
+  bolt_process
   re2::re2
   ${ICU_LIBRARIES})
   

@@ -82,15 +82,15 @@ class HiveDataSource : public DataSource {
     return ioStats_->rawBytesRead();
   }
 
-  std::vector<uint64_t> getCompletedBytesReads() {
+  std::vector<uint64_t> getCompletedBytesReads() override {
     return ioStats_->rawBytesReads();
   }
 
-  std::vector<uint64_t> getCompletedCntReads() {
+  std::vector<uint64_t> getCompletedCntReads() override {
     return ioStats_->cntReads();
   }
 
-  std::vector<uint64_t> getCompletedScanTimeReads() {
+  std::vector<uint64_t> getCompletedScanTimeReads() override {
     return ioStats_->scanTimeReads();
   }
 

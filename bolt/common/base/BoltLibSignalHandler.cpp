@@ -17,6 +17,10 @@
 #include "bolt/common/base/BoltLibSignalHandler.h"
 #include "bolt/common/base/Exceptions.h"
 
+#if defined(__APPLE__)
+#define BOOST_STACKTRACE_GNU_SOURCE_NOT_REQUIRED
+#endif
+
 #include <boost/stacktrace.hpp>
 #include <folly/system/ThreadName.h>
 

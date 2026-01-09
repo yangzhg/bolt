@@ -30,6 +30,8 @@ class FieldBoolOrAgg : public AggregateFunction {
     val = nullptr;
   }
 
+  virtual ~FieldBoolOrAgg() = default;
+
   void add(VectorPtr value, size_t rowIndex) override {
     if (value->isNullAt(rowIndex))
       return;

@@ -84,15 +84,15 @@ class LocalPartitionWriter : public PartitionWriter {
   arrow::Status reclaimFixedSize(int64_t size, int64_t* actual) override;
 
   // for BoltShuffleWriterV2, merger_ is not used
-  arrow::Status reclaimFixedSizeNoMerge(int64_t size, int64_t* actual);
+  arrow::Status reclaimFixedSizeNoMerge(int64_t size, int64_t* actual) override;
 
   // for BoltShuffleWriterV2, evict all cached BlockPayload
-  arrow::Status evictPayLoadCache();
+  arrow::Status evictPayLoadCache() override;
 
   // for BoltShuffleWriterV2
-  arrow::Status startClearPayLoadCacheSequential();
-  arrow::Status stopClearPayLoadCacheSequential();
-  arrow::Status clearSpecificPayLoadCache(uint32_t pid);
+  arrow::Status startClearPayLoadCacheSequential() override;
+  arrow::Status stopClearPayLoadCacheSequential() override;
+  arrow::Status clearSpecificPayLoadCache(uint32_t pid) override;
 
   // for BoltRowBasedSortShuffleWriter
   arrow::Status evict(
@@ -104,7 +104,7 @@ class LocalPartitionWriter : public PartitionWriter {
   arrow::Status stopInRowFormat(ShuffleWriterMetrics* metrics);
   arrow::Status mergeRowSpills(uint32_t partitionId);
 
-  bool canSpill();
+  bool canSpill() override;
 
   class LocalSpiller;
 

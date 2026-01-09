@@ -97,7 +97,7 @@ arrow::Status BoltRowBasedSortShuffleWriter::split(
     }
 
     // calc rv memory size and try reserve, reserve failed
-    auto incrementSize = std::max(
+    auto incrementSize = std::max<size_t>(
         rv->estimateFlatSize(), rv->size() * rowConverter_->averageRowSize());
     if (!boltPool_->maybeReserve(incrementSize)) {
       RETURN_NOT_OK(tryEvict());

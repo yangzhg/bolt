@@ -103,7 +103,7 @@ class RowsStreamingWindowBuild : public WindowBuild {
 
   void loadNextPartitionFromSpill();
 
-  void finish();
+  void finish() override;
 
   // Holds input rows within the current partition.
   std::vector<char*> inputRows_;

@@ -83,7 +83,7 @@ void testRegexPerformance(
     const std::vector<std::string>& patterns) {
   if constexpr (type == REGEX_TYPE::ICU) {
     if constexpr (Direct) {
-      // 直接编译并使用 ICU 正则表达式
+      // compile and use ICU regex pattern directly
       for (const std::string& pattern : patterns) {
         auto up = icu::UnicodeString::fromUTF8(pattern);
         UErrorCode status = U_ZERO_ERROR;
@@ -96,13 +96,13 @@ void testRegexPerformance(
       }
     } else {
       folly::EvictingCacheMap<std::string, std::unique_ptr<icu::RegexPattern>>
-          cache(kMaxRegexSize);
+          cache{kMaxRegexSize};
       folly::Synchronized<folly::EvictingCacheMap<
           std::string,
           std::unique_ptr<icu::RegexPattern>>>
-          syncCache(folly::EvictingCacheMap<
-                    std::string,
-                    std::unique_ptr<icu::RegexPattern>>(kMaxRegexSize));
+          syncCache{folly::EvictingCacheMap<
+              std::string,
+              std::unique_ptr<icu::RegexPattern>>(kMaxRegexSize)};
       UErrorCode status = U_ZERO_ERROR;
       for (const std::string& pattern : patterns) {
         for (const std::string& text : testStrings) {
@@ -122,7 +122,7 @@ void testRegexPerformance(
     }
   } else if constexpr (type == REGEX_TYPE::RE2) {
     if constexpr (Direct) {
-      // 直接编译并使用 RE2 正则表达式
+      // compile and use RE2 regex pattern directly
       for (const std::string& pattern : patterns) {
         re2::RE2::Options opt{re2::RE2::Quiet};
         opt.set_dot_nl(true);
@@ -132,14 +132,14 @@ void testRegexPerformance(
         }
       }
     } else {
-      // 使用缓存
-      folly::EvictingCacheMap<std::string, std::unique_ptr<re2::RE2>> cache(
-          kMaxRegexSize);
+      // compile and use RE2 regex pattern from cache
+      folly::EvictingCacheMap<std::string, std::unique_ptr<re2::RE2>> cache{
+          kMaxRegexSize};
       folly::Synchronized<
           folly::EvictingCacheMap<std::string, std::unique_ptr<re2::RE2>>>
-          syncCache(
+          syncCache{
               folly::EvictingCacheMap<std::string, std::unique_ptr<re2::RE2>>(
-                  kMaxRegexSize));
+                  kMaxRegexSize)};
       for (const std::string& pattern : patterns) {
         for (const std::string& text : testStrings) {
           re2::RE2::Options opt{re2::RE2::Quiet};

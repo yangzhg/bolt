@@ -92,7 +92,7 @@ class ScalarGeneratorSpec : public GeneratorSpec {
       : GeneratorSpec(type, nullProbability),
         distribution_(std::forward<Distribution>(distribution)) {
     using TCpp = typename TypeTraits<KIND>::NativeType;
-    using Ret = std::result_of_t<Distribution(FuzzerGenerator&)>;
+    using Ret = std::invoke_result_t<Distribution, FuzzerGenerator&>;
     static_assert(std::is_convertible_v<Ret, TCpp>);
   }
 
@@ -156,7 +156,7 @@ class ArrayGeneratorSpec : public GeneratorSpec {
       : GeneratorSpec(type, nullProbability),
         elements_(elements),
         lengthDistribution_(std::forward<Distribution>(lengthDistribution)) {
-    using Ret = std::result_of_t<Distribution(FuzzerGenerator&)>;
+    using Ret = std::invoke_result_t<Distribution, FuzzerGenerator&>;
     static_assert(std::is_convertible_v<Ret, vector_size_t>);
   }
 
@@ -203,7 +203,7 @@ class MapGeneratorSpec : public GeneratorSpec {
         keys_(keys),
         values_(values),
         lengthDistribution_(std::forward<Distribution>(lengthDistribution)) {
-    using Ret = std::result_of_t<Distribution(FuzzerGenerator&)>;
+    using Ret = std::invoke_result_t<Distribution, FuzzerGenerator&>;
     static_assert(std::is_convertible_v<Ret, vector_size_t>);
   }
 
@@ -253,7 +253,7 @@ class EncoderSpec : public GeneratorSpec {
         base_(base),
         encoding_(std::forward<Distribution>(encodingDistribution)),
         nesting_(minNesting, maxNesting) {
-    using Ret = std::result_of_t<Distribution(FuzzerGenerator&)>;
+    using Ret = std::invoke_result_t<Distribution, FuzzerGenerator&>;
     static_assert(std::is_convertible_v<Ret, EncoderSpecCodes>);
   }
 

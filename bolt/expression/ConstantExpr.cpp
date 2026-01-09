@@ -35,7 +35,7 @@ void ConstantExpr::evalSpecialForm(
     const SelectivityVector& rows,
     EvalCtx& context,
     VectorPtr& result) {
-  if (sharedConstantValue_.unique()) {
+  if (sharedConstantValue_.use_count() == 1) {
     sharedConstantValue_->resize(rows.end());
   } else {
     // By reassigning sharedConstantValue_ we increase the chances that it will
@@ -47,7 +47,7 @@ void ConstantExpr::evalSpecialForm(
   if (needToSetIsAscii_) {
     // sharedConstantValue_ must be unique because computeAndSetIsAscii may
     // modify it.
-    BOLT_CHECK(sharedConstantValue_.unique());
+    BOLT_CHECK_EQ(sharedConstantValue_.use_count(), 1);
     auto* vector =
         sharedConstantValue_->asUnchecked<SimpleVector<StringView>>();
     LocalSingleRow singleRow(context, 0);

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <bits/stdint-intn.h>
 #include <folly/container/F14Set.h>
 #include <cmath>
-#include <type_traits>
+#include <cstdint>
 #include "bolt/functions/Udf.h"
+
 namespace bytedance::bolt::functions {
 namespace {
 ///

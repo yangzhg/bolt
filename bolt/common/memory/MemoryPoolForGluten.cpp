@@ -17,7 +17,7 @@
 #include "bolt/common/memory/MemoryPoolForGluten.h"
 
 #include "bolt/common/memory/Memory.h"
-//#include "bolt/common/memory/sparksql/OomPrinter.h"
+
 namespace bytedance::bolt::memory {
 
 MemoryPoolForGluten::MemoryPoolForGluten(

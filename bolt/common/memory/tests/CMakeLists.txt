@@ -49,7 +49,9 @@ add_executable(
 
 target_compile_features(bolt_memory_test PRIVATE cxx_std_20)
 
-find_package(jemalloc CONFIG REQUIRED) 
+if (NOT APPLE)
+  find_package(jemalloc CONFIG REQUIRED) 
+endif()
 
 target_link_libraries(
   bolt_memory_test
@@ -71,7 +73,6 @@ target_link_libraries(
           GTest::gtest
           GTest::gtest_main
           re2::re2
-          jemalloc::jemalloc
           pthread
           dl)
 
@@ -81,7 +82,11 @@ add_executable(bolt_fragmentation_benchmark FragmentationBenchmark.cpp)
 
 target_link_libraries(
   bolt_fragmentation_benchmark PRIVATE bolt_memory ${FOLLY_WITH_DEPENDENCIES}
-                                        gflags::gflags glog::glog   ${LIBJEMALLOC} dl)
+                                        gflags::gflags glog::glog dl)
+if (NOT APPLE)
+  target_link_libraries(bolt_memory_test PRIVATE jemalloc::jemalloc)
+  target_link_libraries(bolt_fragmentation_benchmark PRIVATE jemalloc::jemalloc)
+endif()
 
 add_executable(bolt_concurrent_allocation_benchmark
                ConcurrentAllocationBenchmark.cpp)

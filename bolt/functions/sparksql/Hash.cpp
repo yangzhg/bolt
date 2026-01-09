@@ -30,13 +30,11 @@
 
 #include "bolt/functions/sparksql/Hash.h"
 
-#include <bits/stdint-intn.h>
 #include <folly/CPortability.h>
 #include <type/HugeInt.h>
 #include <type/Type.h>
 #include <vector/ComplexVector.h>
 #include <cstdint>
-#include <type_traits>
 
 #include "bolt/common/base/BitUtil.h"
 #include "bolt/expression/DecodedArgs.h"

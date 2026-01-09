@@ -16,7 +16,11 @@
 
 #pragma once
 
+#if defined(__APPLE__)
+#include <machine/endian.h>
+#else
 #include <endian.h>
+#endif
 #include <folly/CPortability.h>
 #include <folly/container/F14Set.h>
 #include <cmath>

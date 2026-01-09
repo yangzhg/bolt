@@ -30,6 +30,7 @@ class FieldFirstValueAgg : public AggregateFunction {
   FieldFirstValueAgg() {
     value_ = nullptr;
   }
+  virtual ~FieldFirstValueAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     if (!value_) {

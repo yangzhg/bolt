@@ -179,7 +179,7 @@ class JoinFuzzer {
     return boost::random::uniform_int_distribution<int32_t>(min, max)(rng_);
   }
 
-  static inline const std::string kHiveConnectorId = "test-hive";
+  static constexpr const char* kHiveConnectorId = "test-hive";
 
   static std::shared_ptr<connector::ConnectorSplit> makeSplit(
       const std::string& filePath);

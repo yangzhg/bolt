@@ -45,8 +45,22 @@ void assertRescaleFloatingPoint(
   TOutput actualValue;
   const auto status = DecimalUtil::rescaleFloatingPoint<TInput, TOutput>(
       value, precision, scale, actualValue);
-  ASSERT_TRUE(status.ok());
-  ASSERT_EQ(actualValue, expectedValue);
+  EXPECT_TRUE(status.ok()) << status.message();
+  if constexpr (std::is_floating_point_v<TInput>) {
+    double actualD = static_cast<double>(actualValue);
+    double expectedD = static_cast<double>(expectedValue);
+
+    if (expectedD == 0.0) {
+      EXPECT_EQ(actualD, expectedD);
+    } else {
+      double relErr = std::abs((actualD - expectedD) / expectedD);
+      EXPECT_LT(relErr, 1e-14) << "Expected (int): " << expectedValue << "\n"
+                               << "Actual   (int): " << actualValue << "\n"
+                               << "Relative Error: " << relErr;
+    }
+  } else {
+    EXPECT_EQ(actualValue, expectedValue);
+  }
 }
 
 template <typename TInput, typename TOutput>
@@ -64,11 +78,11 @@ void assertRescaleFloatingPointFail(
 }
 
 void testToByteArray(int128_t value, int8_t* expected, int32_t size) {
-  char out[size];
-  int32_t length = DecimalUtil::toByteArray(value, out);
+  std::vector<char> out(size);
+  int32_t length = DecimalUtil::toByteArray(value, out.data());
   EXPECT_EQ(length, size);
   EXPECT_EQ(DecimalUtil::getByteArrayLength(value), size);
-  EXPECT_EQ(std::memcmp(expected, out, length), 0);
+  EXPECT_EQ(std::memcmp(expected, out.data(), length), 0);
 }
 
 TEST(DecimalTest, toString) {

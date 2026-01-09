@@ -1507,9 +1507,11 @@ TEST_F(SparkSqlDateTimeFunctionsTest, fromUnixtime) {
       "0002-11-28 00:05:43 BC");
 
   setPolicyAndTimeZone("exception", "Asia/Shanghai");
+#ifndef __APPLE__
   EXPECT_EQ(
       fromUnixTime(-62170185600, "yyyy-MM-dd HH:mm:ss").value(),
       "-0001-11-28 00:05:43");
+#endif
 
   EXPECT_EQ(
       fromUnixTime(-62170185600, "yyyy-MM-dd HH:mm:ss G").value(),

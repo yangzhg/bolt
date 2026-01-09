@@ -132,7 +132,7 @@ target_link_libraries(
   bolt_type
   Folly::folly
   ${FOLLY_BENCHMARK}
-  -Wl,--whole-archive bolt_process -Wl,--no-whole-archive 
+  $<LINK_LIBRARY:WHOLE_ARCHIVE,bolt_process>
   GTest::gtest
   GTest::gtest_main
   gflags::gflags

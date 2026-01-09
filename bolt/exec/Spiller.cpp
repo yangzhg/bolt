@@ -490,7 +490,7 @@ void Spiller::ensureSorted(SpillRun& run) {
     }
     if (cmp_) {
 #if DEBUG_JIT
-      sorter_.template sort(
+      sorter_.sort(
           run.rows.begin(),
           run.rows.end(),
           [&](const char* left, const char* right) {
@@ -510,7 +510,7 @@ void Spiller::ensureSorted(SpillRun& run) {
             return expected;
           });
 #else
-      sorter_.template sort(run.rows.begin(), run.rows.end(), cmp_);
+      sorter_.sort(run.rows.begin(), run.rows.end(), cmp_);
 #endif
     } else {
 #endif
@@ -523,7 +523,7 @@ void Spiller::ensureSorted(SpillRun& run) {
           container_->keyIndices(),
           noFlags ? compareFlags : state_.sortCompareFlags());
 #else
-    sorter_.template sort(
+    sorter_.sort(
         run.rows.begin(),
         run.rows.end(),
         [&](const char* left, const char* right) {

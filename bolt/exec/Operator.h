@@ -187,7 +187,7 @@ class Operator : public BaseRuntimeStatWriter {
       return std::nullopt;
     }
   };
-  static inline const std::string kSpillWrites{"spillWrites"};
+  static constexpr const char* kSpillWrites = "spillWrites";
 
   /// 'operatorId' is the initial index of the 'this' in the Driver's list of
   /// Operators. This is used as in index into OperatorStats arrays in the Task.

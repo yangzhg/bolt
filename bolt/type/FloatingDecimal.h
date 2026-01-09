@@ -15,8 +15,8 @@
  */
 
 #pragma once
-#include <bits/stdint-intn.h>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <cstdint>
 #include "bolt/type/Type.h"
 namespace bytedance::bolt {
 

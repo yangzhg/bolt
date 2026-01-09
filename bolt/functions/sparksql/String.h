@@ -254,6 +254,10 @@ struct ContainsFunction {
       out_type<bool>& result,
       const arg_type<Varchar>& str,
       const arg_type<Varchar>& pattern) {
+    if (pattern.size() == 0) {
+      result = true;
+      return true;
+    }
     result = memmem(str.data(), str.size(), pattern.data(), pattern.size()) !=
         nullptr;
     return true;

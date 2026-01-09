@@ -34,7 +34,7 @@ struct MapSumAccumulator {
       : map_(MapAllocatorType(alloc)) {}
 
   using MapType = folly::F14FastMap<
-      const StringView,
+      StringView,
       int64_t,
       std::hash<StringView>,
       std::equal_to<StringView>,
@@ -212,7 +212,7 @@ class MapSumAggregate : public exec::Aggregate {
       const SelectivityVector& rows,
       const std::vector<VectorPtr>& args) {
     decodedMaps_.decode(*args[0], rows);
-    auto mapVector = decodedMaps_.base()->as<MapVector>();
+    auto mapVector = decodedMaps_.base()->template as<MapVector>();
 
     BOLT_CHECK_NOT_NULL(mapVector);
 

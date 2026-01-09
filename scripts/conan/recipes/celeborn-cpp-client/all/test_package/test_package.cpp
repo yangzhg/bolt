@@ -41,8 +41,8 @@ int main(int argc, char** argv) {
   folly::Init init(&argc, &argv);
 
   auto conf = std::make_shared<celeborn::conf::CelebornConf>();
-  auto confConst = std::static_pointer_cast<const celeborn::conf::CelebornConf>(
-      conf);
+  auto confConst =
+      std::static_pointer_cast<const celeborn::conf::CelebornConf>(conf);
   celeborn::client::ShuffleClientEndpoint endpoint(confConst);
   auto client = celeborn::client::ShuffleClientImpl::create(
       "test_app", confConst, endpoint);

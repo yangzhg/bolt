@@ -65,7 +65,7 @@ target_link_libraries(bolt_rowEqRow_test
   GTest::gtest  
   GTest::gtest_main)
 
-target_compile_options(bolt_thrustjit_test  PUBLIC  -export-dynamic)
+set_target_properties(bolt_thrustjit_test PROPERTIES ENABLE_EXPORTS ON)
 
 add_test(bolt_thrustjit_test bolt_thrustjit_test)
 

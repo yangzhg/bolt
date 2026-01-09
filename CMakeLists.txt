@@ -427,13 +427,14 @@ endif()
 # MacOSX enables two-level namespace by default:
 # http://mirror.informatimago.com/next/developer.apple.com/releasenotes/DeveloperTools/TwoLevelNamespaces.html
 # Enables -flat_namespace so type_info can be deudplicated across .so boundaries
-if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-  add_link_options("-Wl,-flat_namespace")
-endif()
-
-if(UNIX AND NOT APPLE)
-  # codegen linker flags, -export-dynamic for rtti
+if(APPLE)
+  add_link_options(
+    "-Wl,-flat_namespace,-no_warn_duplicate_libraries"
+    "LINKER:-export_dynamic")
+elseif(UNIX)
   add_link_options("-Wl,-export-dynamic")
+else()
+  message(FATAL_ERROR "Unknown system type")
 endif()
 
 if(ENABLE_EXCEPTION_TRACE)
@@ -722,6 +723,11 @@ find_package(xsimd CONFIG REQUIRED)
 add_library(xsimd::xsimd ALIAS xsimd)
 
 find_package(gfx-timsort CONFIG REQUIRED)
+
+if(TARGET gfx::timsort)
+    get_target_property(_dirs gfx::timsort INTERFACE_LINK_DIRECTORIES)
+    set_target_properties(gfx::timsort PROPERTIES INTERFACE_LINK_DIRECTORIES "")
+endif()
 
 find_package(utf8proc REQUIRED)
 

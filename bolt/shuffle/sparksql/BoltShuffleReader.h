@@ -241,7 +241,7 @@ class BoltShuffleReader {
   // FIXME iterator should be unique_ptr or un-copyable singleton
   std::unique_ptr<BoltColumnarBatchDeserializer> readStream(
       std::shared_ptr<arrow::io::InputStream> in) {
-    return std::move(factory_->createDeserializer(in));
+    return factory_->createDeserializer(in);
   }
 
   arrow::Status close() {

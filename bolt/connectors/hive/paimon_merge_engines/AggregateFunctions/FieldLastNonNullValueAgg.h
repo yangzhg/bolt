@@ -30,6 +30,7 @@ class FieldLastNonNullValueAgg : public AggregateFunction {
   FieldLastNonNullValueAgg() {
     value_ = nullptr;
   }
+  virtual ~FieldLastNonNullValueAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     if (!value->isNullAt(rowIndex)) {

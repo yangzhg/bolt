@@ -82,7 +82,7 @@ TEST_F(HiveConnectorSerDeTest, hiveTableHandle) {
   auto tableHandle = makeTableHandle(
       common::test::SubfieldFiltersBuilder()
           .add("c0.c0", isNotNull())
-          .add("c1", lessThanOrEqual(std::numeric_limits<int128_t>::max()))
+          .add("c1", lessThanOrEqual(std::numeric_limits<int64_t>::max()))
           .add("c2", greaterThanOrEqual(3.1415))
           .add("c3", boolEqual(true))
           .add("c4", in(std::vector<int64_t>{0xdeadbeaf, 0xcafecafe}))

@@ -42,9 +42,10 @@ ENABLE_CRC ?= False
 ENABLE_EXCEPTION_TRACE ?= True
 ENABLE_PERF ?= False
 
-ifeq ($(shell arch), aarch64)
-ENABLE_EXCEPTION_TRACE = False
-$(info ENABLE_EXCEPTION_TRACE is disabled on ARM platform)
+ARCH := $(shell uname -m)
+ifneq (,$(filter $(ARCH), aarch64 arm64))
+    ENABLE_EXCEPTION_TRACE = False
+    $(info ENABLE_EXCEPTION_TRACE is disabled on ARM platform)
 endif
 
 ifeq ($(LDB_BUILD), True)
@@ -69,12 +70,24 @@ GLUTEN_CONAN_OPTIONS:=$(GLUTEN_BOLT_OPTIONS)
 
 # ---------- Conan variables defination ends ----------
 
-MEMORY ?=$(shell free -g | grep 'Mem:' | awk '{print $$2}')
-FREE_MEMORY ?=$(shell free -g | grep 'Mem:' | awk '{print $$4}')
-CPU_CORES ?=$(shell grep -c 'processor' /proc/cpuinfo)
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Linux)
+    # Linux
+    MEMORY ?= $(shell free -g | grep 'Mem:' | awk '{print $$2}')
+    FREE_MEMORY ?= $(shell free -g | grep 'Mem:' | awk '{print $$4}')
+    CPU_CORES ?= $(shell grep -c 'processor' /proc/cpuinfo)
+else ifeq ($(UNAME_S),Darwin)
+    # macOS
+    MEMORY ?= $(shell sysctl -n hw.memsize | awk '{print int($$1/1024/1024/1024)}')
+    FREE_MEMORY ?= $(shell vm_stat | grep "Pages free" | awk '{print int($$3*4096/1024/1024/1024)}')
+    CPU_CORES ?= $(shell sysctl -n hw.ncpu)
+else
+    MEMORY ?= 8
+    FREE_MEMORY ?= 4
+    CPU_CORES ?= 4
+endif
 
 # collect system info
-UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Darwin)
     OS_DETAILED   := $(shell sw_vers -productName) $(shell sw_vers -productVersion) ($(shell sw_vers -buildVersion))
     CPU_MODEL     := $(shell sysctl -n machdep.cpu.brand_string)
@@ -158,7 +171,12 @@ endif
 
 CPU_TARGET ?= "avx"
 
-FUZZER_SEED ?= $(shell shuf -i 1000000000-5000000000 -n 1)
+ifeq ($(UNAME_S),Darwin)
+    FUZZER_SEED ?= $(shell python3 -c 'import random; print(random.randint(1000000000, 5000000000))')
+else
+    FUZZER_SEED ?= $(shell shuf -i 1000000000-5000000000 -n 1)
+endif
+
 FUZZER_MAX_LEVEL_NEST ?= 5
 FUZZER_DURATION_SEC ?= 600
 FUZZER_EXPRESSION_REPRO_PERSIST_PATH ?= expression_fuzzer

@@ -80,7 +80,7 @@ void MetaRowsSorterWraper<SortedRows>::MetaCodegenSort(
           types[sortKeysIndices[2]]->kind());
     }
   } else {
-    sortAlgo.template sort(
+    sortAlgo.sort(
         sortedRows.begin(),
         sortedRows.end(),
         [&rowContainer, &sortCompareFlags](

@@ -217,7 +217,7 @@ class DecimalSumAggregate : public exec::Aggregate {
     if (decodedRaw_.isConstantMapping()) {
       if (!decodedRaw_.isNullAt(0)) {
         auto value = decodedRaw_.valueAt<TInputType>(0);
-        rows.template applyToSelected(
+        rows.applyToSelected(
             [&](vector_size_t i) { updateNonNullValue(group, value, false); });
       }
     } else if (decodedRaw_.mayHaveNulls()) {

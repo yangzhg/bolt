@@ -645,7 +645,7 @@ __attribute__((flatten)) void jsonToArray_Sonic(
       if (jsonDoc.HasParseError()) {
         BOLT_USER_FAIL(fmt::format(
             "json_split parse error: {}, json string: {}",
-            jsonDoc.GetParseError(),
+            sonic_json::ErrorMsg(jsonDoc.GetParseError()),
             jsonStr));
       }
 

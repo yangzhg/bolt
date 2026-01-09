@@ -1409,8 +1409,8 @@ void GroupingSet::outputUniqueGroupsInRowFormat(
         resultOffset,
         rowSizeVec,
         totalUniqueRowSize);
-    estimateUniqueBytesPerRow =
-        std::max(compositeResult->estimateRowSize(), estimateUniqueBytesPerRow);
+    estimateUniqueBytesPerRow = std::max<size_t>(
+        compositeResult->estimateRowSize(), estimateUniqueBytesPerRow);
   }
 }
 

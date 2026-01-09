@@ -28,7 +28,7 @@
 
 add_executable(simple_lru_cache_test SimpleLRUCacheTest.cpp)
 add_test(simple_lru_cache_test simple_lru_cache_test)
-target_link_libraries(simple_lru_cache_test PRIVATE ${FOLLY_WITH_DEPENDENCIES} glog::glog -Wl,--whole-archive bolt_process -Wl,--no-whole-archive 
+target_link_libraries(simple_lru_cache_test PRIVATE ${FOLLY_WITH_DEPENDENCIES} glog::glog $<LINK_LIBRARY:WHOLE_ARCHIVE,bolt_process>
                                                     GTest::gtest GTest::gtest_main)
 
 add_executable(

@@ -237,7 +237,7 @@ void WindowBuild::sortPartitions() {
     }
   }
   if (cmp_) {
-    sorter_.template sort(sortRows_.begin(), sortRows_.end(), cmp_);
+    sorter_.sort(sortRows_.begin(), sortRows_.end(), cmp_);
   } else {
 #endif
 
@@ -249,7 +249,7 @@ void WindowBuild::sortPartitions() {
         data_->keyIndices(),
         sortCompareFlags_);
 #else
-  sorter_.template sort(
+  sorter_.sort(
       sortRows_.begin(),
       sortRows_.end(),
       [this](const char* leftRow, const char* rightRow) {

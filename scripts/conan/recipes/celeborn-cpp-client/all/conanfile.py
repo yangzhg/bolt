@@ -59,7 +59,7 @@ class CelebornCppClientConan(ConanFile):
         self.requires("protobuf/3.21.4", transitive_headers=True, transitive_libs=True)
 
     def build_requirements(self):
-        self.tool_requires("cmake/3.31.3")
+        self.tool_requires("cmake/3.31.10")
         self.tool_requires("protobuf/3.21.4")
 
     def source(self):

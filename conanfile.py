@@ -351,7 +351,7 @@ class BoltConan(ConanFile):
             self.requires(
                 "libtorch/2.6.0", options={"torch": self.options.enable_torch}
             )
-        if self.settings.os == "Linux" or self.settings.os == "FreeBSD":
+        if self.settings.os in ["Linux", "FreeBSD"]:
             if self.options.get_safe("enable_perf"):
                 self.requires("gperftools/2.16")
                 self.requires("libunwind/1.8.0", override=True)
@@ -367,7 +367,7 @@ class BoltConan(ConanFile):
         self.tool_requires("m4/1.4.19")
         self.tool_requires("bison/3.8.2")
         self.tool_requires("flex/2.6.4")
-        self.tool_requires("cmake/3.31.3")
+        self.tool_requires("cmake/3.31.10", override=True)
         self.tool_requires("ninja/1.11.1")
         self.tool_requires("protobuf/<host_version>")
         self.tool_requires("thrift/<host_version>")

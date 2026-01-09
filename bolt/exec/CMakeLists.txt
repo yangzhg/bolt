@@ -123,8 +123,7 @@ add_library(
 
 target_compile_features(bolt_exec PRIVATE cxx_std_20)
 
-# Add option "-export-dynamic" so that LLVM IR can call C/C++ functions
-target_link_options(bolt_exec PRIVATE "-Wl,--export-dynamic")
+set_target_properties(bolt_exec PROPERTIES ENABLE_EXPORTS ON)
 
 if (${ENABLE_BOLT_JIT})
   find_package(LLVM REQUIRED CONFIG)

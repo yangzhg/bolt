@@ -431,8 +431,9 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   add_link_options("-Wl,-flat_namespace")
 endif()
 
-if(UNIX AND NOT APPLE)
-  # codegen linker flags, -export-dynamic for rtti
+if(APPLE)
+  add_link_options("LINKER:-export_dynamic")
+else()
   add_link_options("-Wl,-export-dynamic")
 endif()
 

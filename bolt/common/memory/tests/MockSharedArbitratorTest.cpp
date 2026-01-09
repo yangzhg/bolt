@@ -33,8 +33,7 @@
 #include <fmt/format.h>
 #include <gmock/gmock.h>
 #include <re2/re2.h>
-#include <deque>
-#include <vector>
+
 #include "bolt/common/base/tests/GTestUtils.h"
 #include "bolt/common/memory/MallocAllocator.h"
 #include "bolt/common/memory/Memory.h"
@@ -3648,7 +3647,7 @@ TEST_F(MockSharedArbitrationTest, growWithArbitrationAbort) {
 TEST_F(MockSharedArbitrationTest, singlePoolGrowCapacityWithArbitration) {
   const std::vector<bool> isLeafReclaimables = {false, true};
   const int64_t memoryCapacity = 128 * MB;
-  for (const auto isLeafReclaimable : isLeafReclaimables) {
+  for (bool isLeafReclaimable : isLeafReclaimables) {
     SCOPED_TRACE(fmt::format("isLeafReclaimable {}", isLeafReclaimable));
     setupMemory({.memoryCapacity = memoryCapacity});
     auto* op = addMemoryOp(nullptr, isLeafReclaimable);
@@ -3723,7 +3722,7 @@ TEST_F(MockSharedArbitrationTest, singlePoolGrowCapacityFailedWithAbort) {
 
 TEST_F(MockSharedArbitrationTest, arbitrateWithCapacityShrink) {
   const std::vector<bool> isLeafReclaimables = {true, false};
-  for (const auto isLeafReclaimable : isLeafReclaimables) {
+  for (bool isLeafReclaimable : isLeafReclaimables) {
     SCOPED_TRACE(fmt::format("isLeafReclaimable {}", isLeafReclaimable));
     setupMemory({});
     auto* reclaimedOp = addMemoryOp(nullptr, isLeafReclaimable);
@@ -3760,7 +3759,7 @@ TEST_F(MockSharedArbitrationTest, arbitrateWithMemoryReclaim) {
   const uint64_t reservedPoolCapacity = 8 * MB;
   const uint64_t memoryPoolAbortCapacityLimit = 256 * MB;
   const std::vector<bool> isLeafReclaimables = {true, false};
-  for (const auto isLeafReclaimable : isLeafReclaimables) {
+  for (bool isLeafReclaimable : isLeafReclaimables) {
     SCOPED_TRACE(fmt::format("isLeafReclaimable {}", isLeafReclaimable));
     setupMemory(
         {.memoryCapacity = memoryCapacity,
@@ -3900,7 +3899,7 @@ DEBUG_ONLY_TEST_F(MockSharedArbitrationTest, reclaimWithNoCandidate) {
 }
 
 TEST_F(MockSharedArbitrationTest, arbitrateBySelfMemoryReclaim) {
-  for (const auto isLeafReclaimable : {true, false}) {
+  for (bool isLeafReclaimable : {true, false}) {
     SCOPED_TRACE(fmt::format("isLeafReclaimable {}", isLeafReclaimable));
     const uint64_t memCapacity = 128 * MB;
     const uint64_t reservedCapacity = 8 * MB;

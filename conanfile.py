@@ -299,7 +299,7 @@ class BoltConan(ConanFile):
             force=True,
         )
         self.requires("re2/20230301", transitive_headers=True, transitive_libs=True)
-        self.requires("gtest/1.10.0")
+        self.requires("gtest/1.17.0")
         self.requires(
             "icu/74.2", headers=True, transitive_headers=True, transitive_libs=True
         )

@@ -291,7 +291,7 @@ class BoltConan(ConanFile):
             self.requires("aws-sdk-cpp/1.11.692", transitive_headers=True, transitive_libs=True)
             self.requires("aws-c-common/0.12.5", force=True)
         self.requires("simdjson/3.12.3", transitive_headers=True)
-        self.requires("sonic-cpp/1.0.2", transitive_headers=True, transitive_libs=True)
+        self.requires("sonic-cpp/1.0.2-fix", transitive_headers=True, transitive_libs=True)
         self.requires(
             f"protobuf/{protobuf_version}",
             transitive_headers=True,
@@ -351,11 +351,12 @@ class BoltConan(ConanFile):
             self.requires(
                 "libtorch/2.6.0", options={"torch": self.options.enable_torch}
             )
-        if self.options.get_safe("enable_perf"):
-            self.requires("gperftools/2.16")
-            self.requires("libunwind/1.8.0", override=True)
-        else:
-            self.requires("libunwind/1.8.0")
+        if self.settings.os == "Linux" or self.settings.os == "FreeBSD":
+            if self.options.get_safe("enable_perf"):
+                self.requires("gperftools/2.16")
+                self.requires("libunwind/1.8.0", override=True)
+            else:
+                self.requires("libunwind/1.8.0")
         self.requires("utf8proc/2.11.0", transitive_headers=True, transitive_libs=True)
         self.requires("date/3.0.4-bolt", transitive_headers=True, transitive_libs=True)
         self.requires("libbacktrace/cci.20210118")

@@ -20,7 +20,9 @@
 #include <cxxabi.h>
 #include <dlfcn.h>
 #include <execinfo.h>
+#if defined(__linux__) || defined(__FreeBSD__)
 #include <libunwind.h>
+#endif
 #include <string.h>
 #include <unistd.h>
 
@@ -221,6 +223,7 @@ template <bool demangle>
 
 template <bool demangle>
 [[maybe_unused]] void printStacktraceLibunwind() {
+#if defined(__linux__) || defined(__FreeBSD__)
   unw_context_t context;
   unw_cursor_t cursor;
   unw_word_t ip;
@@ -270,6 +273,9 @@ template <bool demangle>
     }
     writeToStderr("\n");
   }
+#else
+    writeToStderr("libunwind not supported on this system.\n");
+#endif
 }
 
 template <bool demangle, StackTraceEngine engine>

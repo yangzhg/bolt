@@ -1034,7 +1034,7 @@ void RowContainer::clear() {
             << ", numFreeRows_: " << numFreeRows_
             << ", string allocator size: " << stringAllocator_->size()
             << ", free space: " << stringAllocator_->freeSpace();
-  const bool sharedStringAllocator = !stringAllocator_.unique();
+  const bool sharedStringAllocator = (stringAllocator_.use_count() != 1);
   if (checkFree_ || sharedStringAllocator || usesExternalMemory_) {
     constexpr int32_t kBatch = 1000;
     std::vector<char*> rows(kBatch);

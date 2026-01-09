@@ -12,8 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * --------------------------------------------------------------------------
+ */
+
+/* --------------------------------------------------------------------------
  * Copyright (c) ByteDance Ltd. and/or its affiliates.
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -253,10 +254,6 @@ void ReaderBase::initializeSchema() {
   fileMetaData_->schema[0].repetition_type =
       thrift::FieldRepetitionType::REQUIRED;
 
-  BOLT_CHECK_EQ(
-      fileMetaData_->schema[0].repetition_type,
-      thrift::FieldRepetitionType::REQUIRED,
-      "Invalid Parquet schema: root element must be REQUIRED");
   BOLT_CHECK_GT(
       fileMetaData_->schema[0].num_children,
       0,
@@ -474,7 +471,7 @@ std::shared_ptr<const ParquetTypeWithId> ReaderBase::getParquetColumnInfo(
         default:
           BOLT_UNREACHABLE(
               "Invalid SchemaElement converted_type: {}, name: {}",
-              schemaElement.converted_type,
+              thrift::to_string(schemaElement.converted_type),
               schemaElement.name);
       }
     } else {
@@ -850,7 +847,7 @@ int32_t parquetTypeToBoltBytes(thrift::Type::type type) {
     case thrift::Type::BYTE_ARRAY:
       return sizeof(StringView);
     default:
-      BOLT_FAIL("Type does not have a byte width {}", type);
+      BOLT_FAIL("Type does not have a byte width {}", thrift::to_string(type));
   }
 }
 } // namespace

@@ -1191,7 +1191,7 @@ class AlignedStlAllocator {
   using value_type = T;
   template <class Other>
   struct rebind {
-    using other = AlignedStlAllocator<Other, adjustedAlignment>;
+    using other = AlignedStlAllocator<Other, Alignment>;
   };
   MemoryPool& pool;
 

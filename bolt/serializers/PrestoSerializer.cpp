@@ -3601,9 +3601,9 @@ void PrestoVectorSerde::deserialize(
 
   if (resultOffset > 0) {
     BOLT_CHECK_NOT_NULL(*result);
-    BOLT_CHECK(result->unique());
+    BOLT_CHECK_EQ(result->use_count(), 1);
     (*result)->resize(resultOffset + numRows);
-  } else if (*result && result->unique()) {
+  } else if (*result && result->use_count() == 1) {
     BOLT_CHECK(
         *(*result)->type() == *type,
         "Unexpected type: {} vs. {}",

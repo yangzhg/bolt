@@ -50,7 +50,7 @@ const char* FOLLY_NONNULL decompressLz4AndLzo(
     if (inputLength < sizeof(uint32_t)) {
       BOLT_FAIL(
           "{} decompression failed, input len is to small: {}",
-          codec_,
+          thrift::to_string(codec_),
           inputLength)
     }
     uint32_t decompressedBlockLength =
@@ -75,7 +75,7 @@ const char* FOLLY_NONNULL decompressLz4AndLzo(
       if (inputLength < sizeof(uint32_t)) {
         BOLT_FAIL(
             "{} decompression failed, input len is to small: {}",
-            codec_,
+            thrift::to_string(codec_),
             inputLength)
       }
       // Read the length of the next lz4/lzo compressed block.
@@ -112,7 +112,9 @@ const char* FOLLY_NONNULL decompressLz4AndLzo(
             outPtr,
             outPtr + remainingOutputSize);
       } else {
-        BOLT_FAIL("Unsupported Parquet compression type '{}'", codec_);
+        BOLT_FAIL(
+            "Unsupported Parquet compression type '{}'",
+            thrift::to_string(codec_));
       }
 
       BOLT_CHECK_LE(decompressedSize, remainingOutputSize);

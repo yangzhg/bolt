@@ -196,7 +196,7 @@ class ArrayAggAggregate : public exec::Aggregate {
       bool /*mayPushdown*/) final {
     decodedIntermediate_.decode(*args[0], rows);
 
-    auto arrayVector = decodedIntermediate_.base()->as<ArrayVector>();
+    auto arrayVector = decodedIntermediate_.base()->template as<ArrayVector>();
     auto& elements = arrayVector->elements();
     rows.applyToSelected([&](vector_size_t row) {
       auto group = groups[row];
@@ -241,7 +241,7 @@ class ArrayAggAggregate : public exec::Aggregate {
       const std::vector<VectorPtr>& args,
       bool /* mayPushdown */) final {
     decodedIntermediate_.decode(*args[0], rows);
-    auto arrayVector = decodedIntermediate_.base()->as<ArrayVector>();
+    auto arrayVector = decodedIntermediate_.base()->template as<ArrayVector>();
 
     auto& values = value<ArrayAccumulator>(group)->elements;
     auto elements = arrayVector->elements();

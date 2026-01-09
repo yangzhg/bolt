@@ -140,7 +140,7 @@ void TryExpr::nullOutErrors(
         result = BaseVector::wrapInDictionary(nulls, indices, size, result);
       }
     } else {
-      if (result.unique() && result->isNullsWritable()) {
+      if (result.use_count() == 1 && result->isNullsWritable()) {
         rows.applyToSelected([&](auto row) {
           if (row < errors->size() && !errors->isNullAt(row)) {
             result->setNull(row, true);

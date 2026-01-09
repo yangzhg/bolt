@@ -604,11 +604,13 @@ void PageReader::prepareDictionary(const PageHeader& pageHeader) {
         break;
       }
       BOLT_UNSUPPORTED(
-          "Parquet type {} not supported for dictionary", parquetType);
+          "Parquet type {} not supported for dictionary",
+          thrift::to_string(parquetType));
     }
     default:
       BOLT_UNSUPPORTED(
-          "Parquet type {} not supported for dictionary", parquetType);
+          "Parquet type {} not supported for dictionary",
+          thrift::to_string(parquetType));
   }
 }
 
@@ -634,7 +636,7 @@ int32_t parquetTypeBytes(thrift::Type::type type) {
     case thrift::Type::INT96:
       return 12;
     default:
-      BOLT_FAIL("Type does not have a byte width {}", type);
+      BOLT_FAIL("Type does not have a byte width {}", thrift::to_string(type));
   }
 }
 } // namespace
@@ -709,7 +711,7 @@ void PageReader::preloadRepDefs() {
       do {
         while (pageStart_ < chunkSize_ && ++pageCnt <= pageCntPerBatch) {
           if (pageCnt == 1) {
-            auto guessLeftPageCnt = std::min(
+            auto guessLeftPageCnt = std::min<uint64_t>(
                 pageCntPerBatch, (chunkSize_ - pageStart_) / avgPageLen + 1);
             preloadedRepDefs_.emplace_back(raw_vector<char>(&pool_));
             preloadedRepDefs_.back().reserve(avgPageLen * guessLeftPageCnt);
@@ -994,7 +996,9 @@ void PageReader::makeDecoder() {
       }
       break;
     default:
-      BOLT_UNSUPPORTED("Encoding not supported yet: {}", encoding_);
+      BOLT_UNSUPPORTED(
+          "Encoding not supported yet: {}", thrift::to_string(encoding_));
+      break;
   }
 }
 

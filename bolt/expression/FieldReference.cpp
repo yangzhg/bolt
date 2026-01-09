@@ -59,7 +59,7 @@ bool FieldReference::addNullsFast(
   auto& child =
       inputs_.empty() ? context.getField(index_) : row->childAt(index_);
   if (row->mayHaveNulls()) {
-    if (!child.unique()) {
+    if (child.use_count() != 1) {
       return false;
     }
     addNulls(rows, row->rawNulls(), context, const_cast<VectorPtr&>(child));
@@ -90,7 +90,7 @@ void FieldReference::apply(
         auto rowType = dynamic_cast<const RowType*>(rowTry->type().get());
         index_ = rowType->getChildIdx(field_);
         result = std::move(rowTry->childAt(index_));
-        BOLT_CHECK(result.unique());
+        BOLT_CHECK(result.use_count() == 1);
         return;
       }
     }

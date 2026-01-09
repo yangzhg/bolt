@@ -86,7 +86,8 @@ simdjson::error_code extractObject(
   for (auto field : jsonObj) {
     SIMDJSON_ASSIGN_OR_RAISE(auto currentKey, field.unescaped_key(true));
     if (currentKey == key) {
-      ret.emplace(field.value());
+      SIMDJSON_ASSIGN_OR_RAISE(auto v, field.value());
+      ret.emplace(std::move(v));
       return simdjson::SUCCESS;
     }
   }
@@ -102,7 +103,7 @@ simdjson::error_code extractArray(
   if (rv.hasValue()) {
     auto val = jsonArray.at(rv.value());
     if (!val.error()) {
-      ret.emplace(std::move(val));
+      ret.emplace(std::move(val).value_unsafe());
     }
   }
   return simdjson::SUCCESS;

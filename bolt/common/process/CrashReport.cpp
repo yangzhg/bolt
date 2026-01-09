@@ -167,7 +167,7 @@ int32_t fullCallback(
     if constexpr (demangle) {
       static char demangleBuf[4096];
       int32_t status = 0;
-      uint64_t len = sizeof(demangleBuf);
+      auto len = sizeof(demangleBuf);
       const char* demangled =
           abi::__cxa_demangle(function, demangleBuf, &len, &status);
       if (status == 0) {
@@ -274,7 +274,7 @@ template <bool demangle>
     writeToStderr("\n");
   }
 #else
-    writeToStderr("libunwind not supported on this system.\n");
+  writeToStderr("libunwind not supported on this system.\n");
 #endif
 }
 

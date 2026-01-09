@@ -35,7 +35,6 @@
 #include <thread>
 
 #include <bolt/common/time/Timer.h>
-#include <boost/stacktrace.hpp>
 #include <glog/logging.h>
 #include "bolt/shuffle/sparksql/CompressionStream.h"
 #include "bolt/shuffle/sparksql/Payload.h"

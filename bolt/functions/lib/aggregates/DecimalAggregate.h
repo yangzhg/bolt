@@ -158,7 +158,7 @@ class DecimalAggregate : public exec::Aggregate {
         int64_t overflow = 0;
         int128_t totalSum{0};
         auto value = decodedRaw_.valueAt<TInputType>(0);
-        rows.template applyToSelected([&](vector_size_t i) {
+        rows.applyToSelected([&](vector_size_t i) {
           updateNonNullValue(group, TResultType(value));
         });
       }
@@ -187,9 +187,9 @@ class DecimalAggregate : public exec::Aggregate {
             accumulator.sum, data[i], accumulator.sum);
       });
       accumulator.count = rows.countSelected();
-      char rawData[LongDecimalWithOverflowState::serializedSize()];
+      std::vector<char> rawData(LongDecimalWithOverflowState::serializedSize());
       StringView serialized(
-          rawData, LongDecimalWithOverflowState::serializedSize());
+          rawData.data(), LongDecimalWithOverflowState::serializedSize());
       accumulator.serialize(serialized);
       mergeAccumulators<false>(group, serialized);
     } else {
@@ -201,9 +201,9 @@ class DecimalAggregate : public exec::Aggregate {
             accumulator.sum);
       });
       accumulator.count = rows.countSelected();
-      char rawData[LongDecimalWithOverflowState::serializedSize()];
+      std::vector<char> rawData(LongDecimalWithOverflowState::serializedSize());
       StringView serialized(
-          rawData, LongDecimalWithOverflowState::serializedSize());
+          rawData.data(), LongDecimalWithOverflowState::serializedSize());
       accumulator.serialize(serialized);
       mergeAccumulators(group, serialized);
     }

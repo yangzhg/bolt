@@ -89,14 +89,6 @@ std::string printArray(const std::vector<T>& input) {
 namespace {
 class ArrayShuffleTest : public FunctionBaseTest {
  protected:
-  void SetUp() override {
-    FunctionBaseTest::SetUp();
-#ifdef __APPLE__
-    GTEST_SKIP()
-        << "Skipping shuffle tests on macOS due to libstdc++/libc++ RNG implementation differences.";
-#endif
-  }
-
   template <typename T>
   void testShuffle(const VectorPtr& input) {
     DecodedVector decodedExpected(*input.get());
@@ -221,10 +213,16 @@ class ArrayShuffleTest : public FunctionBaseTest {
   }
 };
 } // namespace
-  // Skipping shuffle tests on macOS due to libstdc++/libc++ RNG implementation
-  // differences.
-#ifndef __APPLE__
-TEST_F(ArrayShuffleTest, bigintArrays) {
+
+#ifdef __APPLE__
+#define MAYBE_TEST_F(test_case_name, test_name) \
+  TEST_F(test_case_name, DISABLED_##test_name)
+#else
+#define MAYBE_TEST_F(test_case_name, test_name) \
+  TEST_F(test_case_name, test_name)
+#endif
+
+MAYBE_TEST_F(ArrayShuffleTest, bigintArrays) {
   auto input = makeNullableArrayVector<int64_t>(
       {{},
        {std::nullopt},
@@ -240,7 +238,7 @@ TEST_F(ArrayShuffleTest, bigintArrays) {
   testShuffle<int64_t>(input);
 }
 
-TEST_F(ArrayShuffleTest, nestedArrays) {
+MAYBE_TEST_F(ArrayShuffleTest, nestedArrays) {
   using innerArrayType = std::vector<std::optional<int64_t>>;
   using outerArrayType =
       std::vector<std::optional<std::vector<std::optional<int64_t>>>>;
@@ -257,7 +255,7 @@ TEST_F(ArrayShuffleTest, nestedArrays) {
   testShuffle<Array<int64_t>>(input);
 }
 
-TEST_F(ArrayShuffleTest, sortAndShuffle) {
+MAYBE_TEST_F(ArrayShuffleTest, sortAndShuffle) {
   auto input = makeNullableArrayVector<int64_t>(
       {{-1, 0, std::nullopt, 1, std::nullopt},
        {4, 1, 5, 3, 2},
@@ -275,7 +273,7 @@ TEST_F(ArrayShuffleTest, sortAndShuffle) {
   assertEqualVectors(result1, result2);
 }
 
-TEST_F(ArrayShuffleTest, constantEncoding) {
+MAYBE_TEST_F(ArrayShuffleTest, constantEncoding) {
   vector_size_t size = 100;
   // Test empty array, array with null element,
   // array with duplicate elements, and array with distinct values.
@@ -288,7 +286,7 @@ TEST_F(ArrayShuffleTest, constantEncoding) {
   }
 }
 
-TEST_F(ArrayShuffleTest, dictEncoding) {
+MAYBE_TEST_F(ArrayShuffleTest, dictEncoding) {
   // Test dict with repeated elements: {1,2,3} x 3, {4,5} x 2.
   auto base = makeNullableArrayVector<int64_t>(
       {{0},
@@ -305,15 +303,14 @@ TEST_F(ArrayShuffleTest, dictEncoding) {
   testShuffle<int64_t>(input);
 }
 
-TEST_F(ArrayShuffleTest, flatEncodingRandomness) {
+MAYBE_TEST_F(ArrayShuffleTest, flatEncodingRandomness) {
   testShuffleRandomness(VectorEncoding::Simple::FLAT);
 }
 
-TEST_F(ArrayShuffleTest, constantEncodingRandomness) {
+MAYBE_TEST_F(ArrayShuffleTest, constantEncodingRandomness) {
   testShuffleRandomness(VectorEncoding::Simple::CONSTANT);
 }
 
-TEST_F(ArrayShuffleTest, dictEncodingRandomness) {
+MAYBE_TEST_F(ArrayShuffleTest, dictEncodingRandomness) {
   testShuffleRandomness(VectorEncoding::Simple::DICTIONARY);
 }
-#endif

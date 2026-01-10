@@ -35,7 +35,7 @@ std::unique_ptr<PartitionWriter> PartitionWriter::create(
         options.numPartitions, options, pool, options.rssClient);
   } else {
     BOLT_FAIL(
-        "Unsupported partition writer type: " + options.partitionWriterType);
+        "Unsupported partition writer type: {}", options.partitionWriterType);
   }
   return nullptr;
 }

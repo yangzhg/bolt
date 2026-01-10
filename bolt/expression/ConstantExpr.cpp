@@ -47,7 +47,7 @@ void ConstantExpr::evalSpecialForm(
   if (needToSetIsAscii_) {
     // sharedConstantValue_ must be unique because computeAndSetIsAscii may
     // modify it.
-    BOLT_CHECK(sharedConstantValue_.use_count() == 1);
+    BOLT_CHECK_EQ(sharedConstantValue_.use_count(), 1);
     auto* vector =
         sharedConstantValue_->asUnchecked<SimpleVector<StringView>>();
     LocalSingleRow singleRow(context, 0);

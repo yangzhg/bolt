@@ -31,9 +31,9 @@ SparkShuffleReader::SparkShuffleReader(
       shuffleReaderOptions_(shuffleReaderNode->getShuffleReaderOptions()),
       readerStreamIterator_(shuffleReaderNode->getReaderStreams()),
       arrowPool_(std::make_shared<BoltArrowMemoryPool>(pool())),
-      codec_(std::move(createArrowIpcCodec(
+      codec_(createArrowIpcCodec(
           shuffleReaderOptions_.compressionType,
-          getCodecBackend(shuffleReaderOptions_.codecBackend)))),
+          getCodecBackend(shuffleReaderOptions_.codecBackend))),
       batchSize_(shuffleReaderOptions_.batchSize),
       shuffleBatchByteSize_(shuffleReaderOptions_.shuffleBatchByteSize),
       numPartitions_(shuffleReaderOptions_.numPartitions),

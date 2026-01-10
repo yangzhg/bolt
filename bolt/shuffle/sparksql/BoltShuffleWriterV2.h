@@ -201,9 +201,10 @@ class BoltShuffleWriterV2 final : public BoltShuffleWriter {
     assembleBufferPool_.clear();
   }
 
-  arrow::Status split(bytedance::bolt::RowVectorPtr rv, int64_t memLimit);
+  arrow::Status split(bytedance::bolt::RowVectorPtr rv, int64_t memLimit)
+      override;
 
-  arrow::Status stop();
+  arrow::Status stop() override;
 
   arrow::Status reclaimFixedSize(int64_t size, int64_t* actual) override;
 
@@ -232,7 +233,7 @@ class BoltShuffleWriterV2 final : public BoltShuffleWriter {
 
   arrow::Status splitBatches(int64_t memLimit);
 
-  arrow::Status initPartitions();
+  arrow::Status initPartitions() override;
 
   virtual arrow::Status tryEvict(
       int64_t memLimit = std::numeric_limits<int64_t>::max()) override;
@@ -245,11 +246,12 @@ class BoltShuffleWriterV2 final : public BoltShuffleWriter {
       bool doEvict,
       int64_t memLimit);
 
-  arrow::Status splitRowVector(const bytedance::bolt::RowVector& rv);
+  arrow::Status splitRowVector(const bytedance::bolt::RowVector& rv) override;
 
   arrow::Status initFixedColumnSize(const bytedance::bolt::RowVector& rv);
 
-  arrow::Status initFromRowVector(const bytedance::bolt::RowVector& rv);
+  arrow::Status initFromRowVector(
+      const bytedance::bolt::RowVector& rv) override;
 
   arrow::Status allocateValidityBuffer(
       const uint32_t col,
@@ -263,7 +265,7 @@ class BoltShuffleWriterV2 final : public BoltShuffleWriter {
       const bytedance::bolt::FlatVector<bytedance::bolt::StringView>& src,
       std::vector<std::vector<BinaryBuf>>& dst);
 
-  arrow::Status splitBinaryArray(const bytedance::bolt::RowVector& rv);
+  arrow::Status splitBinaryArray(const bytedance::bolt::RowVector& rv) override;
 
   arrow::Status evictPartitionBuffers(
       uint32_t partitionId,
@@ -278,11 +280,12 @@ class BoltShuffleWriterV2 final : public BoltShuffleWriter {
   arrow::Result<std::vector<std::shared_ptr<arrow::Buffer>>>
   assembleBuffersRowVectorMode(uint32_t partitionId);
 
-  arrow::Status resetValidityBuffer(uint32_t partitionId);
+  arrow::Status resetValidityBuffer(uint32_t partitionId) override;
 
   arrow::Status evictFullPartitions();
 
-  arrow::Result<int64_t> evictPartitionBuffersMinSize(int64_t /*size*/);
+  arrow::Result<int64_t> evictPartitionBuffersMinSize(
+      int64_t /*size*/) override;
 
   arrow::Result<int64_t> evictCachedPayloadNoMerge(int64_t size);
 

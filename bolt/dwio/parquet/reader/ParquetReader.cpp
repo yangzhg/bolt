@@ -471,7 +471,7 @@ std::shared_ptr<const ParquetTypeWithId> ReaderBase::getParquetColumnInfo(
         default:
           BOLT_UNREACHABLE(
               "Invalid SchemaElement converted_type: {}, name: {}",
-              thrift::to_string(schemaElement.converted_type),
+              schemaElement.converted_type,
               schemaElement.name);
       }
     } else {
@@ -847,7 +847,7 @@ int32_t parquetTypeToBoltBytes(thrift::Type::type type) {
     case thrift::Type::BYTE_ARRAY:
       return sizeof(StringView);
     default:
-      BOLT_FAIL("Type does not have a byte width {}", thrift::to_string(type));
+      BOLT_FAIL("Type does not have a byte width {}", type);
   }
 }
 } // namespace

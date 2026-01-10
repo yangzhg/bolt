@@ -604,13 +604,11 @@ void PageReader::prepareDictionary(const PageHeader& pageHeader) {
         break;
       }
       BOLT_UNSUPPORTED(
-          "Parquet type {} not supported for dictionary",
-          thrift::to_string(parquetType));
+          "Parquet type {} not supported for dictionary", parquetType);
     }
     default:
       BOLT_UNSUPPORTED(
-          "Parquet type {} not supported for dictionary",
-          thrift::to_string(parquetType));
+          "Parquet type {} not supported for dictionary", parquetType);
   }
 }
 
@@ -636,7 +634,7 @@ int32_t parquetTypeBytes(thrift::Type::type type) {
     case thrift::Type::INT96:
       return 12;
     default:
-      BOLT_FAIL("Type does not have a byte width {}", thrift::to_string(type));
+      BOLT_FAIL("Type does not have a byte width {}", type);
   }
 }
 } // namespace
@@ -996,8 +994,7 @@ void PageReader::makeDecoder() {
       }
       break;
     default:
-      BOLT_UNSUPPORTED(
-          "Encoding not supported yet: {}", thrift::to_string(encoding_));
+      BOLT_UNSUPPORTED("Encoding not supported yet: {}", encoding_);
       break;
   }
 }

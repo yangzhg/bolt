@@ -55,7 +55,8 @@ add_executable(
   ArrayPositionTest.cpp
   ArrayRemoveTest.cpp
   ArraySortTest.cpp
-  ArrayShuffleTest.cpp
+  # Rand in Darwin is different from other platforms
+  $<$<NOT:$<PLATFORM_ID:Darwin>>:ArrayShuffleTest.cpp> 
   ArraysOverlapTest.cpp
   ArraySumTest.cpp
   ArrayTrimTest.cpp

@@ -64,11 +64,11 @@ void assertRescaleFloatingPointFail(
 }
 
 void testToByteArray(int128_t value, int8_t* expected, int32_t size) {
-  char out[size];
-  int32_t length = DecimalUtil::toByteArray(value, out);
+  std::vector<char> out(size);
+  int32_t length = DecimalUtil::toByteArray(value, out.data());
   EXPECT_EQ(length, size);
   EXPECT_EQ(DecimalUtil::getByteArrayLength(value), size);
-  EXPECT_EQ(std::memcmp(expected, out, length), 0);
+  EXPECT_EQ(std::memcmp(expected, out.data(), length), 0);
 }
 
 TEST(DecimalTest, toString) {

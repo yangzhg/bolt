@@ -68,6 +68,28 @@ struct CompileTimeEmptyString {
   }
 };
 
+template <typename T>
+struct is_atomic : std::false_type {};
+
+template <typename T>
+struct is_atomic<std::atomic<T>> : std::true_type {};
+
+template <typename T>
+inline constexpr bool is_atomic_v = is_atomic<std::decay_t<T>>::value;
+
+template <typename T>
+constexpr decltype(auto) enumToUnderlying(T&& value) {
+  using DecayedT = std::decay_t<T>;
+
+  if constexpr (std::is_enum_v<DecayedT>) {
+    return static_cast<std::underlying_type_t<DecayedT>>(value);
+  } else if constexpr (is_atomic_v<T>) {
+    return value.load();
+  } else {
+    return std::forward<T>(value);
+  }
+}
+
 // boltCheckFail is defined as a separate helper function rather than
 // a macro or inline `throw` expression to allow the compiler *not* to
 // inline it when it is large. Having an out-of-line error path helps
@@ -164,7 +186,7 @@ inline std::string errorMessage(const std::string& str) {
 
 template <typename... Args>
 std::string errorMessage(fmt::string_view fmt, const Args&... args) {
-  return fmt::vformat(fmt, fmt::make_format_args(args...));
+  return fmt::vformat(fmt, fmt::make_format_args(enumToUnderlying(args)...));
 }
 
 } // namespace detail

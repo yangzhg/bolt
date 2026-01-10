@@ -26,6 +26,7 @@ class AggregateEngine : public PaimonEngine {
   AggregateEngine(
       const std::vector<std::shared_ptr<connector::paimon::AggregateFunction>>&
           aggregateFunctions);
+  virtual ~AggregateEngine() = default;
 
   vector_size_t add(PaimonRowIteratorPtr iterator) override;
 

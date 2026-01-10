@@ -30,6 +30,7 @@ class FieldLastValueAgg : public AggregateFunction {
   FieldLastValueAgg() {
     value_ = nullptr;
   }
+  virtual ~FieldLastValueAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     value_ = value;

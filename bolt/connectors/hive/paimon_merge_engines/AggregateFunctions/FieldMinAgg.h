@@ -30,6 +30,7 @@ class FieldMinAgg : public AggregateFunction {
   FieldMinAgg() {
     value_ = nullptr;
   }
+  virtual ~FieldMinAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     if (!value_) {

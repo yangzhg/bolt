@@ -31,6 +31,7 @@ class FieldListaggAgg : public AggregateFunction {
     list = nullptr;
     delimiter = delimiter_;
   }
+  virtual ~FieldListaggAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     if (value->isNullAt(rowIndex))

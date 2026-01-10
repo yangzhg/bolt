@@ -71,9 +71,11 @@ target_link_libraries(
           GTest::gtest
           GTest::gtest_main
           re2::re2
-          jemalloc::jemalloc
           pthread
           dl)
+if (NOT APPLE)
+  target_link_libraries(bolt_memory_test PRIVATE jemalloc::jemalloc)
+endif()
 
 gtest_add_tests(bolt_memory_test "" AUTO)
 

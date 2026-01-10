@@ -370,6 +370,7 @@ add_test(bolt_dwrf_statistics_builder_utils_test
 target_link_libraries(bolt_dwrf_statistics_builder_utils_test bolt_link_libs
                       Folly::folly ${TEST_LINK_LIBS})
 
+if (NOT APPLE)
 add_executable(bolt_dwrf_column_writer_test ColumnWriterTest.cpp)
 add_test(bolt_dwrf_column_writer_test bolt_dwrf_column_writer_test)
 
@@ -384,6 +385,7 @@ target_link_libraries(
   zstd::libzstd_static
   ZLIB::ZLIB
   ${TEST_LINK_LIBS})
+endif()
 
 add_executable(bolt_dwrf_column_writer_index_test ColumnWriterIndexTest.cpp)
 add_test(bolt_dwrf_column_writer_index_test

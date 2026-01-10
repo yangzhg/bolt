@@ -27,6 +27,7 @@ class FieldSumAgg : public AggregateFunction {
 
  public:
   FieldSumAgg() : sum(0) {}
+  virtual ~FieldSumAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     if (value->isNullAt(rowIndex))

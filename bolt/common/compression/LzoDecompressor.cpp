@@ -78,7 +78,7 @@ class MalformedInputException : public dwio::common::ParseError {
 // GCC-10 has bug when use "-O3" option on AARCH platform.
 // TODO:  re-check this if compiler version is bumped up.
 // https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
-#if defined(__aarch64__)
+#if defined(__aarch64__) && defined(__GNUC__) && !defined(__clang__)
 #pragma GCC push_options
 #pragma GCC optimize("O2")
 #endif
@@ -418,7 +418,7 @@ uint64_t lzoDecompress(
   return static_cast<uint64_t>(output - outputAddress);
 }
 
-#if defined(__aarch64__)
+#if defined(__aarch64__) && defined(__GNUC__) && !defined(__clang__)
 #pragma GCC pop_options
 #endif
 

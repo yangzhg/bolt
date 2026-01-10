@@ -263,7 +263,7 @@ class ConcatFunction : public exec::VectorFunction {
   }
 
   static exec::VectorFunctionMetadata metadata() {
-    return {true /* supportsFlattening */};
+    return {true /* supportsFlattening */, {}};
   }
 
  private:

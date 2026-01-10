@@ -1021,7 +1021,7 @@ TEST_P(MultiThreadedHashJoinTest, outOfJoinKeyColumnOrder) {
 
 TEST_P(MultiThreadedHashJoinTest, emptyBuild) {
   const std::vector<bool> finishOnEmptys = {false, true};
-  for (const auto finishOnEmpty : finishOnEmptys) {
+  for (bool finishOnEmpty : finishOnEmptys) {
     SCOPED_TRACE(fmt::format("finishOnEmpty: {}", finishOnEmpty));
 
     HashJoinBuilder(*pool_, duckDbQueryRunner_, driverExecutor_.get())

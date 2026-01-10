@@ -27,6 +27,8 @@ class FieldPrimaryKeyAggregateFunction : public AggregateFunction {
   size_t rowIndex_;
 
  public:
+  virtual ~FieldPrimaryKeyAggregateFunction() = default;
+
   void add(VectorPtr value, size_t rowIndex) override {
     value_ = value;
     rowIndex_ = rowIndex;

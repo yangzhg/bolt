@@ -37,6 +37,7 @@ class FieldCollectAgg : public AggregateFunction {
     distinct_ = distinct;
     hasNull_ = false;
   }
+  virtual ~FieldCollectAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     if (value->isNullAt(rowIndex))

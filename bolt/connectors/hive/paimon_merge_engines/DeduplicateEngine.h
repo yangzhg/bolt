@@ -27,6 +27,8 @@ class DeduplicateEngine : public PaimonEngine {
 
   DeduplicateEngine(bool ignoreDelete_);
 
+  virtual ~DeduplicateEngine() = default;
+
   vector_size_t add(PaimonRowIteratorPtr iterator) override;
 
   vector_size_t finish() override;

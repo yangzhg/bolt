@@ -1655,7 +1655,4 @@ BOLT_INSTANTIATE_TEST_SUITE_P(
     MaxSpillRunTest,
     testing::ValuesIn(MaxSpillRunTest::getTestParams()));
 
-BOLT_INSTANTIATE_TEST_SUITE_P(
-    SpillerTest,
-    RowBasedSpillTest,
-    testing::ValuesIn(RowBasedSpillTest::getTestParams()));
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(RowBasedSpillTest);

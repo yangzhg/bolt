@@ -89,6 +89,14 @@ std::string printArray(const std::vector<T>& input) {
 namespace {
 class ArrayShuffleTest : public FunctionBaseTest {
  protected:
+  void SetUp() override {
+    FunctionBaseTest::SetUp();
+#ifdef __APPLE__
+    GTEST_SKIP()
+        << "Skipping shuffle tests on macOS due to libstdc++/libc++ RNG implementation differences.";
+#endif
+  }
+
   template <typename T>
   void testShuffle(const VectorPtr& input) {
     DecodedVector decodedExpected(*input.get());
@@ -213,7 +221,9 @@ class ArrayShuffleTest : public FunctionBaseTest {
   }
 };
 } // namespace
-
+  // Skipping shuffle tests on macOS due to libstdc++/libc++ RNG implementation
+  // differences.
+#ifndef __APPLE__
 TEST_F(ArrayShuffleTest, bigintArrays) {
   auto input = makeNullableArrayVector<int64_t>(
       {{},
@@ -306,3 +316,4 @@ TEST_F(ArrayShuffleTest, constantEncodingRandomness) {
 TEST_F(ArrayShuffleTest, dictEncodingRandomness) {
   testShuffleRandomness(VectorEncoding::Simple::DICTIONARY);
 }
+#endif

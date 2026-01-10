@@ -112,8 +112,11 @@ void addInputToInputCorpus(std::set<T>& inputCorpus, const T& newInput) {
 template <typename T>
 T rand(FuzzerGenerator& rng) {
   if constexpr (
-      std::is_integral_v<T> && !std::is_same_v<T, bool> &&
-      !std::is_same_v<T, int128_t>) {
+      std::is_same_v<T, uint8_t> || std::is_same_v<T, int8_t> ||
+      std::is_same_v<T, int16_t> || std::is_same_v<T, int32_t> ||
+      std::is_same_v<T, int64_t> || std::is_same_v<T, uint32_t> ||
+      // on macos uint64_t is unsigned long long not unsigned long
+      std::is_same_v<T, uint64_t> || std::is_same_v<T, unsigned long>) {
     return boost::random::uniform_int_distribution<T>()(rng);
   } else if constexpr (std::is_same_v<T, int128_t>) {
     return HugeInt::build(rand<int64_t>(rng), rand<uint64_t>(rng));

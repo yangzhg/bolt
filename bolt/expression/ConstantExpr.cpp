@@ -35,7 +35,7 @@ void ConstantExpr::evalSpecialForm(
     const SelectivityVector& rows,
     EvalCtx& context,
     VectorPtr& result) {
-  if (sharedConstantValue_.use_count() != 1) {
+  if (sharedConstantValue_.use_count() == 1) {
     sharedConstantValue_->resize(rows.end());
   } else {
     // By reassigning sharedConstantValue_ we increase the chances that it will

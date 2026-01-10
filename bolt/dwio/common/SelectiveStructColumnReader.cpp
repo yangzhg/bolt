@@ -258,7 +258,7 @@ void fillRowVectorChildren(
 }
 
 VectorPtr tryReuseResult(const VectorPtr& result) {
-  if (result.use_count() == 1) {
+  if (result.use_count() != 1) {
     return nullptr;
   }
   switch (result->encoding()) {

@@ -433,8 +433,10 @@ endif()
 
 if(APPLE)
   add_link_options("LINKER:-export_dynamic")
-else()
+elseif(UNIX)
   add_link_options("-Wl,-export-dynamic")
+else()
+  message(FATAL_ERROR "Unknown system type")
 endif()
 
 if(ENABLE_EXCEPTION_TRACE)

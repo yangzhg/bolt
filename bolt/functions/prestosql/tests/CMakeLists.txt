@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_subdirectory(utils)
 
 add_executable(
@@ -42,11 +41,11 @@ add_executable(
   ArrayDuplicatesTest.cpp
   ArrayExceptTest.cpp
   ArrayFilterTest.cpp
-  ArrayFrequencyTest.cpp
   ArrayFlattenTest.cpp
-  ArrayJoinTest.cpp
+  ArrayFrequencyTest.cpp
   ArrayHasDuplicatesTest.cpp
   ArrayIntersectTest.cpp
+  ArrayJoinTest.cpp
   ArrayMaxTest.cpp
   ArrayMinTest.cpp
   ArrayNGramsTest.cpp
@@ -54,8 +53,8 @@ add_executable(
   ArrayNormalizeTest.cpp
   ArrayPositionTest.cpp
   ArrayRemoveTest.cpp
-  ArraySortTest.cpp
   ArrayShuffleTest.cpp
+  ArraySortTest.cpp
   ArraysOverlapTest.cpp
   ArraySumTest.cpp
   ArrayTrimTest.cpp
@@ -65,12 +64,13 @@ add_executable(
   CardinalityTest.cpp
   CeilFloorTest.cpp
   ComparisonsTest.cpp
-  PrestoSqlDateTimeFunctionsTest.cpp
   DecimalArithmeticTest.cpp
-  ElementTest.cpp
+  DownsampleFunctionTest.cpp
   ElementAtTest.cpp
+  ElementTest.cpp
   FindFirstTest.cpp
   FromUtf8Test.cpp
+  GreatestLeastTest.cpp
   HyperLogLogCastTest.cpp
   HyperLogLogFunctionsTest.cpp
   InPredicateTest.cpp
@@ -81,12 +81,13 @@ add_executable(
   MapEntriesTest.cpp
   MapFilterTest.cpp
   MapFromEntriesTest.cpp
-  MultimapFromEntriesTest.cpp
   MapKeysAndValuesTest.cpp
   MapMatchTest.cpp
   MapTest.cpp
   MapZipWithTest.cpp
+  MultimapFromEntriesTest.cpp
   NotTest.cpp
+  PrestoSqlDateTimeFunctionsTest.cpp
   ProbabilityTest.cpp
   RandTest.cpp
   ReduceTest.cpp
@@ -94,26 +95,25 @@ add_executable(
   ReverseTest.cpp
   RoundTest.cpp
   ScalarFunctionRegTest.cpp
-  SliceTest.cpp
   SequenceTest.cpp
-  SplitTest.cpp
+  SliceTest.cpp
   SplitPartTest.cpp
+  SplitTest.cpp
   SplitToMapTest.cpp
   StringFunctionsTest.cpp
   StringToMapTest.cpp
   TimestampWithTimeZoneCastTest.cpp
   ToJsonTest.cpp
-  TransformTest.cpp
   TransformKeysTest.cpp
+  TransformTest.cpp
   TransformValuesTest.cpp
   TrimFunctionsTest.cpp
   URLFunctionsTest.cpp
   Utf8Test.cpp
   WidthBucketArrayTest.cpp
-  GreatestLeastTest.cpp
   ZipTest.cpp
   ZipWithTest.cpp
-  DownsampleFunctionTest.cpp)
+)
 
 add_test(bolt_functions_test bolt_functions_test)
 
@@ -131,11 +131,13 @@ target_link_libraries(
   GTest::gtest_main
   gflags::gflags
   GTest::gmock
-  GTest::gmock_main)
+  GTest::gmock_main
+)
 
 add_executable(bolt_functions_simple_test SimpleComparisonMatcherTest.cpp)
 
 add_test(bolt_functions_simple_test bolt_functions_simple_test)
 
-target_link_libraries(bolt_functions_simple_test bolt_functions_test_lib
-                      GTest::gtest GTest::gtest_main)
+target_link_libraries(
+  bolt_functions_simple_test bolt_functions_test_lib GTest::gtest GTest::gtest_main
+)

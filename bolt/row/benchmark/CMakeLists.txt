@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,16 @@
 add_executable(unsafe_row_serialize_benchmark UnsafeRowSerializeBenchmark.cpp)
 
 target_link_libraries(
-    unsafe_row_serialize_benchmark
-    bolt_row_fast
-    bolt_exec
-    bolt_vector
-    bolt_hive_connector
-    bolt_exec_test_lib
-    bolt_dwio_common_exception
-    bolt_vector_fuzzer
-    bolt_vector_test_lib
-    Folly::folly
-    ${FOLLY_BENCHMARK}
-    gflags::gflags)
+  unsafe_row_serialize_benchmark
+  bolt_row_fast
+  bolt_exec
+  bolt_vector
+  bolt_hive_connector
+  bolt_exec_test_lib
+  bolt_dwio_common_exception
+  bolt_vector_fuzzer
+  bolt_vector_test_lib
+  Folly::folly
+  ${FOLLY_BENCHMARK}
+  gflags::gflags
+)

@@ -27,17 +27,19 @@
 
 add_library(
   bolt_exec
+  $<$<BOOL:${ENABLE_META_SORT}>:meta/MetaRowSorter.cpp>
   AddressableNonNullValueList.cpp
   Aggregate.cpp
   AggregateCompanionAdapter.cpp
   AggregateCompanionSignatures.cpp
   AggregateFunctionRegistry.cpp
   AggregateInfo.cpp
-  AggregationMasks.cpp
   AggregateWindow.cpp
+  AggregationMasks.cpp
   ArrowStream.cpp
-  ContainerRowSerde.cpp
+  AssignUniqueId.cpp
   ContainerRow2RowSerde.cpp
+  ContainerRowSerde.cpp
   DistinctAggregations.cpp
   Driver.cpp
   EnforceSingleRow.cpp
@@ -45,8 +47,10 @@ add_library(
   ExchangeClient.cpp
   ExchangeQueue.cpp
   ExchangeSource.cpp
+  ExecutorTaskScheduler.cpp
   Expand.cpp
   FilterProject.cpp
+  Generator.cpp
   GroupId.cpp
   GroupingSet.cpp
   HashAggregation.cpp
@@ -60,6 +64,7 @@ add_library(
   Limit.cpp
   LocalPartition.cpp
   LocalPlanner.cpp
+  LocalShuffle.cpp
   MarkDistinct.cpp
   MemoryReclaimer.cpp
   Merge.cpp
@@ -68,64 +73,59 @@ add_library(
   NestedLoopJoinBuild.cpp
   NestedLoopJoinProbe.cpp
   Operator.cpp
-  OperatorUtils.cpp
-  OrderBy.cpp
   OperatorTraceReader.cpp
   OperatorTraceScan.cpp
   OperatorTraceWriter.cpp
-  TaskTraceReader.cpp
-  TaskTraceWriter.cpp
-  Trace.cpp
-  TraceConfig.cpp
-  TraceUtil.cpp
-  PartitionedOutput.cpp
-  PushBasedEvent.cpp
+  OperatorUtils.cpp
+  OrderBy.cpp
   OutputBuffer.cpp
   OutputBufferManager.cpp
+  PartitionedOutput.cpp
+  PartitionFunction.cpp
   PlanNodeStats.cpp
   ProbeOperatorState.cpp
-  RowsStreamingWindowBuild.cpp
-  RowsStreamingWindowPartition.cpp
+  PushBasedEvent.cpp
   RowContainer.cpp
   RowNumber.cpp
+  RowsStreamingWindowBuild.cpp
+  RowsStreamingWindowPartition.cpp
   SortBuffer.cpp
   SortedAggregations.cpp
   SortWindowBuild.cpp
   Spill.cpp
   SpillableWindowBuild.cpp
+  Spiller.cpp
   SpillFile.cpp
   SpillOperatorGroup.cpp
-  Spiller.cpp
   StreamingAggregation.cpp
+  StreamingWindowBuild.cpp
   StreamingWindowBuild.cpp
   Strings.cpp
   TableScan.cpp
   TableWriteMerge.cpp
   TableWriter.cpp
   Task.cpp
+  TaskTraceReader.cpp
+  TaskTraceWriter.cpp
   TopN.cpp
   TopNRowNumber.cpp
+  Trace.cpp
+  TraceConfig.cpp
+  TraceUtil.cpp
   Unnest.cpp
   Values.cpp
   VectorHasher.cpp
   Window.cpp
   WindowBuild.cpp
   WindowFunction.cpp
-  StreamingWindowBuild.cpp
   WindowPartition.cpp
-  AssignUniqueId.cpp
-  PartitionFunction.cpp
-  Generator.cpp
-  LocalShuffle.cpp
-  $<$<BOOL:${ENABLE_META_SORT}>:meta/MetaRowSorter.cpp>
-  ExecutorTaskScheduler.cpp
-  )
+)
 
 target_compile_features(bolt_exec PRIVATE cxx_std_20)
 
 set_target_properties(bolt_exec PROPERTIES ENABLE_EXPORTS ON)
 
-if (${ENABLE_BOLT_JIT})
+if(${ENABLE_BOLT_JIT})
   find_package(LLVM REQUIRED CONFIG)
 endif()
 
@@ -147,7 +147,8 @@ target_link_libraries(
   bolt_cpu_usage
   $<TARGET_NAME_IF_EXISTS:bolt_thrustjit>
   gfx::timsort
-  arrow::arrow)
+  arrow::arrow
+)
 
 if(${BOLT_ENABLE_TORCH})
   target_compile_definitions(bolt_exec PRIVATE BOLT_HAS_TORCH=1)

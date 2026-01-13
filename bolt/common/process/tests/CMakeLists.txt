@@ -25,10 +25,11 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_executable(bolt_process_test TraceContextTest.cpp ExceptionTraceTest.cpp)
+add_executable(bolt_process_test ExceptionTraceTest.cpp TraceContextTest.cpp)
 
 add_test(bolt_process_test bolt_process_test)
 
-target_link_libraries(bolt_process_test PRIVATE bolt_process fmt::fmt GTest::gtest
-                        GTest::gtest_main glog::glog gflags::gflags)
+target_link_libraries(
+  bolt_process_test PRIVATE bolt_process fmt::fmt GTest::gtest GTest::gtest_main glog::glog
+                            gflags::gflags
+)

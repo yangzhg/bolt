@@ -69,10 +69,10 @@ body:
     attributes:
       label: References / Prior Art
       description: |
-        How do other systems (e.g., Spark, Presto, Flink) handle this? 
+        How do other systems (e.g., Spark, Presto, Flink) handle this?
         Is there a standard SQL spec for this?
       placeholder: |
-        Spark implements this as `...`. 
+        Spark implements this as `...`.
         PostgreSQL behaves like `...`.
     validations:
       required: false

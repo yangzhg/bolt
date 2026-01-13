@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,19 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_library(
-  bolt_dwio_paimon_deletion_vector_reader
-  DeletionVector.cpp
-  DeletionFileReader.cpp
-)
+add_library(bolt_dwio_paimon_deletion_vector_reader DeletionFileReader.cpp DeletionVector.cpp)
 
 find_package(roaring REQUIRED)
 
 target_link_libraries(
-  bolt_dwio_paimon_deletion_vector_reader
-  bolt_process
-  bolt_link_libs
-  roaring::roaring)
+  bolt_dwio_paimon_deletion_vector_reader bolt_process bolt_link_libs roaring::roaring
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

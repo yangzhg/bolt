@@ -41,7 +41,8 @@ target_link_libraries(
             bolt_type_fbhive
             bolt_vector
             Folly::folly
-            fmt::fmt)
+            fmt::fmt
+)
 
 add_subdirectory(common)
 add_subdirectory(catalog)

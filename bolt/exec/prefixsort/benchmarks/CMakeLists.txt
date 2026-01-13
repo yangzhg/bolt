@@ -25,8 +25,8 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-add_executable(bolt_prefix_sort_algorithm_benchmark
-               PrefixSortAlgorithmBenchmark.cpp)
+add_executable(bolt_prefix_sort_algorithm_benchmark PrefixSortAlgorithmBenchmark.cpp)
 target_link_libraries(
-  bolt_prefix_sort_algorithm_benchmark bolt_exec_prefixsort_test_lib
-  bolt_vector_test_lib ${FOLLY_BENCHMARK})
+  bolt_prefix_sort_algorithm_benchmark bolt_exec_prefixsort_test_lib bolt_vector_test_lib
+  ${FOLLY_BENCHMARK}
+)

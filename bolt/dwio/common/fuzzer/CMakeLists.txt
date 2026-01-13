@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,11 +16,12 @@
 add_library(bolt_dwio_common_fuzzer_test DwioFuzzer.cpp)
 
 target_link_libraries(
-    bolt_dwio_common_fuzzer_test
-    bolt_vector_fuzzer
-    bolt_dwio_parquet_writer
-    bolt_dwio_native_parquet_reader
-    bolt_temp_path
-    GTest::gtest
-    GTest::gtest_main
-    fmt::fmt)
+  bolt_dwio_common_fuzzer_test
+  bolt_vector_fuzzer
+  bolt_dwio_parquet_writer
+  bolt_dwio_native_parquet_reader
+  bolt_temp_path
+  GTest::gtest
+  GTest::gtest_main
+  fmt::fmt
+)

@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,37 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_library(
-  bolt_cudf_exec
-  HashAggregation.cpp
-  OrderBy.cpp
-  InterOp.cpp)
+add_library(bolt_cudf_exec HashAggregation.cpp InterOp.cpp OrderBy.cpp)
 
-target_include_directories(
-  bolt_cudf_exec 
-  PRIVATE ${cudf_INCLUDE_DIRS})
+target_include_directories(bolt_cudf_exec PRIVATE ${cudf_INCLUDE_DIRS})
 
 target_link_libraries(
-  bolt_cudf_exec
-  PRIVATE
-    arrow
-    cudf::cudf
-    bolt_arrow_bridge
-    bolt_exception
-    bolt_common_base
-    bolt_exec)
+  bolt_cudf_exec PRIVATE arrow cudf::cudf bolt_arrow_bridge bolt_exception bolt_common_base
+                         bolt_exec
+)
 
-# The LIBCUDACXX_ENABLE_EXPERIMENTAL_MEMORY_RESOURCE macro enables the
-# experimental <cuda/memory_resource> header, a feature used by RMM and libcudf.
-# This definition is necessary to prevent compilation errors.
+# The LIBCUDACXX_ENABLE_EXPERIMENTAL_MEMORY_RESOURCE macro enables the experimental
+# <cuda/memory_resource> header, a feature used by RMM and libcudf. This definition is necessary to
+# prevent compilation errors.
 #
-# References:
-# - RMM Fix: https://github.com/rapidsai/rmm/pull/1852
-# - libcudacxx Docs: https://nvidia.github.io/cccl/libcudacxx/extended_api/memory_resource.html
-target_compile_options(bolt_cudf_exec 
-  PUBLIC 
-    -DLIBCUDACXX_ENABLE_EXPERIMENTAL_MEMORY_RESOURCE 
-  PRIVATE 
-    -Wno-missing-field-initializers -fcoroutines)
+# References: - RMM Fix: https://github.com/rapidsai/rmm/pull/1852 - libcudacxx Docs:
+# https://nvidia.github.io/cccl/libcudacxx/extended_api/memory_resource.html
+target_compile_options(
+  bolt_cudf_exec
+  PUBLIC -DLIBCUDACXX_ENABLE_EXPERIMENTAL_MEMORY_RESOURCE
+  PRIVATE -Wno-missing-field-initializers -fcoroutines
+)
 
 target_compile_definitions(bolt_cudf_exec PRIVATE BOLT_HAS_CUDF=1)

@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
- 
 find_package(simdjson CONFIG REQUIRED)
 
 add_library(
@@ -48,18 +47,17 @@ add_library(
   RegisterRegexp.cpp
   RegisterSpecialForm.cpp
   RegisterString.cpp
-  RegisterUrl.cpp)
- 
- # GCC 12 has a bug where it does not respect "pragma ignore" directives and ends
- # up failing compilation in an openssl header included by a hash-related
- # function.
+  RegisterUrl.cpp
+)
+
+# GCC 12 has a bug where it does not respect "pragma ignore" directives and ends up failing
+# compilation in an openssl header included by a hash-related function.
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  target_compile_options(bolt_functions_spark
-                         PRIVATE -Wno-deprecated-declarations)
+  target_compile_options(bolt_functions_spark PRIVATE -Wno-deprecated-declarations)
 endif()
- 
-target_link_libraries(bolt_functions_spark bolt_functions_spark_impl
-                     bolt_is_null_functions simdjson::simdjson)
- 
-set_property(TARGET bolt_functions_spark PROPERTY JOB_POOL_COMPILE
-                                                   high_memory_pool)
+
+target_link_libraries(
+  bolt_functions_spark bolt_functions_spark_impl bolt_is_null_functions simdjson::simdjson
+)
+
+set_property(TARGET bolt_functions_spark PROPERTY JOB_POOL_COMPILE high_memory_pool)

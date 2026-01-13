@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(
   bolt_dwio_parquet_arrow_test
   BloomFilterTest.cpp
@@ -35,16 +34,16 @@ add_executable(
   FileDeserializeTest.cpp
   FileSerializeTest.cpp
   LevelConversionTest.cpp
+  LZ4HadoopCodecTest.cpp
   MetadataTest.cpp
   PageIndexTest.cpp
   PropertiesTest.cpp
   SchemaTest.cpp
   StatisticsTest.cpp
   TypesTest.cpp
-  LZ4HadoopCodecTest.cpp)
+)
 
-add_test(bolt_dwio_parquet_arrow_test
-         bolt_dwio_parquet_arrow_test)
+add_test(bolt_dwio_parquet_arrow_test bolt_dwio_parquet_arrow_test)
 target_link_libraries(
   bolt_dwio_parquet_arrow_test
   bolt_dwio_parquet_arrow_lib
@@ -55,7 +54,8 @@ target_link_libraries(
   glog::glog
   gflags::gflags
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)
 
 add_library(
   bolt_dwio_parquet_arrow_test_lib
@@ -65,7 +65,10 @@ add_library(
   ColumnScanner.cpp
   FileReader.cpp
   TestUtil.cpp
-  XxHasher.cpp)
+  XxHasher.cpp
+)
 
-target_link_libraries(bolt_dwio_parquet_arrow_test_lib
-                      bolt_dwio_parquet_arrow_lib arrow::arrow GTest::gtest GTest::gtest_main)
+target_link_libraries(
+  bolt_dwio_parquet_arrow_test_lib bolt_dwio_parquet_arrow_lib arrow::arrow GTest::gtest
+  GTest::gtest_main
+)

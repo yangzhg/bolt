@@ -25,13 +25,12 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_subdirectory(exception)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
-  if (${BOLT_ENABLE_PARQUET})
-  add_subdirectory(fuzzer)
+  if(${BOLT_ENABLE_PARQUET})
+    add_subdirectory(fuzzer)
   endif()
 elseif(${BOLT_BUILD_TEST_UTILS})
   add_subdirectory(tests/utils)
@@ -42,16 +41,20 @@ add_library(
   BitConcatenation.cpp
   BitPackDecoder.cpp
   BufferedInput.cpp
-  CacheInputStream.cpp
   CachedBufferedInput.cpp
+  CacheInputStream.cpp
   ColumnLoader.cpp
   ColumnSelector.cpp
+  compression/Compression.cpp
+  compression/PagedInputStream.cpp
+  compression/PagedOutputStream.cpp
   DataBufferHolder.cpp
   DecoderUtil.cpp
   DirectBufferedInput.cpp
   DirectDecoder.cpp
   DirectInputStream.cpp
   DwioMetricsLog.cpp
+  encryption/Encryption.cpp
   ExecutorBarrier.cpp
   FileSink.cpp
   FlatMapHelper.cpp
@@ -71,16 +74,13 @@ add_library(
   SelectiveRepeatedColumnReader.cpp
   SelectiveStructColumnReader.cpp
   SortingWriter.cpp
+  SortingWriter.cpp
   SortingWriter.h
   TypeUtils.cpp
   TypeWithId.cpp
   Writer.cpp
   WriterFactory.cpp
-  SortingWriter.cpp
-  compression/Compression.cpp
-  compression/PagedInputStream.cpp
-  compression/PagedOutputStream.cpp
-  encryption/Encryption.cpp)
+)
 
 target_link_libraries(
   bolt_dwio_common
@@ -100,4 +100,5 @@ target_link_libraries(
   glog::glog
   protobuf::protobuf
   LZ4::lz4_static
-  arrow::arrow)
+  arrow::arrow
+)

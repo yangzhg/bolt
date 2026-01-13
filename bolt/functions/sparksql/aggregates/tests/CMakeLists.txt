@@ -25,13 +25,11 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(
   bolt_functions_spark_aggregates_test
   AverageAggregationTest.cpp
   BitwiseXorAggregationTest.cpp
   BloomFilterAggAggregateTest.cpp
-  PercentileAggregateTest.cpp
   CentralMomentsAggregationTest.cpp
   CollectListAggregateTest.cpp
   CollectSetAggregateTest.cpp
@@ -39,13 +37,13 @@ add_executable(
   LastAggregateTest.cpp
   Main.cpp
   MinMaxByAggregationTest.cpp
+  PercentileAggregateTest.cpp
   PercentileApproxTest.cpp
   RegrReplacementAggregationTest.cpp
   SumAggregationTest.cpp
 )
 
-add_test(bolt_functions_spark_aggregates_test
-         bolt_functions_spark_aggregates_test)
+add_test(bolt_functions_spark_aggregates_test bolt_functions_spark_aggregates_test)
 
 target_link_libraries(
   bolt_functions_spark_aggregates_test
@@ -57,4 +55,5 @@ target_link_libraries(
   bolt_hive_connector
   gflags::gflags
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

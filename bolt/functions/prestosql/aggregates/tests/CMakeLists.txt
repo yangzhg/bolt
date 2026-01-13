@@ -25,100 +25,91 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
+set(AGGREGATES_TEST_SRC
+    AggregationFunctionRegTest.cpp
+    ApproxDistinctTest.cpp
+    ApproxMostFrequentTest.cpp
+    ApproxPercentileTest.cpp
+    ArbitraryTest.cpp
+    ArrayAggTest.cpp
+    ArrayAdditionAggregateTest.cpp
+    ArrayCountAggregateTest.cpp
+    AverageAggregationTest.cpp
+    BitwiseAggregationTest.cpp
+    BoolAndOrTest.cpp
+    CentralMomentsAggregationTest.cpp
+    ChecksumAggregateTest.cpp
+    CountAggregationTest.cpp
+    CountDistinctTest.cpp
+    CountIfAggregationTest.cpp
+    CovarianceAggregationTest.cpp
+    EntropyAggregationTest.cpp
+    GeometricMeanTest.cpp
+    HistogramTest.cpp
+    Main.cpp
+    MapAccumulatorTest.cpp
+    MapSumAggregateTest.cpp
+    MinMaxTest.cpp
+    MultiMapAggTest.cpp
+    PrestoHasherTest.cpp
+    SetAggTest.cpp
+    SetUnionTest.cpp
+    SumTest.cpp
+    MapAggTest.cpp
+    MapUnionAggregationTest.cpp
+    MapUnionSumTest.cpp
+    ReduceAggTest.cpp
+    VarianceAggregationTest.cpp
+    MaxSizeForStatsTest.cpp
+    SumDataSizeForStatsTest.cpp
+    MapUnionAvgTest.cpp
+    MapUnionCountTest.cpp
+    MapUnionMinMaxTest.cpp
+    AggregationLazyInputTest.cpp
+    BitDaysOrAggregationTest.cpp
+)
 
-set(aggregates_test_src
-AggregationFunctionRegTest.cpp
-ApproxDistinctTest.cpp
-ApproxMostFrequentTest.cpp
-ApproxPercentileTest.cpp
-ArbitraryTest.cpp
-ArrayAggTest.cpp
-ArrayAdditionAggregateTest.cpp
-ArrayCountAggregateTest.cpp
-AverageAggregationTest.cpp
-BitwiseAggregationTest.cpp
-BoolAndOrTest.cpp
-CentralMomentsAggregationTest.cpp
-ChecksumAggregateTest.cpp
-CountAggregationTest.cpp
-CountDistinctTest.cpp
-CountIfAggregationTest.cpp
-CovarianceAggregationTest.cpp
-EntropyAggregationTest.cpp
-GeometricMeanTest.cpp
-HistogramTest.cpp
-Main.cpp
-MapAccumulatorTest.cpp
-MapSumAggregateTest.cpp
-MinMaxTest.cpp
-MultiMapAggTest.cpp
-PrestoHasherTest.cpp
-SetAggTest.cpp
-SetUnionTest.cpp
-SumTest.cpp
-MapAggTest.cpp
-MapUnionAggregationTest.cpp
-MapUnionSumTest.cpp
-ReduceAggTest.cpp
-VarianceAggregationTest.cpp
-MaxSizeForStatsTest.cpp
-SumDataSizeForStatsTest.cpp
-MapUnionAvgTest.cpp
-MapUnionCountTest.cpp
-MapUnionMinMaxTest.cpp
-AggregationLazyInputTest.cpp
-BitDaysOrAggregationTest.cpp)
-
-if (NOT BOLT_ENABLE_SPARK_COMPATIBLE)
-  list(APPEND aggregates_test_src HiveUDAFPercentileTest.cpp)
+if(NOT BOLT_ENABLE_SPARK_COMPATIBLE)
+  list(APPEND AGGREGATES_TEST_SRC HiveUDAFPercentileTest.cpp)
 endif()
 
-add_executable(
-  bolt_aggregates_test ${aggregates_test_src})
+add_executable(bolt_aggregates_test ${AGGREGATES_TEST_SRC})
 
-add_executable(
-  bolt_minmaxby_aggregates_test
-  MinMaxByAggregationTest.cpp
-  Main.cpp
-)
+add_executable(bolt_minmaxby_aggregates_test Main.cpp MinMaxByAggregationTest.cpp)
 
 add_test(
   NAME bolt_aggregates_test
   COMMAND bolt_aggregates_test
-  WORKING_DIRECTORY .)
+  WORKING_DIRECTORY .
+)
 
 add_test(
   NAME bolt_minmaxby_aggregates_test
   COMMAND bolt_minmaxby_aggregates_test
-  WORKING_DIRECTORY .)
-
-set(bolt_aggregates_test_dependencies
-  bolt_aggregates
-  bolt_core
-  bolt_dwio_common_test_utils
-  bolt_exec
-  bolt_exec_test_lib
-  bolt_file
-  bolt_functions_aggregates
-  bolt_functions_aggregates_test_lib
-  bolt_functions_test_lib
-  bolt_functions_prestosql
-  bolt_functions_lib
-  bolt_hive_connector
-  bolt_simple_aggregate
-  bolt_type
-  bolt_vector_fuzzer
-  gflags::gflags
-  GTest::gtest
-  GTest::gtest_main
+  WORKING_DIRECTORY .
 )
 
-target_link_libraries(
-  bolt_aggregates_test
-  ${bolt_aggregates_test_dependencies}
+set(BOLT_AGGREGATES_TEST_DEPENDENCIES
+    bolt_aggregates
+    bolt_core
+    bolt_dwio_common_test_utils
+    bolt_exec
+    bolt_exec_test_lib
+    bolt_file
+    bolt_functions_aggregates
+    bolt_functions_aggregates_test_lib
+    bolt_functions_test_lib
+    bolt_functions_prestosql
+    bolt_functions_lib
+    bolt_hive_connector
+    bolt_simple_aggregate
+    bolt_type
+    bolt_vector_fuzzer
+    gflags::gflags
+    GTest::gtest
+    GTest::gtest_main
 )
 
-target_link_libraries(
-  bolt_minmaxby_aggregates_test
-  ${bolt_aggregates_test_dependencies}
-)
+target_link_libraries(bolt_aggregates_test ${BOLT_AGGREGATES_TEST_DEPENDENCIES})
+
+target_link_libraries(bolt_minmaxby_aggregates_test ${BOLT_AGGREGATES_TEST_DEPENDENCIES})

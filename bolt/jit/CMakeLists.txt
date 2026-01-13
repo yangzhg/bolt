@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,45 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_library(bolt_thrustjit
-  ThrustJIT.cpp
-  RowContainer/RowContainerCodeGenerator.cpp
-  RowContainer/RowEqVectorsCodeGenerator.cpp
+add_library(
+  bolt_thrustjit ThrustJIT.cpp
+                 RowContainer/RowContainerCodeGenerator.cpp
+                 RowContainer/RowEqVectorsCodeGenerator.cpp
 )
 
 find_package(LLVM CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(Folly CONFIG REQUIRED)
 
-target_link_libraries(bolt_thrustjit PUBLIC
-  llvm-core::llvm-core
-  date::date
-  fmt::fmt
-  Folly::folly
-)
+target_link_libraries(bolt_thrustjit PUBLIC llvm-core::llvm-core date::date fmt::fmt Folly::folly)
 
 target_compile_options(
-  bolt_thrustjit PRIVATE
-  $<$<COMPILE_LANG_AND_ID:CXX,Clang,GNU>:-Werror=return-type>
+  bolt_thrustjit PRIVATE $<$<COMPILE_LANG_AND_ID:CXX,Clang,GNU>:-Werror=return-type>
 )
 
-# if (${ENABLE_BOLT_EXPR_JIT})
-#   # TODO: refactor ...
-#   add_library(bolt_jit 
-#     expression/ExprJitCompiler.h
-#     expression/ExprJitCompiler.cpp
-#   )
-#   find_package(ThrustVector REQUIRED)
+# if (${ENABLE_BOLT_EXPR_JIT}) # TODO: refactor ... add_library(bolt_jit
+# expression/ExprJitCompiler.h expression/ExprJitCompiler.cpp ) find_package(ThrustVector REQUIRED)
 
-#   target_link_libraries(bolt_jit
-#     bolt_core
-#     bolt_vector
-#     bolt_common_base 
-#     bolt_exec
-#     ThrustVector::JIT
-#   )
-# endif()
-
+# target_link_libraries(bolt_jit bolt_core bolt_vector bolt_common_base bolt_exec ThrustVector::JIT
+# ) endif()
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

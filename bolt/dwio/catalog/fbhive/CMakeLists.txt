@@ -25,10 +25,10 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_dwio_catalog_fbhive FileUtils.cpp)
-target_link_libraries(bolt_dwio_catalog_fbhive bolt_dwio_common_exception
-                      ${FMT} ${FOLLY_WITH_DEPENDENCIES})
+target_link_libraries(
+  bolt_dwio_catalog_fbhive bolt_dwio_common_exception ${FMT} ${FOLLY_WITH_DEPENDENCIES}
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(test)

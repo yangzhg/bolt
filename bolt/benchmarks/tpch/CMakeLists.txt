@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_tpch_benchmark_lib TpchBenchmark.cpp)
 
 target_link_libraries(
@@ -51,7 +50,8 @@ target_link_libraries(
   bolt_test_util_gperf
   Folly::folly
   ${FOLLY_BENCHMARK}
-  fmt::fmt)
+  fmt::fmt
+)
 
 add_executable(bolt_tpch_benchmark TpchBenchmarkMain.cpp)
 

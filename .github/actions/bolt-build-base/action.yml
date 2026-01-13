@@ -18,9 +18,8 @@ runs:
       shell: bash
       run: |
         conan remote add --index=0 ci http://conanserver:9300
-      
+
     - name: Install Bolt dependencies
       shell: bash
       run: |
         ./scripts/install-bolt-deps.sh
-

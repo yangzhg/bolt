@@ -25,32 +25,38 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(bolt_example_simple_functions SimpleFunctions.cpp)
 
 find_package(simdjson CONFIG REQUIRED)
 find_package(sonic-cpp CONFIG REQUIRED)
-target_link_libraries(bolt_example_simple_functions bolt_functions_lib
-                      bolt_core bolt_expression re2::re2 simdjson::simdjson sonic-cpp::sonic-cpp)
+target_link_libraries(
+  bolt_example_simple_functions
+  bolt_functions_lib
+  bolt_core
+  bolt_expression
+  re2::re2
+  simdjson::simdjson
+  sonic-cpp::sonic-cpp
+)
 
 add_executable(bolt_example_expression_eval ExpressionEval.cpp)
 
-target_link_libraries(bolt_example_expression_eval bolt_type bolt_vector
-                      bolt_caching bolt_memory bolt_expression)
+target_link_libraries(
+  bolt_example_expression_eval bolt_type bolt_vector bolt_caching bolt_memory bolt_expression
+)
 
 add_executable(bolt_example_opaque_type OpaqueType.cpp)
 
-target_link_libraries(bolt_example_opaque_type bolt_type bolt_vector
-                      bolt_caching bolt_expression bolt_memory)
+target_link_libraries(
+  bolt_example_opaque_type bolt_type bolt_vector bolt_caching bolt_expression bolt_memory
+)
 
-# This is disabled temporarily until we figure out why g++ is crashing linking
-# it on linux builds.
+# This is disabled temporarily until we figure out why g++ is crashing linking it on linux builds.
 
 # add_executable(bolt_example_scan_and_sort ScanAndSort.cpp)
 
-# target_link_libraries( bolt_example_scan_and_sort bolt_type bolt_vector
-# bolt_exec bolt_exec_test_lib bolt_hive_connector bolt_memory
-# bolt_vector_test_lib)
+# target_link_libraries( bolt_example_scan_and_sort bolt_type bolt_vector bolt_exec
+# bolt_exec_test_lib bolt_hive_connector bolt_memory bolt_vector_test_lib)
 
 add_executable(bolt_example_scan_orc ScanOrc.cpp)
 
@@ -61,12 +67,12 @@ target_link_libraries(
   bolt_exec
   bolt_exec_test_lib
   bolt_hive_connector
-  bolt_memory)
+  bolt_memory
+)
 
 add_executable(bolt_example_vector_reader_writer VectorReaderWriter.cpp)
 
-target_link_libraries(bolt_example_vector_reader_writer bolt_expression
-                      bolt_type bolt_vector)
+target_link_libraries(bolt_example_vector_reader_writer bolt_expression bolt_type bolt_vector)
 
 add_executable(bolt_example_operator_extensibility OperatorExtensibility.cpp)
 
@@ -77,4 +83,5 @@ target_link_libraries(
   bolt_exec
   bolt_exec_test_lib
   bolt_memory
-  bolt_vector_test_lib)
+  bolt_vector_test_lib
+)

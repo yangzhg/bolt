@@ -32,8 +32,10 @@ endif()
 add_library(bolt_config Config.cpp Context.cpp)
 target_link_libraries(bolt_config bolt_exception Folly::folly)
 
-add_library(bolt_core Expressions.cpp PlanFragment.cpp PlanNode.cpp
-                       QueryConfig.cpp QueryCtx.cpp SimpleFunctionMetadata.cpp)
+add_library(
+  bolt_core Expressions.cpp PlanFragment.cpp PlanNode.cpp QueryConfig.cpp QueryCtx.cpp
+            SimpleFunctionMetadata.cpp
+)
 
 target_link_libraries(
   bolt_core
@@ -50,7 +52,8 @@ target_link_libraries(
          Boost::headers
          Folly::folly
          fmt::fmt
-  PRIVATE bolt_encode)
+  PRIVATE bolt_encode
+)
 
 if(${BOLT_ENABLE_TORCH})
   target_compile_definitions(bolt_core PRIVATE BOLT_HAS_TORCH=1)

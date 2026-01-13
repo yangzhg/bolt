@@ -29,24 +29,25 @@ add_subdirectory(utils)
 
 add_executable(
   bolt_vector_test
-  VectorCompareTest.cpp
-  VectorSaverTest.cpp
-  VectorMakerTest.cpp
-  VectorPoolTest.cpp
-  VectorPrinterTest.cpp
-  VectorTest.cpp
-  VectorStreamTest.cpp
-  VectorToStringTest.cpp
-  VectorEstimateFlatSizeTest.cpp
-  VectorPrepareForReuseTest.cpp
   DecodedVectorTest.cpp
-  SelectivityVectorTest.cpp
   EnsureWritableVectorTest.cpp
   IsWritableVectorTest.cpp
   LazyVectorTest.cpp
   MayHaveNullsRecursiveTest.cpp
+  SelectivityVectorTest.cpp
   VariantToVectorTest.cpp
-  VectorTestUtils.cpp)
+  VectorCompareTest.cpp
+  VectorEstimateFlatSizeTest.cpp
+  VectorMakerTest.cpp
+  VectorPoolTest.cpp
+  VectorPrepareForReuseTest.cpp
+  VectorPrinterTest.cpp
+  VectorSaverTest.cpp
+  VectorStreamTest.cpp
+  VectorTest.cpp
+  VectorTestUtils.cpp
+  VectorToStringTest.cpp
+)
 
 add_test(bolt_vector_test bolt_vector_test)
 
@@ -75,7 +76,8 @@ target_link_libraries(
   gflags::gflags
   glog::glog
   fmt::fmt
-  dl)
+  dl
+)
 
 add_executable(simple_vector_test SimpleVectorTest.cpp ToStringUtilityTest.cpp)
 
@@ -92,7 +94,8 @@ target_link_libraries(
   ${FOLLY_WITH_DEPENDENCIES}
   gflags::gflags
   glog::glog
-  fmt::fmt)
+  fmt::fmt
+)
 
 add_executable(bias_vector_test BiasVectorTest.cpp)
 
@@ -107,4 +110,5 @@ target_link_libraries(
   ${FOLLY_WITH_DEPENDENCIES}
   gflags::gflags
   glog::glog
-  fmt::fmt)
+  fmt::fmt
+)

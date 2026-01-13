@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(
   bolt_dwio_dwrf_writer
   ColumnWriter.cpp
@@ -38,7 +37,8 @@ add_library(
   Writer.cpp
   WriterBase.cpp
   WriterContext.cpp
-  WriterSink.cpp)
+  WriterSink.cpp
+)
 
 target_link_libraries(
   bolt_dwio_dwrf_writer
@@ -53,4 +53,5 @@ target_link_libraries(
   ${LZ4}
   ${LZO}
   ${ZSTD}
-  ${ZLIB_LIBRARIES})
+  ${ZLIB_LIBRARIES}
+)

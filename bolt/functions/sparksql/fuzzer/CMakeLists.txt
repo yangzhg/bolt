@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(spark_aggregation_fuzzer_test SparkAggregationFuzzerTest.cpp)
 
 target_link_libraries(
@@ -37,7 +36,8 @@ target_link_libraries(
   bolt_window
   bolt_vector_test_lib
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)
 
 add_executable(spark_window_fuzzer_test SparkWindowFuzzerTest.cpp)
 
@@ -49,4 +49,5 @@ target_link_libraries(
   bolt_functions_spark_window
   bolt_expression_test_utility
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

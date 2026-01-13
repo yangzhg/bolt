@@ -27,7 +27,7 @@
  * This modified file is released under the same license.
  * --------------------------------------------------------------------------
  */
- 
+
 %{
 #include <FlexLexer.h>
 #include "bolt/common/base/Exceptions.h"

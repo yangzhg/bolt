@@ -29,23 +29,25 @@ add_executable(
   bolt_functions_lib_test
   ApproxMostFrequentStreamSummaryTest.cpp
   ArrayRemoveNullsTest.cpp
+  CheckedArithmeticTest.cpp
+  CheckNestedNullsTest.cpp
   DateTimeFormatterTest.cpp
-  IsNullTest.cpp
-  IsNotNullTest.cpp
-  KllSketchTest.cpp
   GKTest.cpp
+  IsNotNullTest.cpp
+  IsNullTest.cpp
+  KllSketchTest.cpp
   MapConcatTest.cpp
   Re2FunctionsTest.cpp
   RepeatTest.cpp
   TimeUtilsTest.cpp
   ZetaDistributionTest.cpp
-  CheckNestedNullsTest.cpp
-  CheckedArithmeticTest.cpp)
+)
 
 add_test(
   NAME bolt_functions_lib_test
   COMMAND bolt_functions_lib_test
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_link_libraries(
   bolt_functions_lib_test
@@ -59,4 +61,5 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   GTest::gmock
-  gflags::gflags)
+  gflags::gflags
+)

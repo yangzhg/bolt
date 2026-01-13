@@ -25,10 +25,11 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(bolt_signature_parser_test ParseTypeSignatureTest.cpp)
 
 add_test(NAME bolt_signature_parser_test COMMAND bolt_signature_parser_test)
 
-target_link_libraries(bolt_signature_parser_test bolt_signature_parser
-                      bolt_type_signature GTest::gtest GTest::gtest_main GTest::gmock)
+target_link_libraries(
+  bolt_signature_parser_test bolt_signature_parser bolt_type_signature GTest::gtest
+  GTest::gtest_main GTest::gmock
+)

@@ -35,4 +35,5 @@ target_link_libraries(
   bolt_vector_test_lib
   bolt_vector_fuzzer
   Folly::folly
-  ${FOLLY_BENCHMARK})
+  ${FOLLY_BENCHMARK}
+)

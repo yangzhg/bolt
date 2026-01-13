@@ -25,53 +25,56 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 find_package(simdjson CONFIG REQUIRED)
 find_package(sonic-cpp CONFIG REQUIRED)
 
 add_library(
   bolt_functions_prestosql
-  ArithmeticFunctionsRegistration.cpp
   ArithmeticBasicFunctionsRegistration.cpp
+  ArithmeticDecimalFunctionsRegistration.cpp
   ArithmeticExponentialFunctionsRegistration.cpp
+  ArithmeticFunctionsRegistration.cpp
+  ArithmeticMiscFunctionsRegistration.cpp
   ArithmeticProbabilityFunctionsRegistration.cpp
   ArithmeticRandomFunctionsRegistration.cpp
-  ArithmeticDecimalFunctionsRegistration.cpp
-  ArithmeticMiscFunctionsRegistration.cpp
-  ArithmeticTrigonometricFunctionsRegistration.cpp
   ArithmeticRoundingFunctionsRegistration.cpp
+  ArithmeticTrigonometricFunctionsRegistration.cpp
+  ArrayConcatRegistration.cpp
   ArrayFunctionsRegistration.cpp
+  ArrayNGramsRegistration.cpp
   BinaryFunctionsRegistration.cpp
+  BitwiseFunctionsRegistration.cpp
   CheckedArithmeticRegistration.cpp
   ComparisonFunctionsRegistration.cpp
-  DateTimeFunctionsRegistration.cpp
   DateTimeFunctionsArithmeticRegistration.cpp
   DateTimeFunctionsBasicConversionRegistration.cpp
   DateTimeFunctionsDateComponentExtractionRegistration.cpp
+  DateTimeFunctionsRegistration.cpp
   DateTimeFunctionsTimeComponentExtractionRegistration.cpp
   GeneralFunctionsRegistration.cpp
   HyperLogFunctionsRegistration.cpp
   JsonFunctionsRegistration.cpp
   MapFunctionsRegistration.cpp
-  StringFunctionsRegistration.cpp
-  BitwiseFunctionsRegistration.cpp
-  URLFunctionsRegistration.cpp
+  MetricsFunctionsRegistration.cpp
   RegistrationFunctions.cpp
-  ArrayConcatRegistration.cpp
-  ArrayNGramsRegistration.cpp
-  MetricsFunctionsRegistration.cpp)
+  StringFunctionsRegistration.cpp
+  URLFunctionsRegistration.cpp
+)
 
-# GCC 12 has a bug where it does not respect "pragma ignore" directives and ends
-# up failing compilation in an openssl header included by a hash-related
-# function.
+# GCC 12 has a bug where it does not respect "pragma ignore" directives and ends up failing
+# compilation in an openssl header included by a hash-related function.
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  target_compile_options(bolt_functions_prestosql
-                         PRIVATE -Wno-deprecated-declarations)
+  target_compile_options(bolt_functions_prestosql PRIVATE -Wno-deprecated-declarations)
 endif()
 
 target_link_libraries(
-  bolt_functions_prestosql bolt_functions_prestosql_impl
-  bolt_functions_spark bolt_is_null_functions simdjson::simdjson sonic-cpp::sonic-cpp Boost::url)
+  bolt_functions_prestosql
+  bolt_functions_prestosql_impl
+  bolt_functions_spark
+  bolt_is_null_functions
+  simdjson::simdjson
+  sonic-cpp::sonic-cpp
+  Boost::url
+)
 
-set_property(TARGET bolt_functions_prestosql PROPERTY JOB_POOL_COMPILE
-                                                       high_memory_pool)
+set_property(TARGET bolt_functions_prestosql PROPERTY JOB_POOL_COMPILE high_memory_pool)

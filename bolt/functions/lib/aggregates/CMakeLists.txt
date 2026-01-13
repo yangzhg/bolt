@@ -25,18 +25,23 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(
   bolt_functions_aggregates
-  AverageAggregateBase.cpp BitDaysOrAggregate.cpp CentralMomentsAggregatesBase.cpp CollectSetAggregate.cpp
-  SingleValueAccumulator.cpp ValueList.cpp ValueSet.cpp)
+  AverageAggregateBase.cpp
+  BitDaysOrAggregate.cpp
+  CentralMomentsAggregatesBase.cpp
+  CollectSetAggregate.cpp
+  SingleValueAccumulator.cpp
+  ValueList.cpp
+  ValueSet.cpp
+)
 
-target_link_libraries(bolt_functions_aggregates bolt_exec
-                      bolt_presto_serializer ${FOLLY_WITH_DEPENDENCIES})
+target_link_libraries(
+  bolt_functions_aggregates bolt_exec bolt_presto_serializer ${FOLLY_WITH_DEPENDENCIES}
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
 elseif(${BOLT_BUILD_TEST_UTILS})
   add_subdirectory(tests/utils)
 endif()
-

@@ -33,22 +33,20 @@ jobs:
   changes:
     runs-on:  [ self-hosted, small ]
     outputs:
-      source_changed: ${{ steps.filter.outputs.source_changed }}
+      source_code: ${{ steps.filter.outputs.source_code }}
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - id: filter
-        uses: ./.github/actions/changes-check
+      - uses: dorny/paths-filter@v3
+        id: filter
         with:
           filters: |
-            bolt/**
-            !bolt/**/*.md
+            source_code:
+              - 'bolt/**'
+              - '!bolt/**/*.md'
   format-check:
     needs: changes
-    if: ${{ needs.changes.outputs.source_changed == 'true' }}
+    if: ${{ needs.changes.outputs.source_code == 'true' }}
     runs-on: [ self-hosted, small ]
-    container: 
+    container:
       image: bolt-registry:5000/bolt-ci:20251217
       options: --user root
     steps:

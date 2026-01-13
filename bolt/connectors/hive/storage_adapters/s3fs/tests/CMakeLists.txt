@@ -28,11 +28,7 @@
 add_executable(bolt_s3config_test S3ConfigTest.cpp)
 add_test(bolt_s3config_test bolt_s3config_test)
 target_link_libraries(
-  bolt_s3config_test
-  bolt_common_config
-  bolt_s3fs
-  GTest::gtest
-  GTest::gtest_main
+  bolt_s3config_test bolt_common_config bolt_s3fs GTest::gtest GTest::gtest_main
 )
 
 add_executable(bolt_s3file_test S3FileSystemTest.cpp S3UtilTest.cpp)
@@ -67,12 +63,7 @@ target_link_libraries(
 add_executable(bolt_s3finalize_test S3FileSystemFinalizeTest.cpp)
 add_test(bolt_s3finalize_test bolt_s3finalize_test)
 target_link_libraries(
-  bolt_s3finalize_test
-  bolt_s3fs
-  bolt_file
-  bolt_core
-  GTest::gtest
-  GTest::gtest_main
+  bolt_s3finalize_test bolt_s3fs bolt_file bolt_core GTest::gtest GTest::gtest_main
 )
 
 add_executable(bolt_s3insert_test S3InsertTest.cpp)
@@ -113,11 +104,7 @@ target_link_libraries(
 add_executable(bolt_s3metrics_test S3FileSystemMetricsTest.cpp)
 add_test(bolt_s3metrics_test bolt_s3metrics_test)
 target_link_libraries(
-  bolt_s3metrics_test
-  bolt_s3fs
-  bolt_exec_test_lib
-  GTest::gtest
-  GTest::gtest_main
+  bolt_s3metrics_test bolt_s3fs bolt_exec_test_lib GTest::gtest GTest::gtest_main
 )
 
 add_executable(bolt_s3multiendpoints_test S3MultipleEndpointsTest.cpp)

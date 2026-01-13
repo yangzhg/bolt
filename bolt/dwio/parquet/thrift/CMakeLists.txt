@@ -44,18 +44,22 @@ set(GENERATED_CPP_FILE "${GENERATED_DIR}/parquet_types.cpp")
 # Output a status message about the Thrift compilation
 message(STATUS "Running Thrift compiler for ${THRIFT_FILE}")
 
-# Run the Thrift compiler during the configuration stage
-execute_process(
+add_custom_command(
+  OUTPUT ${GENERATED_H_FILE} ${GENERATED_CPP_FILE}
   COMMAND ${THRIFT_COMPILER} --gen cpp -out ${GENERATED_DIR} ${THRIFT_FILE}
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-  RESULT_VARIABLE THRIFT_RESULT)
+  DEPENDS ${THRIFT_FILE}
+  COMMENT "Generating Thrift files from ${THRIFT_FILE}"
+  VERBATIM
+)
 
-if(NOT THRIFT_RESULT EQUAL 0)
-  message(FATAL_ERROR "Thrift compiler failed with exit code ${THRIFT_RESULT}")
-else()
-  message(STATUS "Thrift compiler completed successfully")
-endif()
+add_custom_target(
+  generate_parquet_thrift
+  DEPENDS ${GENERATED_H_FILE} ${GENERATED_CPP_FILE}
+  COMMENT "Generating Parquet Thrift files"
+)
 
-add_library(bolt_dwio_parquet_thrift ${GENERATED_DIR}/parquet_types.cpp)
-target_link_libraries(bolt_dwio_parquet_thrift
-                      arrow::arrow thrift::thrift fmt::fmt Boost::headers)
+add_library(bolt_dwio_parquet_thrift ${GENERATED_CPP_FILE})
+add_dependencies(bolt_dwio_parquet_thrift generate_parquet_thrift)
+target_include_directories(bolt_dwio_parquet_thrift PUBLIC ${GENERATED_DIR})
+
+target_link_libraries(bolt_dwio_parquet_thrift arrow::arrow thrift::thrift fmt::fmt Boost::headers)

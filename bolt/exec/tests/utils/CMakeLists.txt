@@ -25,26 +25,26 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_library(bolt_temp_path TempFilePath.cpp TempDirectoryPath.cpp)
+add_library(bolt_temp_path TempDirectoryPath.cpp TempFilePath.cpp)
 
 target_link_libraries(bolt_temp_path bolt_exception)
 
 add_library(
   bolt_exec_test_lib
-  AssertQueryBuilder.cpp
   ArbitratorTestUtil.cpp
+  AssertQueryBuilder.cpp
   Cursor.cpp
   HiveConnectorTestBase.cpp
   LocalExchangeSource.cpp
   OperatorTestBase.cpp
   PlanBuilder.cpp
+  PortUtil.cpp
   QueryAssertions.cpp
+  RowBasedSerde.cpp
   SumNonPODAggregate.cpp
   TpchQueryBuilder.cpp
   VectorTestUtil.cpp
-  PortUtil.cpp
-  RowBasedSerde.cpp)
+)
 
 target_link_libraries(
   bolt_exec_test_lib
@@ -65,7 +65,8 @@ target_link_libraries(
   bolt_tpch_connector
   bolt_presto_serializer
   bolt_functions_prestosql
-  bolt_aggregates)
+  bolt_aggregates
+)
 
 if(${BOLT_ENABLE_TORCH})
   target_compile_definitions(bolt_exec_test_lib PRIVATE BOLT_HAS_TORCH=1)

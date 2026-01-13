@@ -1195,16 +1195,16 @@ RowContainerCodeGenerator& RowContainerCodeGenerator::setOpType(CmpType type) {
 const std::string RowContainerCodeGenerator::builtInDeclarationsIR = R"IR(
   declare i32 @llvm.bswap.i32(i32)
   declare i64 @llvm.bswap.i64(i64)
-  declare i32 @memcmp(i8* nocapture, i8* nocapture, i64) local_unnamed_addr 
+  declare i32 @memcmp(i8* nocapture, i8* nocapture, i64) local_unnamed_addr
 
-  declare i32 @FastRowStringViewCompareAsc(i8*  %0, i8*  %1) local_unnamed_addr 
+  declare i32 @FastRowStringViewCompareAsc(i8*  %0, i8*  %1) local_unnamed_addr
 
-  declare i32 @StringViewCompareWrapper(i8* %0, i8*  %1) local_unnamed_addr 
+  declare i32 @StringViewCompareWrapper(i8* %0, i8*  %1) local_unnamed_addr
   declare i32 @RowBasedStringViewCompare(i8* %0, i8*  %1) local_unnamed_addr
   declare i32 @ComplexTypeRowCmpRow(i8* %0, i8* %1, i64 %2, i32 %3, i8 %4, i8 %5) local_unnamed_addr
   declare i32 @RowBasedComplexTypeRowCmpRow(i8* %0, i8* %1, i64 %2, i32 %3, i8 %4, i8 %5) local_unnamed_addr
 
-  declare i8 @StringViewRowEqVectors(i8*  %0, i8*  %1) local_unnamed_addr 
+  declare i8 @StringViewRowEqVectors(i8*  %0, i8*  %1) local_unnamed_addr
   declare i8 @GetDecodedValueBool(i8* %0, i32 %1) local_unnamed_addr
   declare i8 @GetDecodedValueI8(i8* %0, i32 %1) local_unnamed_addr
   declare i16 @GetDecodedValueI16(i8* %0, i32 %1) local_unnamed_addr

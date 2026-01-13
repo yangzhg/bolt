@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_subdirectory(util)
 add_subdirectory(generated)
 
@@ -42,8 +41,8 @@ add_library(
   Encryption.cpp
   EncryptionInternal.cpp
   Exception.cpp
-  FileEncryptorInternal.cpp
   FileDecryptorInternal.cpp
+  FileEncryptorInternal.cpp
   FileWriter.cpp
   LevelComparison.cpp
   LevelComparisonAvx2.cpp
@@ -56,7 +55,8 @@ add_library(
   Schema.cpp
   Statistics.cpp
   Types.cpp
-  Writer.cpp)
+  Writer.cpp
+)
 
 target_link_libraries(
   bolt_dwio_parquet_arrow_lib
@@ -66,4 +66,5 @@ target_link_libraries(
   bolt_arrow_bridge
   bolt_process
   arrow::arrow
-  ${FMT})
+  ${FMT}
+)

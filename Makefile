@@ -31,7 +31,7 @@
 # If built on SCM use date as version
 # $(shell date '+%Y.%m.%d.00')
 BUILD_VERSION ?= main
-BUILD_USER ?= 
+BUILD_USER ?=
 BUILD_CHANNEL ?=
 # Use commas to separate multiple file systems, such as `hdfs,tos`
 ENABLE_HDFS ?= True

@@ -25,8 +25,10 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-add_library(bolt_functions_json JsonExtractor.cpp JsonPathTokenizer.cpp
-                                 SIMDJsonExtractor.cpp SIMDJsonUtil.cpp)
+add_library(
+  bolt_functions_json JsonExtractor.cpp JsonPathTokenizer.cpp SIMDJsonExtractor.cpp
+                      SIMDJsonUtil.cpp
+)
 
 find_package(simdjson CONFIG REQUIRED)
 find_package(sonic-cpp CONFIG REQUIRED)
@@ -40,7 +42,8 @@ target_link_libraries(
   xxHash::xxhash
   ryu::ryu
   sonic-cpp::sonic-cpp
-  ${FOLLY_WITH_DEPENDENCIES})
+  ${FOLLY_WITH_DEPENDENCIES}
+)
 target_compile_features(bolt_functions_json PRIVATE cxx_std_20)
 
 if(${BOLT_BUILD_TESTING})

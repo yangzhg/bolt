@@ -25,17 +25,17 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(
   bolt_caching
+  AsyncDataCache.cpp
   CacheTTLController.cpp
   FileIds.cpp
-  StringIdMap.cpp
-  AsyncDataCache.cpp
   ScanTracker.cpp
   SsdCache.cpp
   SsdFile.cpp
-  SsdFileTracker.cpp)
+  SsdFileTracker.cpp
+  StringIdMap.cpp
+)
 
 target_link_libraries(
   bolt_caching
@@ -46,7 +46,8 @@ target_link_libraries(
          Folly::folly
          fmt::fmt
          gflags::gflags
-  PRIVATE bolt_time)
+  PRIVATE bolt_time
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

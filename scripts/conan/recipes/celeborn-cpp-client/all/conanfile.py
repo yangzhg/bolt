@@ -79,7 +79,7 @@ class CelebornCppClientConan(ConanFile):
         cmake = CMake(self)
         cmake.configure(build_script_folder=os.path.join(self.source_folder, "cpp"))
         cmake.build()
-    
+
     def generate(self):
         build_env = VirtualBuildEnv(self)
         build_env.generate()

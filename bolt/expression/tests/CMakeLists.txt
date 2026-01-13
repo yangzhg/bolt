@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(
   bolt_expression_test
   CastExprTest.cpp
@@ -61,12 +60,14 @@ add_executable(
   StringWriterTest.cpp
   TryExprTest.cpp
   VariadicViewTest.cpp
-  VectorReaderTest.cpp)
+  VectorReaderTest.cpp
+)
 
 add_test(
   NAME bolt_expression_test
   COMMAND bolt_expression_test
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_link_libraries(
   bolt_expression_test
@@ -91,30 +92,35 @@ target_link_libraries(
   ${FOLLY_WITH_DEPENDENCIES}
   gflags::gflags
   glog::glog
-  fmt::fmt)
+  fmt::fmt
+)
 
 add_library(bolt_expression_verifier ExpressionVerifier.cpp)
 
 target_link_libraries(
-  bolt_expression_verifier bolt_vector_test_lib bolt_vector_fuzzer
-  bolt_type bolt_expression_test_utility)
+  bolt_expression_verifier bolt_vector_test_lib bolt_vector_fuzzer bolt_type
+  bolt_expression_test_utility
+)
 
 add_library(bolt_expression_runner ExpressionRunner.cpp)
-target_link_libraries(bolt_expression_runner bolt_expression_verifier
-                      bolt_functions_prestosql bolt_parse_parser GTest::gtest)
+target_link_libraries(
+  bolt_expression_runner bolt_expression_verifier bolt_functions_prestosql bolt_parse_parser
+  GTest::gtest
+)
 
 add_executable(bolt_expression_runner_test ExpressionRunnerTest.cpp)
 target_link_libraries(
-  bolt_expression_runner_test bolt_expression_runner bolt_exec_test_lib
-  bolt_function_registry GTest::gtest GTest::gtest_main)
+  bolt_expression_runner_test bolt_expression_runner bolt_exec_test_lib bolt_function_registry
+  GTest::gtest GTest::gtest_main
+)
 
 add_executable(spark_expression_runner_test SparkExpressionRunnerTest.cpp)
 target_link_libraries(
-  spark_expression_runner_test bolt_expression_runner bolt_exec_test_lib
-  bolt_function_registry GTest::gtest GTest::gtest_main)
+  spark_expression_runner_test bolt_expression_runner bolt_exec_test_lib bolt_function_registry
+  GTest::gtest GTest::gtest_main
+)
 
-add_executable(bolt_expression_verifier_unit_test
-               ExpressionVerifierUnitTest.cpp)
+add_executable(bolt_expression_verifier_unit_test ExpressionVerifierUnitTest.cpp)
 target_link_libraries(
   bolt_expression_verifier_unit_test
   bolt_expression_verifier
@@ -125,7 +131,8 @@ target_link_libraries(
   bolt_type
   bolt_vector_test_lib
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)
 
 add_executable(bolt_expression_runner_unit_test ExpressionRunnerUnitTest.cpp)
 target_link_libraries(
@@ -140,4 +147,5 @@ target_link_libraries(
   bolt_exec_test_lib
   bolt_vector_test_lib
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

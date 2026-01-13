@@ -26,12 +26,18 @@
 # --------------------------------------------------------------------------
 
 add_library(bolt_parse_expression Expressions.cpp TypeResolver.cpp)
-target_link_libraries(bolt_parse_expression bolt_buffer bolt_type bolt_vector
-                      bolt_expression bolt_exec bolt_function_registry)
+target_link_libraries(
+  bolt_parse_expression
+  bolt_buffer
+  bolt_type
+  bolt_vector
+  bolt_expression
+  bolt_exec
+  bolt_function_registry
+)
 
 add_library(bolt_parse_parser ExpressionsParser.cpp QueryPlanner.cpp)
-target_link_libraries(bolt_parse_parser bolt_parse_expression bolt_type
-                      bolt_duckdb_parser)
+target_link_libraries(bolt_parse_parser bolt_parse_expression bolt_type bolt_duckdb_parser)
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
 endif()

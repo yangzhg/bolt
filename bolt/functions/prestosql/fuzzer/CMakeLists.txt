@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(bolt_aggregation_fuzzer_test AggregationFuzzerTest.cpp)
 
 target_link_libraries(
@@ -36,7 +35,8 @@ target_link_libraries(
   bolt_window
   bolt_vector_test_lib
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)
 
 # Window Fuzzer
 add_executable(bolt_window_fuzzer_test WindowFuzzerTest.cpp)
@@ -49,4 +49,5 @@ target_link_libraries(
   bolt_window
   bolt_expression_test_utility
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

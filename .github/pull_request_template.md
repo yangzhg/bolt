@@ -17,8 +17,8 @@ Issue Number: close #xxx
 
 ### Description
 
-Describe your changes in detail. 
-For complex logic, explain the "Why" and "How". 
+Describe your changes in detail.
+For complex logic, explain the "Why" and "How".
 
 ### Performance Impact
 <!--
@@ -79,4 +79,4 @@ If yes, please describe how users should migrate.
     - Possible solutions or workarounds.
     - Any other relevant information.
     ```
-    </details>  
+    </details>

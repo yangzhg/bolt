@@ -37,7 +37,7 @@ class RyuConan(ConanFile):
         commit = "1264a94"
         git.checkout(commit)
         apply_conandata_patches(self)
-    
+
     def export_sources(self):
         export_conandata_patches(self)
 
@@ -48,7 +48,7 @@ class RyuConan(ConanFile):
         cmake = CMake(self)
         cmake.configure()
         cmake.build()
-    
+
     def generate(self):
         build_env = VirtualBuildEnv(self)
         build_env.generate()
@@ -77,4 +77,3 @@ class RyuConan(ConanFile):
         if not is_msvc:
             self.cpp_info.components["generic_128"].set_property("pkg_config_name", "generic_128")
             self.cpp_info.components["generic_128"].libs = ["generic_128"]
-

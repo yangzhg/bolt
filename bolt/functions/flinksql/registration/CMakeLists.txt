@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,20 +15,14 @@
 
 find_package(simdjson CONFIG REQUIRED)
 
-add_library(
-  bolt_functions_flink
-  Register.cpp)
- 
- # GCC 12 has a bug where it does not respect "pragma ignore" directives and ends
- # up failing compilation in an openssl header included by a hash-related
- # function.
+add_library(bolt_functions_flink Register.cpp)
+
+# GCC 12 has a bug where it does not respect "pragma ignore" directives and ends up failing
+# compilation in an openssl header included by a hash-related function.
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-  target_compile_options(bolt_functions_flink
-                         PRIVATE -Wno-deprecated-declarations)
+  target_compile_options(bolt_functions_flink PRIVATE -Wno-deprecated-declarations)
 endif()
- 
-target_link_libraries(bolt_functions_flink bolt_functions_flink_impl
-    simdjson::simdjson)
- 
-set_property(TARGET bolt_functions_flink PROPERTY JOB_POOL_COMPILE
-                                                   high_memory_pool)
+
+target_link_libraries(bolt_functions_flink bolt_functions_flink_impl simdjson::simdjson)
+
+set_property(TARGET bolt_functions_flink PROPERTY JOB_POOL_COMPILE high_memory_pool)

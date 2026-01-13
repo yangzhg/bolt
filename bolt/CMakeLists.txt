@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_subdirectory(buffer)
 add_subdirectory(common)
 add_subdirectory(core)
@@ -36,11 +35,11 @@ add_subdirectory(row)
 add_subdirectory(version)
 add_subdirectory(flag_definitions)
 
-if (${BOLT_ENABLE_SPARK_COMPATIBLE})
+if(${BOLT_ENABLE_SPARK_COMPATIBLE})
   add_subdirectory(shuffle)
 endif()
 
-if (${ENABLE_BOLT_JIT})
+if(${ENABLE_BOLT_JIT})
   add_subdirectory(jit)
 endif()
 

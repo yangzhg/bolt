@@ -25,16 +25,15 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 include(FBThriftCppLibrary)
 
-add_fbthrift_cpp_library(bolt_remote_function_thrift RemoteFunction.thrift
-                         SERVICES RemoteFunctionService)
+add_fbthrift_cpp_library(
+  bolt_remote_function_thrift RemoteFunction.thrift SERVICES RemoteFunctionService
+)
 
-target_compile_options(bolt_remote_function_thrift
-                       PRIVATE -Wno-deprecated-declarations)
+target_compile_options(bolt_remote_function_thrift PRIVATE -Wno-deprecated-declarations)
 
 add_library(bolt_functions_remote_get_serde GetSerde.cpp)
 target_link_libraries(
-  bolt_functions_remote_get_serde PUBLIC bolt_remote_function_thrift
-                                          bolt_presto_serializer)
+  bolt_functions_remote_get_serde PUBLIC bolt_remote_function_thrift bolt_presto_serializer
+)

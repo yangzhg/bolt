@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,25 +20,27 @@ add_executable(
   bolt_sketches_aggregates_test
   Main.cpp
   SerDeTest.cpp
-  SketchCPCTest.cpp
   SketchCPCSketchTest.cpp
-  SketchHLLTest.cpp
-  SketchHLLSketchTest.cpp
-  SketchKLLTest.cpp
-  SketchKLLSketchTest.cpp
+  SketchCPCTest.cpp
   SketchFITest.cpp
-  SketchReqTest.cpp
-  SketchThetaTest.cpp
-  SketchQuantileTest.cpp
-  SketchVarOptTest.cpp
-  SketchTestBase.cpp
   SketchHLLEstimateTest.cpp
-  SketchHLLUnionTest.cpp)
+  SketchHLLSketchTest.cpp
+  SketchHLLTest.cpp
+  SketchHLLUnionTest.cpp
+  SketchKLLSketchTest.cpp
+  SketchKLLTest.cpp
+  SketchQuantileTest.cpp
+  SketchReqTest.cpp
+  SketchTestBase.cpp
+  SketchThetaTest.cpp
+  SketchVarOptTest.cpp
+)
 
 add_test(
   NAME bolt_sketches_aggregates_test
   COMMAND bolt_sketches_aggregates_test
-  WORKING_DIRECTORY .)
+  WORKING_DIRECTORY .
+)
 
 target_link_libraries(
   bolt_sketches_aggregates_test
@@ -53,4 +55,5 @@ target_link_libraries(
   DataSketches::DataSketches
   ${gflags_LIBRARIES}
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

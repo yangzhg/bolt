@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,30 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_library(bolt_torch Tensor.cpp Compatibility.cpp Operator.cpp PlanNode.cpp Utils.cpp)
+add_library(bolt_torch Compatibility.cpp Operator.cpp PlanNode.cpp Tensor.cpp Utils.cpp)
 
-target_include_directories(bolt_torch PRIVATE
-  ${TORCH_INCLUDE_DIRS}
-  ${fmt_INCLUDE_DIRS}
-  ${glog_INCLUDE_DIRS} # transitive include
-  ${gflags_INCLUDE_DIRS} # transitive include
-  ${folly_INCLUDE_DIRS} # transitive include
-  ${Boost_INCLUDE_DIRS} # transitive include
-  ${double-conversion_INCLUDE_DIRS} # transitive include
-  ${xsimd_INCLUDE_DIRS} # transitive include
-  ${Libevent_INCLUDE_DIRS} # transitive include
-  ${ryu_INCLUDE_DIRS} # transitive include
-  ${gfx-timsort_INCLUDE_DIRS} # transitive include
-  ${xxHash_INCLUDE_DIRS} # transitive include
-  ${date_INCLUDE_DIRS} # transitive include
+target_include_directories(
+  bolt_torch
+  PRIVATE ${TORCH_INCLUDE_DIRS}
+          ${fmt_INCLUDE_DIRS}
+          ${glog_INCLUDE_DIRS} # transitive include
+          ${gflags_INCLUDE_DIRS} # transitive include
+          ${folly_INCLUDE_DIRS} # transitive include
+          ${Boost_INCLUDE_DIRS} # transitive include
+          ${double-conversion_INCLUDE_DIRS} # transitive include
+          ${xsimd_INCLUDE_DIRS} # transitive include
+          ${Libevent_INCLUDE_DIRS} # transitive include
+          ${ryu_INCLUDE_DIRS} # transitive include
+          ${gfx-timsort_INCLUDE_DIRS} # transitive include
+          ${xxHash_INCLUDE_DIRS} # transitive include
+          ${date_INCLUDE_DIRS} # transitive include
 )
 
 if(${ENABLE_BOLT_JIT})
   target_include_directories(bolt_torch PRIVATE ${LLVM_INCLUDE_DIRS})
 endif()
 
-# icu is needed as a result of a transitive include calling a function
-# from icu library.
+# icu is needed as a result of a transitive include calling a function from icu library.
 target_link_libraries(bolt_torch PUBLIC ${TORCH_LIBRARIES} icu::icu folly::folly)
 target_compile_definitions(bolt_torch PRIVATE ${glog_DEFINITIONS})
 

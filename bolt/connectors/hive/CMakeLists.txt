@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_hive_config OBJECT HiveConfig.cpp)
 
 target_link_libraries(bolt_hive_config bolt_exception)
@@ -35,78 +34,69 @@ add_library(
   FileHandle.cpp
   HiveConfig.cpp
   HiveConnector.cpp
-  HiveConnectorUtil.cpp
   HiveConnectorSplit.cpp
-  PaimonConnectorSplit.cpp
-  PaimonMiscHelpers.cpp
+  HiveConnectorUtil.cpp
   HiveDataSink.cpp
   HiveDataSource.cpp
   HivePartitionUtil.cpp
-  PartitionIdGenerator.cpp
   HiveSplitReaderBase.cpp
-  SplitReader.cpp
-  PaimonSplitReader.cpp
-  paimon_merge_engines/DeduplicateEngine.cpp
   paimon_merge_engines/AggregateEngine.cpp
-  paimon_merge_engines/PartialUpdateEngine.cpp
+  paimon_merge_engines/DeduplicateEngine.cpp
   paimon_merge_engines/PaimonRowKind.cpp
+  paimon_merge_engines/PartialUpdateEngine.cpp
+  PaimonConnectorSplit.cpp
+  PaimonMiscHelpers.cpp
   PaimonRowIterator.cpp
+  PaimonSplitReader.cpp
+  PartitionIdGenerator.cpp
+  SplitReader.cpp
   TableHandle.cpp
-  )
+)
 
-set(enabled_dwio_formats "")
+set(ENABLED_DWIO_FORMATS "")
 if(BOLT_ENABLE_ORC)
-  list(APPEND enabled_dwio_formats
-          bolt_dwio_orc_reader
-          bolt_dwio_orc_writer
-  )
+  list(APPEND ENABLED_DWIO_FORMATS bolt_dwio_orc_reader bolt_dwio_orc_writer)
 endif()
 if(BOLT_ENABLE_PARQUET)
-  list(APPEND enabled_dwio_formats
-          bolt_dwio_parquet_reader
-          bolt_dwio_parquet_writer
-  )
+  list(APPEND ENABLED_DWIO_FORMATS bolt_dwio_parquet_reader bolt_dwio_parquet_writer)
 endif()
 
 if(BOLT_ENABLE_TXT)
-  list(APPEND enabled_dwio_formats
-          bolt_dwio_txt_reader
-          bolt_dwio_txt_writer
-  )
+  list(APPEND ENABLED_DWIO_FORMATS bolt_dwio_txt_reader bolt_dwio_txt_writer)
 endif()
 
-set(enabled_filesystems "")
+set(ENABLED_FILESYSTEMS "")
 
 if(BOLT_ENABLE_S3)
-  list(APPEND enabled_filesystems "bolt_s3fs")
+  list(APPEND ENABLED_FILESYSTEMS "bolt_s3fs")
 endif()
 if(BOLT_ENABLE_GCS)
-  list(APPEND enabled_filesystems "bolt_gcs")
+  list(APPEND ENABLED_FILESYSTEMS "bolt_gcs")
 endif()
 if(BOLT_ENABLE_HDFS)
-  list(APPEND enabled_filesystems "bolt_hdfs")
+  list(APPEND ENABLED_FILESYSTEMS "bolt_hdfs")
 endif()
 if(BOLT_ENABLE_ABFS)
-  list(APPEND enabled_filesystems "bolt_abfs")
+  list(APPEND ENABLED_FILESYSTEMS "bolt_abfs")
 endif()
 
 target_link_libraries(
   bolt_hive_connector
-  PUBLIC
-  bolt_common_io
-  bolt_connector
-  bolt_dwio_catalog_fbhive
-  bolt_dwio_dwrf_reader
-  bolt_dwio_dwrf_writer
-  bolt_dwio_orc_reader
-  bolt_dwio_parquet_reader
-  bolt_dwio_parquet_writer
-  ${enabled_filesystems}
-  ${enabled_dwio_formats}
-  bolt_dwio_paimon_deletion_vector_reader
-  bolt_file
-  bolt_hive_partition_function
-  arrow::arrow)
+  PUBLIC bolt_common_io
+         bolt_connector
+         bolt_dwio_catalog_fbhive
+         bolt_dwio_dwrf_reader
+         bolt_dwio_dwrf_writer
+         bolt_dwio_orc_reader
+         bolt_dwio_parquet_reader
+         bolt_dwio_parquet_writer
+         ${ENABLED_FILESYSTEMS}
+         ${ENABLED_DWIO_FORMATS}
+         bolt_dwio_paimon_deletion_vector_reader
+         bolt_file
+         bolt_hive_partition_function
+         arrow::arrow
+)
 
 add_library(bolt_hive_partition_function HivePartitionFunction.cpp)
 

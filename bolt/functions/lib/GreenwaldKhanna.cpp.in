@@ -16,5 +16,5 @@
 
 #include "bolt/functions/lib/GreenwaldKhanna.h"
 namespace bytedance::bolt::functions::gk {
-template class GKQuantileSummaries<@TYPE@>;
+template class GKQuantileSummaries<@type@>;
 } // namespace bytedance::bolt::functions::gk

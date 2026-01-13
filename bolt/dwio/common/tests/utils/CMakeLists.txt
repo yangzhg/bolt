@@ -25,9 +25,9 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_library(bolt_dwio_common_test_utils BatchMaker.cpp DataFiles.cpp
-                                         FilterGenerator.cpp DataSetBuilder.cpp)
+add_library(
+  bolt_dwio_common_test_utils BatchMaker.cpp DataFiles.cpp DataSetBuilder.cpp FilterGenerator.cpp
+)
 
 target_link_libraries(
   bolt_dwio_common_test_utils
@@ -38,10 +38,10 @@ target_link_libraries(
   bolt_memory
   bolt_type
   bolt_type_fbhive
-  bolt_vector)
+  bolt_vector
+)
 
 # older versions of GCC need it to allow std::filesystem
 if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)
   target_link_libraries(bolt_dwio_common_test_utils stdc++fs)
 endif()
-

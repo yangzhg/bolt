@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 # for generated headers
 
 add_library(bolt_abfs RegisterAbfsFileSystem.cpp)
@@ -41,7 +40,8 @@ if(BOLT_ENABLE_ABFS)
            Azure::azure-storage-blobs
            Folly::folly
            glog::glog
-           fmt::fmt)
+           fmt::fmt
+  )
 
   if(${BOLT_BUILD_TESTING})
     add_subdirectory(tests)

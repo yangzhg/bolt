@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(
   bolt_dwio_dwrf_reader
   BinaryStreamReader.cpp
@@ -34,20 +33,21 @@ add_library(
   DwrfReader.cpp
   FlatMapColumnReader.cpp
   ReaderBase.cpp
+  SelectiveDecimalColumnReader.cpp
   SelectiveDwrfReader.cpp
   SelectiveFlatMapColumnReader.cpp
-  SelectiveIntegerDirectColumnReader.cpp
   SelectiveIntegerDictionaryColumnReader.cpp
-  SelectiveStringDirectColumnReader.cpp
-  SelectiveStringDictionaryColumnReader.cpp
-  SelectiveTimestampColumnReader.cpp
-  SelectiveDecimalColumnReader.cpp
-  SelectiveStructColumnReader.cpp
+  SelectiveIntegerDirectColumnReader.cpp
   SelectiveRepeatedColumnReader.cpp
+  SelectiveStringDictionaryColumnReader.cpp
+  SelectiveStringDirectColumnReader.cpp
+  SelectiveStructColumnReader.cpp
+  SelectiveTimestampColumnReader.cpp
   StreamLabels.cpp
   StripeDictionaryCache.cpp
   StripeReaderBase.cpp
-  StripeStream.cpp)
+  StripeStream.cpp
+)
 
 target_link_libraries(
   bolt_dwio_dwrf_reader
@@ -56,9 +56,15 @@ target_link_libraries(
   bolt_caching
   bolt_dwio_dwrf_utils
   bolt_test_util
-  ${FMT})
+  ${FMT}
+)
 
-  install(TARGETS bolt_dwio_dwrf_reader
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+install(
+  TARGETS bolt_dwio_dwrf_reader
+          ARCHIVE
+          DESTINATION
+          ${CMAKE_INSTALL_LIBDIR}
+          LIBRARY
+          DESTINATION
+          ${CMAKE_INSTALL_LIBDIR}
 )

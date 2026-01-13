@@ -25,10 +25,9 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_subdirectory(dbgen)
 
-add_library(bolt_tpch_gen TpchGen.cpp DBGenIterator.cpp)
+add_library(bolt_tpch_gen DBGenIterator.cpp TpchGen.cpp)
 
 target_include_directories(bolt_tpch_gen PRIVATE dbgen/include)
 

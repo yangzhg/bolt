@@ -27,58 +27,57 @@
 
 add_library(
   bolt_shuffle_spark_impl
-    ShuffleColumnarToRowConverter.cpp
-    ShuffleRowToColumnarConverter.cpp
-    BoltShuffleReader.cpp
-    BoltShuffleWriter.cpp
-    BoltShuffleWriterV2.cpp
-    BoltRowBasedSortShuffleWriter.cpp
-    ShuffleWriterNode.cpp
-    ShuffleReaderNode.cpp
-    BoltArrowMemoryPool.cpp
-    partitioner/FallbackRangePartitioner.cpp
-    partitioner/HashPartitioner.cpp
-    partitioner/RoundRobinPartitioner.cpp
-    partitioner/SinglePartitioner.cpp
-    partitioner/Partitioner.cpp
-    partitioner/Partitioning.cpp
-    partition_writer/PartitionWriter.cpp
-    partition_writer/LocalPartitionWriter.cpp
-    partition_writer/rss/RemotePartitionWriter.cpp
-    partition_writer/rss/CelebornPartitionWriter.cpp
-    partition_writer/rss/NativeCelebornClient.cpp
-    CelebornReaderStreamIterator.cpp
-    compression/Compression.cpp
-    Payload.cpp
-    ShuffleMemoryPool.cpp
-    Spill.cpp
-    Utils.cpp)
+  BoltArrowMemoryPool.cpp
+  BoltRowBasedSortShuffleWriter.cpp
+  BoltShuffleReader.cpp
+  BoltShuffleWriter.cpp
+  BoltShuffleWriterV2.cpp
+  CelebornReaderStreamIterator.cpp
+  compression/Compression.cpp
+  partition_writer/LocalPartitionWriter.cpp
+  partition_writer/PartitionWriter.cpp
+  partition_writer/rss/CelebornPartitionWriter.cpp
+  partition_writer/rss/NativeCelebornClient.cpp
+  partition_writer/rss/RemotePartitionWriter.cpp
+  partitioner/FallbackRangePartitioner.cpp
+  partitioner/HashPartitioner.cpp
+  partitioner/Partitioner.cpp
+  partitioner/Partitioning.cpp
+  partitioner/RoundRobinPartitioner.cpp
+  partitioner/SinglePartitioner.cpp
+  Payload.cpp
+  ShuffleColumnarToRowConverter.cpp
+  ShuffleMemoryPool.cpp
+  ShuffleReaderNode.cpp
+  ShuffleRowToColumnarConverter.cpp
+  ShuffleWriterNode.cpp
+  Spill.cpp
+  Utils.cpp
+)
 
 find_package(celeborn-cpp-client CONFIG REQUIRED)
 
 target_link_libraries(
-  bolt_shuffle_spark_impl
-  PUBLIC
-    arrow::arrow
-    ryu::ryu
-    bolt_vector
-    bolt_core
-    bolt_exec
-    celeborn-cpp-client::celeborn-cpp-client
+  bolt_shuffle_spark_impl PUBLIC arrow::arrow ryu::ryu bolt_vector bolt_core bolt_exec
+                                 celeborn-cpp-client::celeborn-cpp-client
 )
 
 if(ENABLE_QAT)
   include(BuildQATzip)
   include(BuildQATZstd)
   target_sources(bolt_shuffle_spark_impl PRIVATE compression/qat/QatCodec.cpp)
-  target_include_directories(bolt_shuffle_spark_impl PUBLIC ${QATZIP_INCLUDE_DIR} ${QATZSTD_INCLUDE_DIR})
+  target_include_directories(
+    bolt_shuffle_spark_impl PUBLIC ${QATZIP_INCLUDE_DIR} ${QATZSTD_INCLUDE_DIR}
+  )
   target_link_libraries(bolt_shuffle_spark_impl PUBLIC qatzip::qatzip qatzstd::qatzstd)
 endif()
 
 if(ENABLE_IAA)
   include(BuildQpl)
   target_include_directories(bolt_shuffle_spark_impl PUBLIC ${QPL_INCLUDE_DIR})
-  target_sources(bolt_shuffle_spark_impl PRIVATE compression/qpl/qpl_job_pool.cpp compression/qpl/qpl_codec.cpp)
+  target_sources(
+    bolt_shuffle_spark_impl PRIVATE compression/qpl/qpl_job_pool.cpp compression/qpl/qpl_codec.cpp
+  )
   target_link_libraries(bolt_shuffle_spark_impl PUBLIC qpl::qpl)
 endif()
 

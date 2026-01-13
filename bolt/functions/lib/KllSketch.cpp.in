@@ -16,5 +16,5 @@
 
 #include "bolt/functions/lib/KllSketch.h"
 namespace bytedance::bolt::functions::kll {
-template class KllSketch<@TYPE@, StlAllocator<@TYPE@>, std::less<@TYPE@>>;
+template class KllSketch<@type@, StlAllocator<@type@>, std::less<@type@>>;
 }

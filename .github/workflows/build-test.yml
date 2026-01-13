@@ -37,26 +37,25 @@ jobs:
   changes:
     runs-on:  [ self-hosted, small ]
     outputs:
-      source_changed: ${{ steps.filter.outputs.source_changed }}
+      source_code: ${{ steps.filter.outputs.source_code }}
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - id: filter
-        uses: ./.github/actions/changes-check
+      - uses: dorny/paths-filter@v3
+        id: filter
         with:
           filters: |
-            bolt/**
-            !bolt/**/*.md
-            Makefile
-            conanfile.py
-            CMakeLists.txt
-            scripts/**
+            source_code:
+              - 'bolt/**'
+              - '!bolt/**/*.md'
+              - 'Makefile'
+              - 'conanfile.py'
+              - 'CMakeLists.txt'
+              - 'bolt/**/CMakeLists.txt'
+              - 'scripts/**'
   build-test:
     needs: changes
-    if: ${{ needs.changes.outputs.source_changed == 'true' }}
+    if: ${{ needs.changes.outputs.source_code == 'true' }}
     runs-on: [ self-hosted, medium ]
-    container: 
+    container:
       image: bolt-registry:5000/bolt-ci:20251217
       options: --user root
       volumes:
@@ -67,7 +66,7 @@ jobs:
         volumes:
           - /data/conan-server-data:/var/conan/data
     strategy:
-      matrix: 
+      matrix:
         build_type: [ release, release_spark ]
     steps:
     - name: Checkout code
@@ -86,9 +85,9 @@ jobs:
 
   benchmarks-build:
       needs: changes
-      if: ${{ needs.changes.outputs.source_changed == 'true' }}
+      if: ${{ needs.changes.outputs.source_code == 'true' }}
       runs-on: [ self-hosted, medium ]
-      container: 
+      container:
         image: bolt-registry:5000/bolt-ci:20251217
         volumes:
           - /data/ccache-data:/data/ccache-data

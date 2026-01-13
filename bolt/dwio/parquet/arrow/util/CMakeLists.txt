@@ -25,16 +25,16 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(
   bolt_dwio_parquet_arrow_util_lib
   Compression.cpp
-  CompressionSnappy.cpp
-  CompressionZstd.cpp
-  CompressionZlib.cpp
   CompressionLZ4.cpp
+  CompressionSnappy.cpp
+  CompressionZlib.cpp
+  CompressionZstd.cpp
+  Crc32.cpp
   Hashing.cpp
-  Crc32.cpp)
+)
 
 find_package(xxHash CONFIG REQUIRED)
 
@@ -47,4 +47,5 @@ target_link_libraries(
   lz4::lz4
   glog::glog
   fmt::fmt
-  xxHash::xxhash)
+  xxHash::xxhash
+)

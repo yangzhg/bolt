@@ -73,7 +73,7 @@ RUN https_proxy=${https_proxy} curl -L -# -o /tmp/skywalking-eyes-bin.tgz https:
     sudo tar -C /opt/skywalking-license-eye --strip-components=1 -xzf /tmp/skywalking-eyes-bin.tgz
 
 ENV PATH="/opt/skywalking-license-eye/bin/linux:${PATH}"
-    
+
 # Set up default python virtualenv, and make it the default on PATH
 RUN virtualenv -p python3 /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
@@ -88,7 +88,7 @@ ARG USER_GID=$USER_UID
 RUN groupadd --gid $USER_GID $USERNAME \
     && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
-    && chmod 0440 /etc/sudoers.d/$USERNAME 
+    && chmod 0440 /etc/sudoers.d/$USERNAME
 
 USER $USERNAME
 

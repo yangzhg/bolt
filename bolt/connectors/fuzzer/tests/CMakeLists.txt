@@ -36,4 +36,5 @@ target_link_libraries(
   bolt_exec_test_lib
   bolt_aggregates
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

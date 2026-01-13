@@ -32,7 +32,7 @@ checkout_conan_center_index() {
 
 if ! conan remote list | grep -q 'bolt-local'; then
     conan remote add -t local-recipes-index bolt-local "${CUR_DIR}/conan"
-fi 
+fi
 
 # Clone conan-center-index and apply Bolt's patch
 cci_home=${CONAN_HOME-~/.conan2}/conan-center-index
@@ -54,12 +54,12 @@ done
 
 if ! conan remote list | grep -q 'bolt-cci-local'; then
     conan remote add -t local-recipes-index bolt-cci-local "${cci_home}"
-fi 
+fi
 
 # Move conancenter to the end of the list
 if conan remote list | grep -q 'conancenter'; then
     conan remote remove conancenter
     conan remote add conancenter https://center2.conan.io
 else
-    conan remote add conancenter https://center2.conan.io 
+    conan remote add conancenter https://center2.conan.io
 fi

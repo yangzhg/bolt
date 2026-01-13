@@ -25,7 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-add_library(bolt_dwio_arrow_parquet_writer Writer.cpp ArrowDataBufferSink.cpp)
+add_library(bolt_dwio_arrow_parquet_writer ArrowDataBufferSink.cpp Writer.cpp)
 
 find_package(Snappy CONFIG REQUIRED)
 
@@ -37,4 +37,5 @@ target_link_libraries(
   bolt_arrow_bridge
   arrow::arrow
   Snappy::snappy
-  ${FMT})
+  ${FMT}
+)

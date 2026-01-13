@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_test_util ScopedTestTime.cpp TestValue.cpp)
 target_link_libraries(bolt_test_util PUBLIC bolt_exception)
 

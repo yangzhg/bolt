@@ -26,7 +26,7 @@ body:
     attributes:
       value: |
         > **Critical Check:**
-        > Performance reports are valid **ONLY** for `Release` or `RelWithDebInfo` builds. 
+        > Performance reports are valid **ONLY** for `Release` or `RelWithDebInfo` builds.
         > Please do not report performance issues on `Debug` builds.
 
   - type: dropdown

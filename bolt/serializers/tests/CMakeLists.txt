@@ -26,9 +26,9 @@
 # --------------------------------------------------------------------------
 
 add_executable(
-  bolt_serializer_test
-  PrestoOutputStreamListenerTest.cpp PrestoSerializerTest.cpp
-  UnsafeRowSerializerTest.cpp CompactRowSerializerTest.cpp)
+  bolt_serializer_test CompactRowSerializerTest.cpp PrestoOutputStreamListenerTest.cpp
+                       PrestoSerializerTest.cpp UnsafeRowSerializerTest.cpp
+)
 
 add_test(bolt_serializer_test bolt_serializer_test)
 
@@ -41,7 +41,8 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   gflags::gflags
-  glog::glog)
+  glog::glog
+)
 
 add_executable(bolt_serializer_benchmark SerializerBenchmark.cpp)
 
@@ -53,4 +54,5 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   gflags::gflags
-  glog::glog)
+  glog::glog
+)

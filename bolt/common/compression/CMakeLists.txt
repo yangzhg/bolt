@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
 endif()
@@ -34,4 +33,5 @@ add_library(bolt_common_compression Compression.cpp LzoDecompressor.cpp)
 target_link_libraries(
   bolt_common_compression
   PUBLIC ${FOLLY_WITH_DEPENDENCIES}
-  PRIVATE bolt_exception)
+  PRIVATE bolt_exception
+)

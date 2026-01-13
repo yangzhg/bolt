@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
 elseif(${BOLT_BUILD_TEST_UTILS})

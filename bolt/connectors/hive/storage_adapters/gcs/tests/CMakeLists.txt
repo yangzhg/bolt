@@ -25,8 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_executable(bolt_gcsfile_test GCSUtilTest.cpp GCSFileSystemTest.cpp)
+add_executable(bolt_gcsfile_test GCSFileSystemTest.cpp GCSUtilTest.cpp)
 add_test(bolt_gcsfile_test bolt_gcsfile_test)
 target_link_libraries(
   bolt_gcsfile_test
@@ -38,4 +37,5 @@ target_link_libraries(
   bolt_exec
   GTest::gmock
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

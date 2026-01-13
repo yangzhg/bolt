@@ -55,7 +55,7 @@ body:
     attributes:
       label: Reproduction Steps
       description: |
-        Steps to reproduce the behavior. 
+        Steps to reproduce the behavior.
         **Crucial**: Please provide a Minimal Reproducible Example (SQL query, Unit Test, or Data Schema).
       placeholder: |
         1. Create table with schema...
@@ -92,7 +92,7 @@ body:
     attributes:
       label: Logs / Stack Trace
       description: |
-        Paste the crash logs or GDB backtrace here. 
+        Paste the crash logs or GDB backtrace here.
         **Please DO NOT share screenshots of logs.**
       render: shell
     validations:

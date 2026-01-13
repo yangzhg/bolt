@@ -25,12 +25,11 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_subdirectory(specialforms)
 add_library(
   bolt_functions_spark_impl
-  ArraySliceSum.cpp
   ArrayGetFunction.cpp
+  ArraySliceSum.cpp
   ArraySort.cpp
   Comparisons.cpp
   DecimalArithmetic.cpp
@@ -38,9 +37,10 @@ add_library(
   DecimalVectorFunctions.cpp
   Hash.cpp
   ICURegexFunctions.cpp
+  In.cpp
+  InputFileName.cpp
   JsonToMap.cpp
   JsonTuple.cpp
-  In.cpp
   LeastGreatest.cpp
   MakeTimestamp.cpp
   Map.cpp
@@ -51,7 +51,7 @@ add_library(
   SplitFunctions.cpp
   String.cpp
   UnscaledValueFunction.cpp
-  InputFileName.cpp)
+)
 
 target_link_libraries(
   bolt_functions_spark_impl
@@ -62,10 +62,10 @@ target_link_libraries(
   bolt_process
   Folly::folly
   ${ICU_LIBRARIES}
-  simdjson::simdjson)
+  simdjson::simdjson
+)
 
-set_property(TARGET bolt_functions_spark_impl PROPERTY JOB_POOL_COMPILE
-                                                   high_memory_pool)
+set_property(TARGET bolt_functions_spark_impl PROPERTY JOB_POOL_COMPILE high_memory_pool)
 
 add_subdirectory(window)
 

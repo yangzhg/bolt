@@ -25,16 +25,14 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
+add_library(bolt_expression_test_utility ArgumentTypeFuzzer.cpp FuzzerToolkit.cpp)
 
-add_library(bolt_expression_test_utility ArgumentTypeFuzzer.cpp
-                                          FuzzerToolkit.cpp)
-
-target_link_libraries(bolt_expression_test_utility bolt_type
-                      bolt_expression_functions GTest::gtest)
+target_link_libraries(bolt_expression_test_utility bolt_type bolt_expression_functions GTest::gtest)
 
 add_library(
-  bolt_expression_fuzzer ArgumentTypeFuzzer.cpp ExpressionFuzzer.cpp
-                          FuzzerRunner.cpp ExpressionFuzzerVerifier.cpp)
+  bolt_expression_fuzzer ArgumentTypeFuzzer.cpp ExpressionFuzzer.cpp ExpressionFuzzerVerifier.cpp
+                         FuzzerRunner.cpp
+)
 
 target_link_libraries(
   bolt_expression_fuzzer
@@ -43,29 +41,36 @@ target_link_libraries(
   bolt_vector_fuzzer
   bolt_vector_test_lib
   bolt_function_registry
-  bolt_expression_test_utility)
+  bolt_expression_test_utility
+)
 
 add_executable(bolt_expression_fuzzer_test ExpressionFuzzerTest.cpp)
 
-target_link_libraries(bolt_expression_fuzzer_test bolt_expression_fuzzer
-                      bolt_functions_prestosql GTest::gtest GTest::gtest_main)
+target_link_libraries(
+  bolt_expression_fuzzer_test bolt_expression_fuzzer bolt_functions_prestosql GTest::gtest
+  GTest::gtest_main
+)
 
 add_executable(spark_expression_fuzzer_test SparkExpressionFuzzerTest.cpp)
 
-target_link_libraries(spark_expression_fuzzer_test bolt_expression_fuzzer
-                      bolt_functions_spark GTest::gtest GTest::gtest_main)
-
+target_link_libraries(
+  spark_expression_fuzzer_test bolt_expression_fuzzer bolt_functions_spark GTest::gtest
+  GTest::gtest_main
+)
 
 find_package(Arrow CONFIG REQUIRED)
 add_executable(spark_double_to_decimal_fuzzer_test DoubleToDecimalFuzzerTest.cpp)
 
-target_link_libraries(spark_double_to_decimal_fuzzer_test
-                      bolt_type
-                      bolt_process
-                      bolt_functions_spark
-                      arrow::arrow
-                      folly::folly
-                      GTest::gtest GTest::gtest_main)
+target_link_libraries(
+  spark_double_to_decimal_fuzzer_test
+  bolt_type
+  bolt_process
+  bolt_functions_spark
+  arrow::arrow
+  folly::folly
+  GTest::gtest
+  GTest::gtest_main
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

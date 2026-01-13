@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_is_null_functions IsNull.cpp)
 
 target_link_libraries(bolt_is_null_functions bolt_expression)
@@ -36,42 +35,44 @@ target_link_libraries(bolt_functions_util bolt_vector bolt_common_base)
 
 find_package(simdjson CONFIG REQUIRED)
 
-set(GK_TYPES "int8_t" "int16_t" "int32_t" "int64_t" "int128_t" "float" "double" "Timestamp")
-specialize_template(
-  GK_GENERATED_FILES
-  GreenwaldKhanna.cpp.in
-  ${GK_TYPES}
+set(GK_TYPES
+    "int8_t"
+    "int16_t"
+    "int32_t"
+    "int64_t"
+    "int128_t"
+    "float"
+    "double"
+    "Timestamp"
 )
+specialize_template(GK_GENERATED_FILES GreenwaldKhanna.cpp.in ${GK_TYPES})
 
 set(KLL_TYPES "int8_t" "int16_t" "int32_t" "int64_t" "float" "double")
-specialize_template(
-  KLL_GENERATED_FILES
-  KllSketch.cpp.in
-  ${KLL_TYPES}
-)
+specialize_template(KLL_GENERATED_FILES KllSketch.cpp.in ${KLL_TYPES})
 
 add_library(
   bolt_functions_lib
+  ${GK_GENERATED_FILES}
+  ${KLL_GENERATED_FILES}
   ArrayShuffle.cpp
+  ArraySort.cpp
   CheckDuplicateKeys.cpp
+  CheckNestedNulls.cpp
   DateTimeFormatter.cpp
   DateTimeFormatterBuilder.cpp
-  ${KLL_GENERATED_FILES}
-  ArraySort.cpp
   KllSketch.cpp
-  ${GK_GENERATED_FILES}
   MapConcat.cpp
-  MapUpdate.cpp
   MapFromEntries.cpp
+  MapUpdate.cpp
   Re2Functions.cpp
   Repeat.cpp
   SimpleComparisonMatcher.cpp
-  StringEncodingUtils.cpp
-  SubscriptUtil.cpp
-  CheckNestedNulls.cpp
-  TimeUtils.cpp
   Size.cpp
-  StringUtil.cpp)
+  StringEncodingUtils.cpp
+  StringUtil.cpp
+  SubscriptUtil.cpp
+  TimeUtils.cpp
+)
 
 target_link_libraries(
   bolt_functions_lib

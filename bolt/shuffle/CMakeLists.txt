@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 if(BOLT_ENABLE_SPARK_COMPATIBLE)
-    add_subdirectory(sparksql)
+  add_subdirectory(sparksql)
 endif()

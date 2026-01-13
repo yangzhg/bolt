@@ -27,21 +27,22 @@
 
 add_executable(
   bolt_type_test
-  StringViewTest.cpp
-  TypeTest.cpp
+  BigDecimalTest.cpp
+  ConversionsTest.cpp
   DecimalTest.cpp
-  FilterTest.cpp
-  FloatingPointFiltersTest.cpp
   FilterSerDeTest.cpp
+  FilterTest.cpp
+  FloatingDecimalTest.cpp
+  FloatingPointFiltersTest.cpp
   FloatingPointUtilTest.cpp
   HugeIntTest.cpp
+  StringViewTest.cpp
   SubfieldTest.cpp
   TimestampConversionTest.cpp
-  VariantTest.cpp
   TimestampTest.cpp
-  BigDecimalTest.cpp
-  FloatingDecimalTest.cpp
-  ConversionsTest.cpp)
+  TypeTest.cpp
+  VariantTest.cpp
+)
 
 add_test(bolt_type_test bolt_type_test)
 
@@ -54,7 +55,8 @@ target_link_libraries(
   GTest::gtest_main
   GTest::gmock
   gflags::gflags
-  glog::glog)
+  glog::glog
+)
 
 add_executable(bolt_filter_benchmark FilterBenchmark.cpp)
 
@@ -67,10 +69,10 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   gflags::gflags
-  glog::glog)
+  glog::glog
+)
 
-add_executable(bolt_negated_values_filter_benchmark
-               NegatedValuesFilterBenchmark.cpp)
+add_executable(bolt_negated_values_filter_benchmark NegatedValuesFilterBenchmark.cpp)
 
 target_link_libraries(
   bolt_negated_values_filter_benchmark
@@ -81,10 +83,10 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   gflags::gflags
-  glog::glog)
+  glog::glog
+)
 
-add_executable(bolt_negated_bytes_values_benchmark
-               NegatedBytesValuesBenchmark.cpp)
+add_executable(bolt_negated_bytes_values_benchmark NegatedBytesValuesBenchmark.cpp)
 
 target_link_libraries(
   bolt_negated_bytes_values_benchmark
@@ -95,10 +97,10 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   gflags::gflags
-  glog::glog)
+  glog::glog
+)
 
-add_executable(bolt_negated_bigint_range_benchmark
-               NegatedBigintRangeBenchmark.cpp)
+add_executable(bolt_negated_bigint_range_benchmark NegatedBigintRangeBenchmark.cpp)
 
 target_link_libraries(
   bolt_negated_bigint_range_benchmark
@@ -109,10 +111,10 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   gflags::gflags
-  glog::glog)
+  glog::glog
+)
 
-add_executable(bolt_negated_bytes_range_benchmark
-               NegatedBytesRangeBenchmark.cpp)
+add_executable(bolt_negated_bytes_range_benchmark NegatedBytesRangeBenchmark.cpp)
 
 target_link_libraries(
   bolt_negated_bytes_range_benchmark
@@ -123,7 +125,8 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   gflags::gflags
-  glog::glog)
+  glog::glog
+)
 
 add_executable(bolt_string_view_benchmark StringViewBenchmark.cpp)
 
@@ -136,4 +139,5 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   gflags::gflags
-  glog::glog)
+  glog::glog
+)

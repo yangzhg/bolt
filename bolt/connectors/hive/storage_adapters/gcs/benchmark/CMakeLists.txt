@@ -25,9 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_executable(bolt_gcsread_benchmark GCSReadBenchmark.cpp
-                                       GCSReadBenchmarkMain.cpp)
+add_executable(bolt_gcsread_benchmark GCSReadBenchmark.cpp GCSReadBenchmarkMain.cpp)
 
 target_link_libraries(
   bolt_gcsread_benchmark
@@ -38,4 +36,5 @@ target_link_libraries(
   ${FMT}
   ${FOLLY_WITH_DEPENDENCIES}
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

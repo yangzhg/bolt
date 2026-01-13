@@ -36,15 +36,24 @@ add_library(
   SelectivityVector.cpp
   SequenceVector.cpp
   SimpleVector.cpp
-  VectorSaver.cpp
+  VariantToVector.cpp
   VectorEncoding.cpp
   VectorPool.cpp
   VectorPrinter.cpp
+  VectorSaver.cpp
   VectorStream.cpp
-  VariantToVector.cpp)
+)
 
-target_link_libraries(bolt_vector bolt_encode bolt_memory bolt_time
-                      bolt_type_base bolt_buffer ${ICU_LIBRARIES} re2::re2)
+target_link_libraries(
+  bolt_vector
+  bolt_encode
+  bolt_memory
+  bolt_time
+  bolt_type_base
+  bolt_buffer
+  ${ICU_LIBRARIES}
+  re2::re2
+)
 
 add_subdirectory(arrow)
 add_subdirectory(fuzzer)

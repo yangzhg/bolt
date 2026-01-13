@@ -25,9 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_executable(bolt_abfs_test AbfsFileSystemTest.cpp AbfsUtilTest.cpp
-                               AzuriteServer.cpp)
+add_executable(bolt_abfs_test AbfsFileSystemTest.cpp AbfsUtilTest.cpp AzuriteServer.cpp)
 add_test(bolt_abfs_test bolt_abfs_test)
 target_link_libraries(
   bolt_abfs_test
@@ -40,4 +38,5 @@ target_link_libraries(
           bolt_exec
           GTest::gtest
           GTest::gtest_main
-          Azure::azure-storage-blobs)
+          Azure::azure-storage-blobs
+)

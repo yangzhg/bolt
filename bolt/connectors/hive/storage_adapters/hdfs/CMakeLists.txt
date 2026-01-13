@@ -25,23 +25,17 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_hdfs RegisterHdfsFileSystem.cpp)
-  target_link_libraries(bolt_hdfs 
-    ${FOLLY_WITH_DEPENDENCIES} 
-    bolt_dwio_common
-    xsimd::xsimd
-    date::date)
+target_link_libraries(bolt_hdfs ${FOLLY_WITH_DEPENDENCIES} bolt_dwio_common xsimd::xsimd date::date)
 
 if(BOLT_USE_ARROW_HDFS)
-  target_sources(bolt_hdfs PRIVATE HdfsFileSystem.cpp HdfsReadFile.cpp
-                                    HdfsWriteFile.cpp StorageException.cpp)
+  target_sources(
+    bolt_hdfs PRIVATE HdfsFileSystem.cpp HdfsReadFile.cpp HdfsWriteFile.cpp StorageException.cpp
+  )
 
   find_package(Arrow CONFIG REQUIRED)
-  target_link_libraries(bolt_hdfs 
-    bolt_external_hdfs
-    arrow::arrow)
-  
+  target_link_libraries(bolt_hdfs bolt_external_hdfs arrow::arrow)
+
   if(${BOLT_BUILD_TESTING})
     add_subdirectory(tests)
   endif()

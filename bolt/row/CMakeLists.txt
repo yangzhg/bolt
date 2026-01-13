@@ -25,8 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_library(bolt_row_fast UnsafeRowFast.cpp CompactRow.cpp)
+add_library(bolt_row_fast CompactRow.cpp UnsafeRowFast.cpp)
 
 target_link_libraries(bolt_row_fast PUBLIC bolt_vector)
 

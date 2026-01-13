@@ -36,35 +36,31 @@ target_link_libraries(
   bolt_vector_test_lib
   bolt_vector_fuzzer
   Folly::folly
-  ${FOLLY_BENCHMARK})
+  ${FOLLY_BENCHMARK}
+)
 
 add_executable(bolt_sparksql_benchmarks_compare CompareBenchmark.cpp)
-target_link_libraries(bolt_sparksql_benchmarks_compare bolt_functions_spark
-                      bolt_benchmark_builder bolt_vector_test_lib)
+target_link_libraries(
+  bolt_sparksql_benchmarks_compare bolt_functions_spark bolt_benchmark_builder bolt_vector_test_lib
+)
 
 add_executable(bolt_sparksql_benchmarks_regex RegexBenchmark.cpp)
 target_link_libraries(
-  bolt_sparksql_benchmarks_regex
-  Folly::folly 
-  ${FOLLY_BENCHMARK}
-  bolt_process
-  re2::re2
-  ${ICU_LIBRARIES})
-  
+  bolt_sparksql_benchmarks_regex Folly::folly ${FOLLY_BENCHMARK} bolt_process re2::re2
+  ${ICU_LIBRARIES}
+)
+
 add_executable(bolt_sparksql_benchmarks_split Split.cpp)
-target_link_libraries(bolt_sparksql_benchmarks_split bolt_functions_spark
-                      bolt_benchmark_builder bolt_vector_test_lib)
+target_link_libraries(
+  bolt_sparksql_benchmarks_split bolt_functions_spark bolt_benchmark_builder bolt_vector_test_lib
+)
 
 add_executable(bolt_sparksql_benchmarks_hash HiveHashBenchmark.cpp)
 target_link_libraries(
-  bolt_sparksql_benchmarks_hash
-  bolt_functions_spark
-  bolt_benchmark_builder
-  bolt_vector_test_lib)
+  bolt_sparksql_benchmarks_hash bolt_functions_spark bolt_benchmark_builder bolt_vector_test_lib
+)
 
-  add_executable(bolt_sparksql_benchmarks_map MapBenchmark.cpp)
-  target_link_libraries(
-    bolt_sparksql_benchmarks_map
-    bolt_functions_spark
-    bolt_benchmark_builder
-    bolt_vector_test_lib)
+add_executable(bolt_sparksql_benchmarks_map MapBenchmark.cpp)
+target_link_libraries(
+  bolt_sparksql_benchmarks_map bolt_functions_spark bolt_benchmark_builder bolt_vector_test_lib
+)

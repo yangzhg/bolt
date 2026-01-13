@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,17 +14,15 @@
 # limitations under the License.
 
 add_executable(
-  bolt_functions_flink_test
-  FlinkSqlDataTimeFunctionsTest.cpp
-  JsonFunctionsTest.cpp
-  RandTest.cpp
-  StringFunctionsTest.cpp
+  bolt_functions_flink_test FlinkSqlDataTimeFunctionsTest.cpp JsonFunctionsTest.cpp RandTest.cpp
+                            StringFunctionsTest.cpp
 )
 
 add_test(
   NAME bolt_functions_flink_test
   COMMAND bolt_functions_flink_test
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_link_libraries(
   bolt_functions_flink_test
@@ -35,4 +33,5 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   GTest::gmock
-  gflags::gflags)
+  gflags::gflags
+)

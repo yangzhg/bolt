@@ -86,8 +86,8 @@ class ReduceAggBenchmark : public HiveConnectorTestBase {
 
   void TestBody() override {}
 
-  static inline const std::string kSum = "sum(i16)";
-  static inline const std::string kReduceAgg =
+  static constexpr const char* kSum = "sum(i16)";
+  static constexpr const char* kReduceAgg =
       "reduce_agg(i16, 0, (x, y) -> (x + y), (x, y) -> (x + y))";
 
   void verify() {

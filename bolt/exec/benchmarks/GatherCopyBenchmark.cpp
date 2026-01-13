@@ -17,6 +17,7 @@
 #include <fmt/format.h>
 #include <folly/Benchmark.h>
 #include <folly/init/Init.h>
+#include <random>
 #include <string>
 
 #include "bolt/exec/OperatorUtils.h"
@@ -40,7 +41,8 @@ struct GatherCopyParam {
             BaseVector::create<RowVector>(ROW({type}), batchSize, pool.get())) {
     indices.resize(batchSize);
     std::iota(indices.begin(), indices.end(), 0);
-    std::random_shuffle(indices.begin(), indices.end());
+    std::mt19937 g(42);
+    std::shuffle(indices.begin(), indices.end(), g);
     VectorFuzzer::Options opts;
     opts.vectorSize = batchSize;
     opts.nullRatio = 0;

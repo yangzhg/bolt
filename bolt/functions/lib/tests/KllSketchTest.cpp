@@ -405,7 +405,8 @@ TEST_F(KllSketchTest, memoryUsage) {
   for (int i = 1024; i < 8192; ++i) {
     kll.insert(i);
   }
-  EXPECT_LE(alloc.retainedSize() - alloc.freeSpace(), 32840);
+  // For Linux it‘s 32840, but on Darwin it's 32860.
+  EXPECT_LE(alloc.retainedSize() - alloc.freeSpace(), 32900);
 }
 
 } // namespace

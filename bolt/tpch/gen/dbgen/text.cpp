@@ -188,8 +188,8 @@ static int txt_sentence(char* dest, seed_t* seed) {
   pick_str(&grammar, seed, syntax);
   cptr = syntax;
 
-next_token
-    : /* I hate goto's, but can't seem to have parent and child use strtok() */
+next_token: /* I hate goto's, but can't seem to have parent and child use
+               strtok() */
   while (*cptr && *cptr == ' ')
     cptr++;
   if (*cptr == '\0')

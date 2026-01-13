@@ -29,6 +29,8 @@ class DeleteionFileReaderTest : public parquet::ParquetTestBase {
   static void SetUpTestCase() {
     memory::MemoryManager::testingSetInstance({});
     common::testutil::TestValue::enable();
+    bytedance::bolt::connector::hive::CheckHiveConnectorFactoryInit<
+        bytedance::bolt::connector::hive::HiveConnectorFactory>();
     auto hiveConnector =
         connector::getConnectorFactory(
             connector::hive::HiveConnectorFactory::kHiveConnectorName)

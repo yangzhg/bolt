@@ -73,8 +73,7 @@ class MetaRowContainerSorter<DataArgs, TypeKindHolder<Kinds...>> {
     MetaRowComparator<Kinds...> cmp_(
         sortArg_.container, sortArg_.sortKeysIndices, sortArg_.compareFlags);
 
-    sortArg_.sortAlgo.template sort(
-        sortArg_.rows.begin(), sortArg_.rows.end(), cmp_);
+    sortArg_.sortAlgo.sort(sortArg_.rows.begin(), sortArg_.rows.end(), cmp_);
   }
 
  private:

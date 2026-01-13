@@ -124,7 +124,7 @@ class EvalCtx {
   /// vector_size_t and return void.
   template <typename Callable>
   void applyToSelectedNoThrow(const SelectivityVector& rows, Callable func) {
-    rows.template applyToSelected([&](auto row) INLINE_LAMBDA {
+    rows.applyToSelected([&](auto row) INLINE_LAMBDA {
       try {
         func(row);
       } catch (const BoltException& e) {

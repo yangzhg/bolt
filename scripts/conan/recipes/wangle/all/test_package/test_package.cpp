@@ -64,8 +64,7 @@ int main() {
   sslConfig.clientCAFile = "ca.pem";
   serverConfig.sslContextConfigs.push_back(sslConfig);
 
-  serverConfig.fizzConfig.supportedVersions = {
-      fizz::ProtocolVersion::tls_1_3};
+  serverConfig.fizzConfig.supportedVersions = {fizz::ProtocolVersion::tls_1_3};
   serverConfig.fizzConfig.supportedCiphers = {
       {fizz::CipherSuite::TLS_AES_128_GCM_SHA256}};
   serverConfig.fizzConfig.supportedGroups = {fizz::NamedGroup::x25519};

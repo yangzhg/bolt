@@ -656,6 +656,7 @@ struct GetTimestampFunction {
       const arg_type<Varchar>* /*input*/,
       const arg_type<Varchar>* format) {
     auto sessionTimezoneName = config.sessionTimezone();
+    this->timeParserPolicy = parseTimePolicy(config.timeParserPolicy());
     if (!sessionTimezoneName.empty()) {
       sessionTimezoneId_ = tz::getTimeZoneID(sessionTimezoneName);
     }
@@ -701,6 +702,8 @@ struct GetTimestampFunction {
     result = dateTimeResult.value().timestamp;
     return true;
   }
+
+  TimePolicy timeParserPolicy{TimePolicy::CORRECTED};
 
  private:
   int16_t getTimezoneId(const DateTimeResultValue& result) const {

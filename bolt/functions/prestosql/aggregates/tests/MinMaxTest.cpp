@@ -952,6 +952,24 @@ TEST_F(MinMaxNTest, incrementalWindow) {
 }
 
 TEST_F(MinMaxTest, rowBasedSpillAgg) {
+#ifdef __APPLE__
+  struct rlimit rl;
+  if (getrlimit(RLIMIT_NOFILE, &rl) != 0) {
+    GTEST_SKIP() << "Cannot get file descriptor limit";
+  }
+
+  // Required file descriptor limit.
+  constexpr rlim_t kRequired = 10000;
+
+  if (rl.rlim_cur < kRequired) {
+    rl.rlim_cur = std::min(rl.rlim_max, (rlim_t)65536);
+    if (setrlimit(RLIMIT_NOFILE, &rl) != 0 || rl.rlim_cur < kRequired) {
+      GTEST_SKIP() << "Insufficient file descriptor limit on macOS"
+                   << " (have: " << rl.rlim_cur << ", need: " << kRequired
+                   << ")";
+    }
+  }
+#endif
   std::vector<RowVectorPtr> vectors;
   for (int i = 0; i < 100; ++i) {
     size_t rowCount = 10000;

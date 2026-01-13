@@ -35,14 +35,20 @@ target_link_libraries(
   PRIVATE fmt::fmt gflags::gflags glog::glog)
 
 find_package(libbacktrace REQUIRED CONFIG)
-find_package(libunwind REQUIRED CONFIG)
+
 
 add_library(bolt_process_crash_report CrashReport.cpp)
 
 target_link_libraries(
   bolt_process_crash_report
-  libbacktrace::libbacktrace
-  libunwind::libunwind)
+  libbacktrace::libbacktrace)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "FreeBSD")
+  find_package(libunwind REQUIRED CONFIG)
+  target_link_libraries(
+    bolt_process_crash_report
+    libunwind::libunwind)
+endif()
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

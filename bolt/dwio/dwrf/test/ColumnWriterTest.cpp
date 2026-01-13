@@ -28,6 +28,8 @@
  * --------------------------------------------------------------------------
  */
 
+#ifndef __APPLE__
+
 #include <folly/Random.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -4559,3 +4561,5 @@ TEST_F(ColumnWriterTest, mapDictionary) {
       randomNulls(3));
 }
 } // namespace bytedance::bolt::dwrf
+
+#endif

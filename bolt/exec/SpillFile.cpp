@@ -389,7 +389,7 @@ uint64_t SpillWriter::write(
   static constexpr size_t kBufferSize =
       (1ULL << 20) - AlignedBuffer::kPaddedSize; // 1MB
   BufferPtr buffer = AlignedBuffer::allocate<char>(kBufferSize, pool_, 0);
-  size_t writeBufferLimit = std::min(kBufferSize, buffer->capacity());
+  size_t writeBufferLimit = std::min<size_t>(kBufferSize, buffer->capacity());
   BufferPtr compressBuffer = nullptr;
   char* current = nullptr;
   const char *bufferStart = nullptr, *bufferEnd = nullptr;
@@ -465,7 +465,7 @@ uint64_t SpillWriter::write(
           file->write(std::string_view(writeBuffer, writeBufferSize));
     }
     // keep writeBufferLimit to kBufferSize to avoid OOM in sort merge
-    writeBufferLimit = std::min(kBufferSize, buffer->capacity());
+    writeBufferLimit = std::min<size_t>(kBufferSize, buffer->capacity());
     // there is no flush here, so add compress time as flush time
     updateWriteStats(writtenBytes, compressTimeUs, writeTimeUs);
     updateAndCheckSpillLimitCb_(writtenBytes);

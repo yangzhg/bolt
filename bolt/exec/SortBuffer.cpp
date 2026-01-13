@@ -160,7 +160,7 @@ void SortBuffer::noMoreInput() {
       }
     }
     if (cmp_) {
-      sorter_.template sort(sortedRows_.begin(), sortedRows_.end(), cmp_);
+      sorter_.sort(sortedRows_.begin(), sortedRows_.end(), cmp_);
     } else {
 #endif
 
@@ -172,7 +172,7 @@ void SortBuffer::noMoreInput() {
           data_->keyIndices(),
           sortCompareFlags_);
 #else
-    sorter_.template sort(
+    sorter_.sort(
         sortedRows_.begin(),
         sortedRows_.end(),
         [this](const char* leftRow, const char* rightRow) {

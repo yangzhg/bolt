@@ -137,9 +137,8 @@ arrow::Status BoltShuffleWriterV2::splitExtremelyLargeBatch(
   int32_t offset = 0;
   do {
     auto length = std::min(splitedBatchSize, numRows);
-    batches_.push_back(
-        std::move(std::dynamic_pointer_cast<bytedance::bolt::RowVector>(
-            rv->slice(offset, length))));
+    batches_.push_back(std::dynamic_pointer_cast<bytedance::bolt::RowVector>(
+        rv->slice(offset, length)));
     LOG(INFO) << __FUNCTION__
               << ": splitExtremelyLargeBatch offset = " << offset
               << ", numRows = " << length;

@@ -794,8 +794,12 @@ class MemoryPoolImpl : public MemoryPool {
   uint64_t shrink(uint64_t targetBytes = 0) override;
 
   FOLLY_ALWAYS_INLINE bool jemallocEnabled() {
+#ifdef __APPLE__
+    return false;
+#else
     return rallocx != nullptr &&
         allocator_->kind() == MemoryAllocator::Kind::kMalloc;
+#endif
   }
 
  protected:
@@ -1191,7 +1195,7 @@ class AlignedStlAllocator {
   using value_type = T;
   template <class Other>
   struct rebind {
-    using other = AlignedStlAllocator<Other, adjustedAlignment>;
+    using other = AlignedStlAllocator<Other, Alignment>;
   };
   MemoryPool& pool;
 

@@ -48,6 +48,7 @@ for patch_file in "${CUR_DIR}/conan/patches"/*.patch; do
         echo "✅ $patch_name has been applied to conan-center-index@${conan_center_commit_id} successfully"
     else
         echo "❌ Failed to apply $patch_name" >&2
+        exit 1
     fi
 done
 
@@ -59,4 +60,6 @@ fi
 if conan remote list | grep -q 'conancenter'; then
     conan remote remove conancenter
     conan remote add conancenter https://center2.conan.io
+else
+    conan remote add conancenter https://center2.conan.io 
 fi

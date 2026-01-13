@@ -72,7 +72,7 @@ struct LongDecimalWithOverflowState {
    * Total size = sizeOf(count) + sizeOf(overflow) + sizeOf(sum)
    *            = 8 + 8 + 16 = 32.
    */
-  inline static size_t serializedSize() {
+  static constexpr size_t serializedSize() {
     return sizeof(int64_t) * 4;
   }
 
@@ -158,7 +158,7 @@ class DecimalAggregate : public exec::Aggregate {
         int64_t overflow = 0;
         int128_t totalSum{0};
         auto value = decodedRaw_.valueAt<TInputType>(0);
-        rows.template applyToSelected([&](vector_size_t i) {
+        rows.applyToSelected([&](vector_size_t i) {
           updateNonNullValue(group, TResultType(value));
         });
       }

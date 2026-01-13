@@ -15,7 +15,6 @@
  */
 
 #include "bolt/type/FloatingDecimal.h"
-#include <bits/stdint-intn.h>
 #include <boost/multiprecision/detail/default_ops.hpp>
 #include <common/base/Exceptions.h>
 #include <fmt/core.h>

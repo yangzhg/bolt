@@ -134,7 +134,7 @@ class AggregationFuzzerBase {
   };
 
  protected:
-  static inline const std::string kHiveConnectorId = "test-hive";
+  static constexpr const char* kHiveConnectorId = "test-hive";
 
   struct Stats {
     // Names of functions that were tested.

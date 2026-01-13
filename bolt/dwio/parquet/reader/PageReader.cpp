@@ -38,6 +38,7 @@
 #include "bolt/dwio/parquet/reader/Decompression.h"
 #include "bolt/dwio/parquet/reader/NestedStructureDecoder.h"
 #include "bolt/dwio/parquet/reader/PageReader.h"
+#include "bolt/dwio/parquet/thrift/FmtParquetFormatters.h"
 #include "bolt/dwio/parquet/thrift/ThriftTransport.h"
 #include "bolt/vector/FlatVector.h"
 namespace bytedance::bolt::parquet {
@@ -709,7 +710,7 @@ void PageReader::preloadRepDefs() {
       do {
         while (pageStart_ < chunkSize_ && ++pageCnt <= pageCntPerBatch) {
           if (pageCnt == 1) {
-            auto guessLeftPageCnt = std::min(
+            auto guessLeftPageCnt = std::min<uint64_t>(
                 pageCntPerBatch, (chunkSize_ - pageStart_) / avgPageLen + 1);
             preloadedRepDefs_.emplace_back(raw_vector<char>(&pool_));
             preloadedRepDefs_.back().reserve(avgPageLen * guessLeftPageCnt);
@@ -995,6 +996,7 @@ void PageReader::makeDecoder() {
       break;
     default:
       BOLT_UNSUPPORTED("Encoding not supported yet: {}", encoding_);
+      break;
   }
 }
 

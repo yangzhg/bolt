@@ -41,7 +41,7 @@ class BoltRowBasedSortShuffleWriter final : public BoltShuffleWriter {
   arrow::Status split(bytedance::bolt::RowVectorPtr rv, int64_t memLimit)
       override;
 
-  arrow::Status stop();
+  arrow::Status stop() override;
 
   arrow::Status reclaimFixedSize(int64_t size, int64_t* actual) override;
 

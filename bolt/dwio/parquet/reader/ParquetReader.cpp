@@ -12,8 +12,9 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * --------------------------------------------------------------------------
+ */
+
+/* --------------------------------------------------------------------------
  * Copyright (c) ByteDance Ltd. and/or its affiliates.
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -38,8 +39,10 @@
 #include "bolt/dwio/parquet/reader/ParquetFooterCache.h"
 #include "bolt/dwio/parquet/reader/SchemaHelper.h"
 #include "bolt/dwio/parquet/reader/StructColumnReader.h"
+#include "bolt/dwio/parquet/thrift/FmtParquetFormatters.h"
 #include "bolt/dwio/parquet/thrift/ThriftTransport.h"
 #include "bolt/dwio/parquet/thrift/codegen/parquet_types.h"
+
 namespace bytedance::bolt::parquet {
 
 /// Metadata and options for reading Parquet.
@@ -265,10 +268,6 @@ void ReaderBase::initializeSchema() {
   fileMetaData_->schema[0].repetition_type =
       thrift::FieldRepetitionType::REQUIRED;
 
-  BOLT_CHECK_EQ(
-      fileMetaData_->schema[0].repetition_type,
-      thrift::FieldRepetitionType::REQUIRED,
-      "Invalid Parquet schema: root element must be REQUIRED");
   BOLT_CHECK_GT(
       fileMetaData_->schema[0].num_children,
       0,

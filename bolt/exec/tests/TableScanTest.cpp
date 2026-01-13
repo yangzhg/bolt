@@ -1655,6 +1655,10 @@ TEST_F(TableScanTest, splitDoubleRead) {
 }
 
 TEST_F(TableScanTest, multipleSplits) {
+#ifdef __APPLE__
+  GTEST_SKIP()
+      << "Skipping test, number of open file descriptors is too low in macOS";
+#endif
   std::vector<int32_t> numPrefetchSplits = {0, 2};
   for (const auto& numPrefetchSplit : numPrefetchSplits) {
     SCOPED_TRACE(fmt::format("numPrefetchSplit {}", numPrefetchSplit));

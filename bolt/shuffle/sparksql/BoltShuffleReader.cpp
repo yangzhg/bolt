@@ -821,9 +821,9 @@ BoltShuffleReader::BoltShuffleReader(
     bytedance::bolt::memory::MemoryPool* boltPool)
     : factory_(std::make_unique<BoltColumnarBatchDeserializerFactory>(
           schema,
-          std::move(createArrowIpcCodec(
+          createArrowIpcCodec(
               options.compressionType,
-              getCodecBackend(options.codecBackend))),
+              getCodecBackend(options.codecBackend)),
           bytedance::bolt::asRowType(fromBoltTypeToArrowSchema(schema)),
           options.batchSize,
           options.shuffleBatchByteSize,

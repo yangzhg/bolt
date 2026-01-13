@@ -180,7 +180,7 @@ TEST_F(SortWindowTest, multiType) {
            size, [](auto row) { return row * 2; }, nullEvery(5)),
        .partitionKey = makeFlatVector<int32_t>(
            size,
-           [](auto row) { return (row % 100) * (row % 7); }, //大范围分区
+           [](auto row) { return (row % 100) * (row % 7); }, // 大范围分区
            nullEvery(11)),
        .sortKey = makeFlatVector<float>(
            size,

@@ -122,7 +122,6 @@ class DepLoader:
             "bolt_fuzzer_connector",
             "bolt_hive_config",
             "bolt_functions_string",
-            "bolt_flag_definitions",
         ]
         for edge in graph.get_edge_list():
             src_name, dst_name = self.get_edge(graph, edge)
@@ -291,7 +290,7 @@ class BoltConan(ConanFile):
             self.requires("aws-sdk-cpp/1.11.692", transitive_headers=True, transitive_libs=True)
             self.requires("aws-c-common/0.12.5", force=True)
         self.requires("simdjson/3.12.3", transitive_headers=True)
-        self.requires("sonic-cpp/1.0.2", transitive_headers=True, transitive_libs=True)
+        self.requires("sonic-cpp/1.0.2-fix", transitive_headers=True, transitive_libs=True)
         self.requires(
             f"protobuf/{protobuf_version}",
             transitive_headers=True,
@@ -299,7 +298,7 @@ class BoltConan(ConanFile):
             force=True,
         )
         self.requires("re2/20230301", transitive_headers=True, transitive_libs=True)
-        self.requires("gtest/1.10.0")
+        self.requires("gtest/1.17.0")
         self.requires(
             "icu/74.2", headers=True, transitive_headers=True, transitive_libs=True
         )
@@ -351,11 +350,12 @@ class BoltConan(ConanFile):
             self.requires(
                 "libtorch/2.6.0", options={"torch": self.options.enable_torch}
             )
-        if self.options.get_safe("enable_perf"):
-            self.requires("gperftools/2.16")
-            self.requires("libunwind/1.8.0", override=True)
-        else:
-            self.requires("libunwind/1.8.0")
+        if self.settings.os in ["Linux", "FreeBSD"]:
+            if self.options.get_safe("enable_perf"):
+                self.requires("gperftools/2.16")
+                self.requires("libunwind/1.8.0", override=True)
+            else:
+                self.requires("libunwind/1.8.0")
         self.requires("utf8proc/2.11.0", transitive_headers=True, transitive_libs=True)
         self.requires("date/3.0.4-bolt", transitive_headers=True, transitive_libs=True)
         self.requires("libbacktrace/cci.20210118")
@@ -366,11 +366,11 @@ class BoltConan(ConanFile):
         self.tool_requires("m4/1.4.19")
         self.tool_requires("bison/3.8.2")
         self.tool_requires("flex/2.6.4")
-        self.tool_requires("cmake/3.31.3")
+        self.tool_requires("cmake/3.31.10", override=True)
         self.tool_requires("ninja/1.11.1")
         self.tool_requires("protobuf/<host_version>")
         self.tool_requires("thrift/<host_version>")
-        if self.options.get_safe("enable_test"):
+        if self.options.get_safe("enable_test") and self.settings.os in ["Linux", "FreeBSD"]:
             self.test_requires("jemalloc/5.3.0")
 
     def layout(self):

@@ -75,8 +75,8 @@ int main() {
   fizz::server::ClockSkewTolerance skew{
       std::chrono::milliseconds(-1000), std::chrono::milliseconds(1000)};
   serverContext.setEarlyDataSettings(true, skew, replayCache);
-  auto negotiated = serverContext.negotiateAlpn(
-      {"h2", "http/1.1"}, folly::none);
+  auto negotiated =
+      serverContext.negotiateAlpn({"h2", "http/1.1"}, folly::none);
 
   auto cached = clientContext.getPsk("identity");
   clientContext.removePsk("identity");
@@ -84,8 +84,8 @@ int main() {
   bool ok = cached.hasValue();
   ok = ok && !clientContext.getPsk("identity").hasValue();
   ok = ok && negotiated && *negotiated == "h2";
-  ok = ok && clientContext.getSendKeyShare() ==
-      fizz::client::SendKeyShare::Always;
+  ok = ok &&
+      clientContext.getSendKeyShare() == fizz::client::SendKeyShare::Always;
   ok = ok && serverContext.getAcceptEarlyData(fizz::ProtocolVersion::tls_1_3);
   return ok ? 0 : 1;
 }

@@ -15,6 +15,7 @@
  */
 
 #include "bolt/common/memory/MemoryAllocationListener.h"
+#include "bolt/common/base/FmtBoltFormatters.h"
 #include "bolt/common/base/SuccinctPrinter.h"
 #include "bolt/common/memory/MemoryPool.h"
 

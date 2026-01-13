@@ -31,6 +31,7 @@ class PartialUpdateEngine : public PaimonEngine {
           std::shared_ptr<connector::paimon::AggregateFunction>> aggregations,
       const std::vector<std::pair<std::vector<int>, std::vector<int>>>&
           sequenceGroups);
+  virtual ~PartialUpdateEngine() = default;
 
   vector_size_t add(PaimonRowIteratorPtr iterator) override;
 

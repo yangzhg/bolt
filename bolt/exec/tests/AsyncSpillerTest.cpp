@@ -471,6 +471,10 @@ class SpillerTest : public exec::test::RowContainerTestBase {
       uint64_t maxSpillRunRows = 0,
       bool rowBasedSpill = false,
       bool spillUringEnabled = false) {
+#ifdef __APPLE__
+    spillUringEnabled = false;
+    LOG(INFO) << "Spilling Uring is not supported on macOS.";
+#endif
     static const std::string kBadSpillDirPath = "/bad/path";
     common::GetSpillDirectoryPathCB badSpillDirCb =
         [&]() -> const std::string& { return kBadSpillDirPath; };
@@ -1650,3 +1654,5 @@ BOLT_INSTANTIATE_TEST_SUITE_P(
     SpillerTest,
     MaxSpillRunTest,
     testing::ValuesIn(MaxSpillRunTest::getTestParams()));
+
+GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(RowBasedSpillTest);

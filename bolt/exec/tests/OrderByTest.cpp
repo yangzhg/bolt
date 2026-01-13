@@ -1438,7 +1438,7 @@ DEBUG_ONLY_TEST_P(OrderByTest, reclaimDuringAllocation) {
   }
 
   const std::vector<bool> enableSpillings = {false, true};
-  for (const auto enableSpilling : enableSpillings) {
+  for (bool enableSpilling : enableSpillings) {
     SCOPED_TRACE(fmt::format("enableSpilling {}", enableSpilling));
     auto tempDirectory = exec::test::TempDirectoryPath::create();
     auto queryCtx = core::QueryCtx::create(executor_.get());
@@ -1572,7 +1572,7 @@ DEBUG_ONLY_TEST_P(OrderByTest, reclaimDuringOutputProcessing) {
   }
 
   const std::vector<bool> enableSpillings = {false, true};
-  for (const auto enableSpilling : enableSpillings) {
+  for (bool enableSpilling : enableSpillings) {
     SCOPED_TRACE(fmt::format("enableSpilling {}", enableSpilling));
     auto tempDirectory = exec::test::TempDirectoryPath::create();
     auto queryCtx = core::QueryCtx::create(executor_.get());

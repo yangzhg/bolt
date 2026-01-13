@@ -36,7 +36,7 @@ add_executable(bolt_vector_selectivity_vector_benchmark
                SelectivityVectorBenchmark.cpp)
 
 target_link_libraries(bolt_vector_selectivity_vector_benchmark bolt_vector
-                      Folly::folly ${FOLLY_BENCHMARK} -Wl,--whole-archive bolt_process -Wl,--no-whole-archive )
+                      Folly::folly ${FOLLY_BENCHMARK} bolt_process)
 
 add_executable(copy_benchmark CopyBenchmark.cpp)
 

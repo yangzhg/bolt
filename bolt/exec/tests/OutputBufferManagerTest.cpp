@@ -1295,7 +1295,7 @@ TEST_F(OutputBufferManagerTest, getDataOnFailedTask) {
 
 TEST_P(AllOutputBufferManagerTest, multiFetchers) {
   const std::vector<bool> earlyTerminations = {false, true};
-  for (const auto earlyTermination : earlyTerminations) {
+  for (bool earlyTermination : earlyTerminations) {
     SCOPED_TRACE(fmt::format("earlyTermination {}", earlyTermination));
 
     const vector_size_t size = 10;

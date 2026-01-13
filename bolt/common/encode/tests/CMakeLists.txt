@@ -28,4 +28,4 @@
 
 add_executable(bolt_common_coding_test Base64Test.cpp CodingTest.cpp)
 add_test(bolt_common_coding_test bolt_common_coding_test)
-target_link_libraries(bolt_common_coding_test PRIVATE ${FOLLY_WITH_DEPENDENCIES} -Wl,--whole-archive bolt_process bolt_encode -Wl,--no-whole-archive GTest::gtest GTest::gtest_main)
+target_link_libraries(bolt_common_coding_test PRIVATE ${FOLLY_WITH_DEPENDENCIES} bolt_process bolt_encode GTest::gtest GTest::gtest_main)

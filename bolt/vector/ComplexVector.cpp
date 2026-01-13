@@ -687,7 +687,7 @@ void RowVector::resize(vector_size_t newSize, bool setNotNull) {
       // to skip uniqueness check since effectively we are just changing
       // the length.
       if (newSize > oldSize) {
-        BOLT_CHECK(child.unique(), "Resizing shared child vector");
+        BOLT_CHECK(child.use_count() == 1, "Resizing shared child vector");
         child->resize(newSize, setNotNull);
       }
     }
@@ -1211,7 +1211,7 @@ void MapVector::canonicalize(
   // threads. The keys and values do not have to be uniquely owned
   // since they are not mutated but rather transposed, which is
   // non-destructive.
-  BOLT_CHECK(map.unique());
+  BOLT_CHECK_EQ(map.use_count(), 1);
   canonicalize(map.get(), useStableSort);
 }
 std::vector<vector_size_t> MapVector::sortedKeyIndices(
@@ -1398,7 +1398,7 @@ void CompositeRowVector::resize(vector_size_t newSize, bool setNotNull) {
         BOLT_FAIL("Resize on a lazy vector is not allowed");
       }
       if (newSize > oldSize) {
-        BOLT_CHECK(child.unique(), "Resizing shared child vector");
+        BOLT_CHECK_EQ(child.use_count(), 1, "Resizing shared child vector");
         child->resize(newSize, setNotNull);
       }
     });

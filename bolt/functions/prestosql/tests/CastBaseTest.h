@@ -341,7 +341,7 @@ class CastBaseTest : public FunctionBaseTest {
       const std::vector<std::optional<TFrom>>& input,
       const std::string& expectedErrorMessage) {
 #ifdef SPARK_COMPATIBLE
-    bool expectException = fromType->name() == "JSON";
+    bool expectException = std::string_view(fromType->name()) == "JSON";
 #else
     bool expectException = true;
 #endif

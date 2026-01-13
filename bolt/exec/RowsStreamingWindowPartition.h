@@ -64,7 +64,7 @@ class RowsStreamingWindowPartition : public WindowPartitionImpl<R> {
     return partialPartitionFinished_;
   }
 
-  char* getLastRow() {
+  char* getLastRow() override {
     BOLT_CHECK_GT(sortedRows_.size(), 0);
     return sortedRows_.back();
   }

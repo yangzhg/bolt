@@ -111,8 +111,10 @@ class MemoryArbitrator {
     std::unordered_map<std::string, std::string> extraConfigs{};
 
     std::string toString() const {
+      std::map<std::string, std::string> sortedConfigs(
+          extraConfigs.begin(), extraConfigs.end());
       std::stringstream ss;
-      for (const auto& extraConfig : extraConfigs) {
+      for (const auto& extraConfig : sortedConfigs) {
         ss << extraConfig.first << "=" << extraConfig.second << ";";
       }
       return fmt::format(

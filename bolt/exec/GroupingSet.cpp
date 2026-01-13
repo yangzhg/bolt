@@ -1409,8 +1409,8 @@ void GroupingSet::outputUniqueGroupsInRowFormat(
         resultOffset,
         rowSizeVec,
         totalUniqueRowSize);
-    estimateUniqueBytesPerRow =
-        std::max(compositeResult->estimateRowSize(), estimateUniqueBytesPerRow);
+    estimateUniqueBytesPerRow = std::max<size_t>(
+        compositeResult->estimateRowSize(), estimateUniqueBytesPerRow);
   }
 }
 
@@ -2032,7 +2032,7 @@ namespace {
 // Recursive resize all children.
 
 void recursiveResizeChildren(VectorPtr& vector, vector_size_t newSize) {
-  BOLT_CHECK(vector.unique());
+  BOLT_CHECK(vector.use_count() == 1);
   if (vector->typeKind() == TypeKind::ROW) {
     auto rowVector = vector->asUnchecked<RowVector>();
     for (auto& child : rowVector->children()) {
@@ -2048,7 +2048,7 @@ void GroupingSet::toIntermediate(
     const RowVectorPtr& input,
     RowVectorPtr& result) {
   BOLT_CHECK(abandonedPartialAggregation_);
-  BOLT_CHECK(result.unique());
+  BOLT_CHECK(result.use_count() == 1);
   if (!isRawInput_) {
     result = input;
     return;

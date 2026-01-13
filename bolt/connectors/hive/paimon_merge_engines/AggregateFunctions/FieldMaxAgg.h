@@ -30,6 +30,7 @@ class FieldMaxAgg : public AggregateFunction {
   FieldMaxAgg() {
     value_ = nullptr;
   }
+  virtual ~FieldMaxAgg() = default;
 
   void add(VectorPtr value, size_t rowIndex) override {
     if (!value_) {

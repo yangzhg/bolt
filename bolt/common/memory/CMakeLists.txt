@@ -62,7 +62,9 @@ add_library(
   sparksql/NativeMemoryManagerFactory.cpp
   sparksql/MemoryUsageStats.cpp)
 
-include_directories(${JEMALLOC_INCLUDE_DIRS})
+if (NOT APPLE)
+  include_directories(${JEMALLOC_INCLUDE_DIRS})
+endif()
 
 find_package(GTest CONFIG REQUIRED)
 find_package(Arrow CONFIG REQUIRED)

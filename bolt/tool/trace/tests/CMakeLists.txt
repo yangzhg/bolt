@@ -25,21 +25,22 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(
   bolt_tool_trace_test
   AggregationReplayerTest.cpp
   FilterProjectReplayerTest.cpp
   HashJoinReplayerTest.cpp
   PartitionedOutputReplayerTest.cpp
-  TraceFileToolTest.cpp
   TableScanReplayerTest.cpp
-  TableWriterReplayerTest.cpp)
+  TableWriterReplayerTest.cpp
+  TraceFileToolTest.cpp
+)
 
 add_test(
   NAME bolt_tool_trace_test
   COMMAND bolt_tool_trace_test
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 set_tests_properties(bolt_tool_trace_test PROPERTIES TIMEOUT 3000)
 
@@ -56,4 +57,5 @@ target_link_libraries(
   Folly::folly
   gflags::gflags
   glog::glog
-  fmt::fmt)
+  fmt::fmt
+)

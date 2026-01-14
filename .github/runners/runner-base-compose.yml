@@ -9,4 +9,3 @@ services:
       - host.docker.internal:host-gateway
     volumes:
       - ${HOST_DATA_DIR}/conan-server-data:/data/conan-server-data:r
-

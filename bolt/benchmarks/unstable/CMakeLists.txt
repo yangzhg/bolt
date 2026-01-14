@@ -25,7 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-set(bolt_benchmark_deps
+set(BOLT_BENCHMARK_DEPS
     bolt_type
     bolt_vector
     bolt_vector_fuzzer
@@ -37,19 +37,20 @@ set(bolt_benchmark_deps
     ${FOLLY_BENCHMARK}
     ${DOUBLE_CONVERSION}
     gflags::gflags
-    glog::glog)
+    glog::glog
+)
 
 add_executable(bolt_memory_alloc_benchmark MemoryAllocationBenchmark.cpp)
 add_executable(bolt_memory_alloc_contiguous_benchmark AllocateContiguousBenchmark.cpp)
 add_executable(bolt_memory_realloc_benchmark ReallocateBenchmark.cpp)
 add_executable(bolt_memory_realloc_contiguous_benchmark ReallocateContiguousBenchmark.cpp)
 
-target_link_libraries(bolt_memory_alloc_benchmark ${bolt_benchmark_deps}
-                      bolt_memory pthread)
-target_link_libraries(bolt_memory_alloc_contiguous_benchmark ${bolt_benchmark_deps}
-                      bolt_memory pthread)
-target_link_libraries(bolt_memory_realloc_benchmark ${bolt_benchmark_deps}
-                      bolt_memory pthread)
+target_link_libraries(bolt_memory_alloc_benchmark ${BOLT_BENCHMARK_DEPS} bolt_memory pthread)
+target_link_libraries(
+  bolt_memory_alloc_contiguous_benchmark ${BOLT_BENCHMARK_DEPS} bolt_memory pthread
+)
+target_link_libraries(bolt_memory_realloc_benchmark ${BOLT_BENCHMARK_DEPS} bolt_memory pthread)
 
-target_link_libraries(bolt_memory_realloc_contiguous_benchmark ${bolt_benchmark_deps}
-                      bolt_memory pthread)
+target_link_libraries(
+  bolt_memory_realloc_contiguous_benchmark ${BOLT_BENCHMARK_DEPS} bolt_memory pthread
+)

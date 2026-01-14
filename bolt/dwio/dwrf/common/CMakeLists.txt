@@ -26,7 +26,7 @@
 # --------------------------------------------------------------------------
 
 find_package(zstd CONFIG REQUIRED)
-#message(FATAL_ERROR "${zstd_FOUND} ${zstd_INCLUDE_DIRS}")
+# message(FATAL_ERROR "${zstd_FOUND} ${zstd_INCLUDE_DIRS}")
 add_library(
   bolt_dwio_dwrf_common
   ByteRLE.cpp
@@ -41,7 +41,8 @@ add_library(
   RLEv2.cpp
   Statistics.cpp
   wrap/dwrf-proto-wrapper.cpp
-  wrap/orc-proto-wrapper.cpp)
+  wrap/orc-proto-wrapper.cpp
+)
 
 add_dependencies(bolt_dwio_dwrf_common bolt_dwio_dwrf_proto)
 
@@ -54,4 +55,5 @@ target_link_libraries(
   bolt_dwio_dwrf_proto
   bolt_caching
   Snappy::snappy
-  zstd::libzstd_static)
+  zstd::libzstd_static
+)

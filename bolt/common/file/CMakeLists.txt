@@ -25,16 +25,10 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 # for generated headers
 include_directories(.)
 
-add_library(
-  bolt_file
-  File.cpp
-  FileInputStream.cpp
-  FileSystems.cpp
-  Utils.cpp)
+add_library(bolt_file File.cpp FileInputStream.cpp FileSystems.cpp Utils.cpp)
 if(KERNEL_SUPPORTS_IO_URING)
   message(STATUS "Add liburing dependency")
 
@@ -42,12 +36,14 @@ if(KERNEL_SUPPORTS_IO_URING)
   target_link_libraries(
     bolt_file
     PUBLIC bolt_exception Folly::folly liburing::liburing
-    PRIVATE bolt_buffer bolt_common_base fmt::fmt glog::glog)
+    PRIVATE bolt_buffer bolt_common_base fmt::fmt glog::glog
+  )
 else()
   target_link_libraries(
     bolt_file
     PUBLIC bolt_exception Folly::folly
-    PRIVATE bolt_buffer bolt_common_base fmt::fmt glog::glog)
+    PRIVATE bolt_buffer bolt_common_base fmt::fmt glog::glog
+  )
 endif()
 
 if(${BOLT_BUILD_TESTING} OR ${BOLT_BUILD_TEST_UTILS})

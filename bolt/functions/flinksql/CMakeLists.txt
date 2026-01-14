@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_library(
-  bolt_functions_flink_impl
-  JsonFunctions.cpp)
+add_library(bolt_functions_flink_impl JsonFunctions.cpp)
 
 target_link_libraries(
   bolt_functions_flink_impl
@@ -27,10 +25,10 @@ target_link_libraries(
   Folly::folly
   date::date
   ${ICU_LIBRARIES}
-  simdjson::simdjson)
+  simdjson::simdjson
+)
 
-set_property(TARGET bolt_functions_flink_impl PROPERTY JOB_POOL_COMPILE
-high_memory_pool)
+set_property(TARGET bolt_functions_flink_impl PROPERTY JOB_POOL_COMPILE high_memory_pool)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

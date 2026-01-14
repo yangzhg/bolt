@@ -25,8 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_executable(bolt_row_test UnsafeRowFuzzTest.cpp CompactRowTest.cpp)
+add_executable(bolt_row_test CompactRowTest.cpp UnsafeRowFuzzTest.cpp)
 
 add_test(bolt_row_test bolt_row_test)
 
@@ -39,4 +38,5 @@ target_link_libraries(
           bolt_vector_test_lib
           Folly::folly
           GTest::gtest
-          GTest::gtest_main)
+          GTest::gtest_main
+)

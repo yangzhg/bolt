@@ -476,7 +476,7 @@ class BoltConan(ConanFile):
 
     def generate(self):
         build_env = VirtualBuildEnv(self)
-        build_env.generate()
+        build_env.generate(scope="build")
 
         run_env = VirtualRunEnv(self)
         run_env.generate()
@@ -641,11 +641,6 @@ class BoltConan(ConanFile):
 
         tc.generate()
 
-        # In case there are dependencies listed on build_requirements,
-        # VirtualBuildEnv should be used
-        tc = VirtualBuildEnv(self)
-        tc.generate(scope="build")
-
         # generate conantoolchain.cmake & xxx-config.cmake
         CMakeDeps(self).generate()
 
@@ -666,7 +661,7 @@ class BoltConan(ConanFile):
 
     def generate_dep_graph(self):
         dot_file = os.path.join(self.build_folder, "graph", "bolt.dot")
-        graphviz_command = f"cmake -S {self.source_folder} -B {self.build_folder} --graphviz={dot_file}"
+        graphviz_command =  f"cmake --graphviz={dot_file} ."
         self.run(graphviz_command, cwd=self.build_folder)
         # generate dependency graph
         dep_path = os.path.join(self.build_folder, "deps")

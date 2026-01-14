@@ -25,8 +25,9 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(file_utils_test FileUtilsTests.cpp)
 add_test(file_utils_test file_utils_test)
-target_link_libraries(file_utils_test bolt_dwio_catalog_fbhive
-                      bolt_dwio_common_exception GTest::gtest GTest::gtest_main GTest::gmock)
+target_link_libraries(
+  file_utils_test bolt_dwio_catalog_fbhive bolt_dwio_common_exception GTest::gtest
+  GTest::gtest_main GTest::gmock
+)

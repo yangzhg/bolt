@@ -25,18 +25,20 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(
   bolt_functions_spark_specialforms
   AtLeastNNonNulls.cpp
   DecimalRound.cpp
   FromJson.cpp
+  FromJson.cpp
+  GetArrayStructFields.cpp
+  GetStructField.cpp
+  JsonSplit.cpp
   MakeDecimal.cpp
   SparkCastExpr.cpp
-  JsonSplit.cpp
-  FromJson.cpp
-  GetStructField.cpp
-  GetArrayStructFields.cpp)
+)
 find_package(sonic-cpp CONFIG REQUIRED)
-target_link_libraries(bolt_functions_spark_specialforms fmt::fmt
-                      bolt_functions_json bolt_expression simdjson::simdjson sonic-cpp::sonic-cpp)
+target_link_libraries(
+  bolt_functions_spark_specialforms fmt::fmt bolt_functions_json bolt_expression simdjson::simdjson
+  sonic-cpp::sonic-cpp
+)

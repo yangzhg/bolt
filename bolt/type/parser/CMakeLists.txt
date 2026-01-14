@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
 endif()
@@ -33,16 +32,19 @@ endif()
 bison_target(
   TypeParser TypeParser.yy ${CMAKE_CURRENT_BINARY_DIR}/TypeParser.yy.cc
   DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/TypeParser.yy.h
-  COMPILE_FLAGS "-Werror -Wno-deprecated")
+  COMPILE_FLAGS "-Werror -Wno-deprecated"
+)
 
 flex_target(
   TypeParserScanner TypeParser.ll ${CMAKE_CURRENT_BINARY_DIR}/Scanner.cpp
-  COMPILE_FLAGS "-Cf --prefix=bolttp")
+  COMPILE_FLAGS "-Cf --prefix=bolttp"
+)
 
 add_flex_bison_dependency(TypeParserScanner TypeParser)
 
 include_directories(${PROJECT_BINARY_DIR})
 include_directories(${FLEX_INCLUDE_DIRS})
-add_library(bolt_type_parser ${BISON_TypeParser_OUTPUTS}
-                              ${FLEX_TypeParserScanner_OUTPUTS} ParserUtil.cpp)
+add_library(
+  bolt_type_parser ${BISON_TypeParser_OUTPUTS} ${FLEX_TypeParserScanner_OUTPUTS} ParserUtil.cpp
+)
 target_link_libraries(bolt_type_parser bolt_common_base)

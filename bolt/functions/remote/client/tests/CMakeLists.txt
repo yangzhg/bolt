@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(bolt_functions_remote_client_test RemoteFunctionTest.cpp)
 
 add_test(bolt_functions_remote_client_test bolt_functions_remote_client_test)
@@ -41,4 +40,5 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   GTest::gmock
-  gflags::gflags)
+  gflags::gflags
+)

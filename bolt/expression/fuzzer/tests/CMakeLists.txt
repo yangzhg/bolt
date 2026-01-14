@@ -25,8 +25,9 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_executable(bolt_expression_fuzzer_unit_test ArgumentTypeFuzzerTest.cpp ExpressionFuzzerUnitTest.cpp)
+add_executable(
+  bolt_expression_fuzzer_unit_test ArgumentTypeFuzzerTest.cpp ExpressionFuzzerUnitTest.cpp
+)
 
 target_link_libraries(
   bolt_expression_fuzzer_unit_test
@@ -35,4 +36,5 @@ target_link_libraries(
   bolt_core
   bolt_expression
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

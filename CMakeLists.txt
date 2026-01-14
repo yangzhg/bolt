@@ -31,17 +31,18 @@ cmake_minimum_required(VERSION 3.14)
 cmake_policy(SET CMP0077 NEW)
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
-
 if(POLICY CMP0177)
-    cmake_policy(SET CMP0177 NEW)
-    set(CMAKE_POLICY_WARNING_CMP0177 OFF)
+  cmake_policy(SET CMP0177 NEW)
+  set(CMAKE_POLICY_WARNING_CMP0177 OFF)
 endif()
 
-set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS ON CACHE BOOL "Suppress developer warnings")
+set(CMAKE_SUPPRESS_DEVELOPER_WARNINGS
+    ON
+    CACHE BOOL "Suppress developer warnings"
+)
 
-# Sets new behavior for CMP0135, which controls how timestamps are extracted
-# when using ExternalProject_Add():
-# https://cmake.org/cmake/help/latest/policy/CMP0135.html
+# Sets new behavior for CMP0135, which controls how timestamps are extracted when using
+# ExternalProject_Add(): https://cmake.org/cmake/help/latest/policy/CMP0135.html
 if(POLICY CMP0135)
   cmake_policy(SET CMP0135 NEW)
   set(CMAKE_POLICY_DEFAULT_CMP0135 NEW)
@@ -50,16 +51,14 @@ endif()
 # set the project name
 project(bolt CXX)
 
-# If we are in an active conda env disable search in system paths and add env to
-# prefix path if(DEFINED ENV{CONDA_PREFIX}) if(NOT DEFINED
-# ENV{BOLT_DEPENDENCY_SOURCE} OR "$ENV{BOLT_DEPENDENCY_SOURCE}" STREQUAL
-# "CONDA") message(STATUS "Using Conda environment: $ENV{CONDA_PREFIX}")
-# set(CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH FALSE) list(APPEND
+# If we are in an active conda env disable search in system paths and add env to prefix path
+# if(DEFINED ENV{CONDA_PREFIX}) if(NOT DEFINED ENV{BOLT_DEPENDENCY_SOURCE} OR
+# "$ENV{BOLT_DEPENDENCY_SOURCE}" STREQUAL "CONDA") message(STATUS "Using Conda environment:
+# $ENV{CONDA_PREFIX}") set(CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH FALSE) list(APPEND
 # CMAKE_PREFIX_PATH "$ENV{CONDA_PREFIX}") # Override in case it was set to CONDA
-# set(ENV{BOLT_DEPENDENCY_SOURCE} AUTO) elseif(DEFINED
-# ENV{BOLT_DEPENDENCY_SOURCE} AND NOT "$ENV{BOLT_DEPENDENCY_SOURCE}" STREQUAL
-# "CONDA") message(STATUS "Overriding Conda environment: $ENV{CONDA_PREFIX}")
-# endif() endif()
+# set(ENV{BOLT_DEPENDENCY_SOURCE} AUTO) elseif(DEFINED ENV{BOLT_DEPENDENCY_SOURCE} AND NOT
+# "$ENV{BOLT_DEPENDENCY_SOURCE}" STREQUAL "CONDA") message(STATUS "Overriding Conda environment:
+# $ENV{CONDA_PREFIX}") endif() endif()
 
 # set platforms
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64|x86_64")
@@ -91,7 +90,8 @@ elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
 endif()
 
 list(PREPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake"
-     "${PROJECT_SOURCE_DIR}/CMake/third-party")
+     "${PROJECT_SOURCE_DIR}/CMake/third-party"
+)
 
 # Include our ThirdPartyToolchain dependencies macros include(ResolveDependency)
 
@@ -99,27 +99,25 @@ list(PREPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/CMake"
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 # Add all options below
-option(
-  BOLT_BUILD_TESTING
-  "Enable Bolt tests. This will enable all other build options automatically."
-  ON)
-option(
-  BOLT_BUILD_MINIMAL
-  "Build a minimal set of components only. This will override other build options."
-  OFF)
-option(BOLT_BUILD_TESTING_WITH_COVERAGE
-       "Enable Bolt tests with coverage statistics." OFF)
-# option() always creates a BOOL variable so we have to use a normal cache
-# variable with STRING type for this option.
+option(BOLT_BUILD_TESTING
+       "Enable Bolt tests. This will enable all other build options automatically." ON
+)
+option(BOLT_BUILD_MINIMAL
+       "Build a minimal set of components only. This will override other build options." OFF
+)
+option(BOLT_BUILD_TESTING_WITH_COVERAGE "Enable Bolt tests with coverage statistics." OFF)
+# option() always creates a BOOL variable so we have to use a normal cache variable with STRING type
+# for this option.
 #
 # * AUTO: Try SYSTEM first fall back to BUNDLED.
 # * SYSTEM: Use installed dependencies via find_package.
 # * BUNDLED: Build dependencies from source. set(BOLT_DEPENDENCY_SOURCE
-#   ${BOLT_DEPENDENCY_SOURCE_DEFAULT} CACHE STRING "Default source for all
-#   dependencies with source builds enabled: AUTO SYSTEM BUNDLED." )
+#   ${BOLT_DEPENDENCY_SOURCE_DEFAULT} CACHE STRING "Default source for all dependencies with source
+#   builds enabled: AUTO SYSTEM BUNDLED." )
 
-option(BOLT_ENABLE_ADDRESS_SANITIZER
-       "Enable Address Sanitizer to check for memory related errors" OFF)
+option(BOLT_ENABLE_ADDRESS_SANITIZER "Enable Address Sanitizer to check for memory related errors"
+       OFF
+)
 option(BOLT_ENABLE_DUCKDB "Build duckDB to enable differential testing." ON)
 option(BOLT_ENABLE_EXEC "Build exec." ON)
 option(BOLT_ENABLE_AGGREGATES "Build aggregates." ON)
@@ -131,13 +129,12 @@ option(BOLT_ENABLE_SPARK_FUNCTIONS "Build Spark SQL functions." ON)
 option(BOLT_ENABLE_FLINK_FUNCTIONS "Build Flink SQL functions." ON)
 option(BOLT_ENABLE_SKETCH_FUNCTIONS "Build DataSketches SQL functions." OFF)
 option(BOLT_ENABLE_COLOCATE_FUNCTIONS "Enable colocate function support" OFF)
-option(ALLOW_REMOTE_COLOCATE_REGISTER
-       "Enable remote colocate function register" OFF)
+option(ALLOW_REMOTE_COLOCATE_REGISTER "Enable remote colocate function register" OFF)
 option(BOLT_ENABLE_EXPRESSION "Build expression." ON)
 option(BOLT_ENABLE_PARSE "Build parser used for unit tests." ON)
 option(BOLT_ENABLE_EXAMPLES
-       "Build examples. This will enable BOLT_ENABLE_EXPRESSION automatically."
-       OFF)
+       "Build examples. This will enable BOLT_ENABLE_EXPRESSION automatically." OFF
+)
 option(BOLT_ENABLE_SUBSTRAIT "Build Substrait-to-Bolt converter." OFF)
 option(BOLT_ENABLE_BENCHMARKS "Enable Bolt top level benchmarks." OFF)
 option(BOLT_ENABLE_BENCHMARKS_BASIC "Enable Bolt basic benchmarks." OFF)
@@ -157,10 +154,12 @@ option(BOLT_ENABLE_CCACHE "Use ccache if installed." ON)
 option(BOLT_BUILD_TEST_UTILS "Builds Bolt test utilities" OFF)
 option(BOLT_BUILD_PYTHON_PACKAGE "Builds Bolt Python bindings" OFF)
 option(BOLT_BUILD_BENCHMARKS "Builds Bolt benchmarks" OFF)
-option(
-  BOLT_ENABLE_INT64_BUILD_PARTITION_BOUND
-  "make buildPartitionBounds_ a vector int64 instead of int32 to avoid integer overflow when the hashtable has billions of records"
-  OFF)
+
+# make buildPartitionBounds_ a vector int64 instead of int32 to avoid integer overflow when the
+# hashtable has billions of records
+option(BOLT_ENABLE_INT64_BUILD_PARTITION_BOUND
+       "Avoid integer overflow when the hashtable has billions of records" OFF
+)
 
 option(BOLT_ENABLE_SPARK_COMPATIBLE "Enable spark compatible setting" OFF)
 option(ENABLE_EXCEPTION_TRACE "Enable exception trace" ON)
@@ -169,8 +168,11 @@ option(BOLT_ENABLE_TBB "Enable oneTBB support" OFF)
 option(BOLT_ENABLE_TORCH "Enable torch script support" OFF)
 option(BOLT_ENABLE_CUDF "Enable cuDF support" OFF)
 
-if (BOLT_ENABLE_SPARK_COMPATIBLE)
-  set(SPARK_VERSION "3.5" CACHE STRING "Spark major.minor version")
+if(BOLT_ENABLE_SPARK_COMPATIBLE)
+  set(SPARK_VERSION
+      "3.5"
+      CACHE STRING "Spark major.minor version"
+  )
   set_property(CACHE SPARK_VERSION PROPERTY STRINGS "3.2" "3.3" "3.4" "3.5")
   message("Build with SPARK_VERSION ${SPARK_VERSION}")
   string(REPLACE "." "_" SPARK_VERSION_ENUM ${SPARK_VERSION})
@@ -179,21 +181,17 @@ else()
   set(BOLT_SPARK_VERSION "UNDEFINED")
 endif()
 
-# Enable address sanitizer, this needs to precede the addition of all targets to
-# be enabled for all subdirectories
+# Enable address sanitizer, this needs to precede the addition of all targets to be enabled for all
+# subdirectories
 if(BOLT_ENABLE_ADDRESS_SANITIZER)
   # To ensure compatibility with folly, we add other sanitizers
-  set(CMAKE_CXX_FLAGS
-      "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
-  set(CMAKE_LINKER_FLAGS
-      "${CMAKE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
+  set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fno-omit-frame-pointer -fsanitize=address")
 endif()
 
-# Explicitly force compilers to generate colored output. Compilers usually do
-# this by default if they detect the output is a terminal, but this assumption
-# is broken if you use ninja.
-option(BOLT_FORCE_COLORED_OUTPUT
-       "Always produce ANSI-colored output (GNU/Clang only)." OFF)
+# Explicitly force compilers to generate colored output. Compilers usually do this by default if
+# they detect the output is a terminal, but this assumption is broken if you use ninja.
+option(BOLT_FORCE_COLORED_OUTPUT "Always produce ANSI-colored output (GNU/Clang only)." OFF)
 
 option(KERNEL_SUPPORTS_IO_URING "IO_URING is supported by Linux kernel" ON)
 
@@ -278,10 +276,8 @@ endif()
 if(BOLT_BUILD_TESTING_WITH_COVERAGE)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --coverage")
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --coverage")
-  add_compile_options(-fprofile-arcs -ftest-coverage
-                      -DGTEST_USE_OWN_TR1_TUPLE=0)
-  set(CMAKE_EXE_LINKER_FLAGS
-      "${CMAKE_EXE_LINKER_FLAGS} -fprofile-arcs -ftest-coverage")
+  add_compile_options(-fprofile-arcs -ftest-coverage -DGTEST_USE_OWN_TR1_TUPLE=0)
+  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fprofile-arcs -ftest-coverage")
   if(NOT OS_MACOSX)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lgcov")
   endif()
@@ -329,7 +325,8 @@ endif()
 
 if(BOLT_ENABLE_CCACHE
    AND NOT CMAKE_C_COMPILER_LAUNCHER
-   AND NOT CMAKE_CXX_COMPILER_LAUNCHER)
+   AND NOT CMAKE_CXX_COMPILER_LAUNCHER
+)
 
   find_program(CCACHE_FOUND ccache)
 
@@ -345,15 +342,15 @@ endif()
 if(${BOLT_FORCE_COLORED_OUTPUT})
   if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     add_compile_options(-fdiagnostics-color=always)
-  elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang"
-         OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+  elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL
+                                                        "AppleClang"
+  )
     add_compile_options(-fcolor-diagnostics)
   endif()
 endif()
 
-# At the moment we prefer static linking but by default cmake looks for shared
-# libs first. This will still fallback to shared libs when static ones are not
-# found
+# At the moment we prefer static linking but by default cmake looks for shared libs first. This will
+# still fallback to shared libs when static ones are not found
 list(INSERT CMAKE_FIND_LIBRARY_SUFFIXES 0 a)
 if(BOLT_ENABLE_S3)
   # Set AWS_ROOT_DIR if you have a custom install location of AWS SDK CPP.
@@ -374,8 +371,7 @@ if(BOLT_ENABLE_GCS)
 endif()
 
 if(BOLT_ENABLE_ABFS)
-  # Set AZURESDK_ROOT_DIR if you have a custom install location of Azure Storage
-  # SDK CPP.
+  # Set AZURESDK_ROOT_DIR if you have a custom install location of Azure Storage SDK CPP.
   if(AZURESDK_ROOT_DIR)
     list(APPEND CMAKE_PREFIX_PATH ${AZURESDK_ROOT_DIR})
   endif()
@@ -387,53 +383,49 @@ endif()
 
 if(BOLT_ENABLE_HDFS)
   add_definitions(-DBOLT_ENABLE_HDFS)
-  if (BOLT_USE_ARROW_HDFS)
+  if(BOLT_USE_ARROW_HDFS)
     find_package(Arrow REQUIRED)
   endif()
 endif()
 
 if(BOLT_ENABLE_PARQUET)
   add_definitions(-DBOLT_ENABLE_PARQUET)
-  # Native Parquet reader requires Apache Thrift and Arrow Parquet writer, which
-  # are included in Arrow.
+  # Native Parquet reader requires Apache Thrift and Arrow Parquet writer, which are included in
+  # Arrow.
   set(BOLT_ENABLE_ARROW ON)
 endif()
 
 if(BOLT_ENABLE_ORC)
   add_definitions(-DBOLT_ENABLE_ORC)
-  # Native Parquet reader requires Apache Thrift and Arrow Parquet writer, which
-  # are included in Arrow.
+  # Native Parquet reader requires Apache Thrift and Arrow Parquet writer, which are included in
+  # Arrow.
   set(BOLT_ENABLE_ARROW ON)
 endif()
 
 if(BOLT_ENABLE_TXT)
   add_definitions(-DBOLT_ENABLE_TXT)
-  # TXT reader requires Apache Arrow CSV reader, which
-  # are included in Arrow.
+  # TXT reader requires Apache Arrow CSV reader, which are included in Arrow.
   set(BOLT_ENABLE_ARROW ON)
 endif()
 
 # if(BOLT_ENABLE_ARROW) find_package(Thrift CONFIG REQUIRED) endif()
-
 
 # define processor variable for conditional compilation
 if(${BOLT_CODEGEN_SUPPORT})
   add_compile_definitions(CODEGEN_ENABLED=1)
 endif()
 
-# make buildPartitionBounds_ a vector int64 instead of int32 to avoid integer
-# overflow
+# make buildPartitionBounds_ a vector int64 instead of int32 to avoid integer overflow
 if(${BOLT_ENABLE_INT64_BUILD_PARTITION_BOUND})
   add_compile_definitions(BOLT_ENABLE_INT64_BUILD_PARTITION_BOUND)
 endif()
 
 # MacOSX enables two-level namespace by default:
-# http://mirror.informatimago.com/next/developer.apple.com/releasenotes/DeveloperTools/TwoLevelNamespaces.html
-# Enables -flat_namespace so type_info can be deudplicated across .so boundaries
+# http://mirror.informatimago.com/next/developer.apple.com/releasenotes/
+# DeveloperTools/TwoLevelNamespaces.html Enables -flat_namespace so type_info can be deudplicated
+# across .so boundaries
 if(APPLE)
-  add_link_options(
-    "-Wl,-flat_namespace,-no_warn_duplicate_libraries"
-    "LINKER:-export_dynamic")
+  add_link_options("-Wl,-flat_namespace,-no_warn_duplicate_libraries" "LINKER:-export_dynamic")
 elseif(UNIX)
   add_link_options("-Wl,-export-dynamic")
 else()
@@ -444,8 +436,7 @@ if(ENABLE_EXCEPTION_TRACE)
   add_link_options("-Wl,-wrap=__cxa_throw")
 endif()
 
-if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm64" AND ${CMAKE_SYSTEM_NAME} MATCHES
-                                                 "Darwin")
+if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "arm64" AND ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
   set(ON_APPLE_M1 True)
 endif()
 
@@ -455,12 +446,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# execute_process(
-#   COMMAND
-#     bash -c
-#     "( source ${CMAKE_CURRENT_SOURCE_DIR}/scripts/setup-helper-functions.sh && echo -n $(get_cxx_flags $ENV{CPU_TARGET}))"
-#   OUTPUT_VARIABLE SCRIPT_CXX_FLAGS
-#   RESULT_VARIABLE COMMAND_STATUS)
+# execute_process( COMMAND bash -c "( source
+# ${CMAKE_CURRENT_SOURCE_DIR}/scripts/setup-helper-functions.sh && echo -n $(get_cxx_flags
+# $ENV{CPU_TARGET}))" OUTPUT_VARIABLE SCRIPT_CXX_FLAGS RESULT_VARIABLE COMMAND_STATUS)
 
 if(COMMAND_STATUS EQUAL "1")
   message(FATAL_ERROR "Unable to determine compiler flags!")
@@ -475,21 +463,20 @@ if(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsigned-char")
 endif()
 
-# Under Ninja, we are able to designate certain targets large enough to require
-# restricted parallelism.
+# Under Ninja, we are able to designate certain targets large enough to require restricted
+# parallelism.
 if("${MAX_HIGH_MEM_JOBS}")
-  set_property(GLOBAL PROPERTY JOB_POOLS
-                               "high_memory_pool=${MAX_HIGH_MEM_JOBS}")
+  set_property(GLOBAL PROPERTY JOB_POOLS "high_memory_pool=${MAX_HIGH_MEM_JOBS}")
 else()
   set_property(GLOBAL PROPERTY JOB_POOLS high_memory_pool=1000)
 endif()
 
 set(MAX_LINK_JOBS
     4
-    CACHE STRING "")
+    CACHE STRING ""
+)
 if("${MAX_LINK_JOBS}")
-  set_property(GLOBAL APPEND PROPERTY JOB_POOLS
-                                      "link_job_pool=${MAX_LINK_JOBS}")
+  set_property(GLOBAL APPEND PROPERTY JOB_POOLS "link_job_pool=${MAX_LINK_JOBS}")
   set(CMAKE_JOB_POOL_LINK link_job_pool)
 endif()
 
@@ -498,7 +485,8 @@ if("${ENABLE_ALL_WARNINGS}")
     set(KNOWN_COMPILER_SPECIFIC_WARNINGS
         "-Wno-range-loop-analysis \
          -Wno-mismatched-tags \
-         -Wno-nullability-completeness")
+         -Wno-nullability-completeness"
+    )
   elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(KNOWN_COMPILER_SPECIFIC_WARNINGS
         "-Wno-implicit-fallthrough \
@@ -515,7 +503,8 @@ if("${ENABLE_ALL_WARNINGS}")
          -Wno-type-limits \
          -Wno-stringop-overflow \
          -Wno-stringop-overread \
-        ")
+        "
+    )
   endif()
 
   set(KNOWN_WARNINGS
@@ -524,7 +513,8 @@ if("${ENABLE_ALL_WARNINGS}")
        -Wno-sign-compare \
        -Wno-ignored-qualifiers \
        -Wno-psabi \
-       ${KNOWN_COMPILER_SPECIFIC_WARNINGS}")
+       ${KNOWN_COMPILER_SPECIFIC_WARNINGS}"
+  )
 
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra ${KNOWN_WARNINGS}")
 endif()
@@ -545,28 +535,25 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(Boost CONFIG REQUIRED)
 
-# Range-v3 will be enable when the codegen code actually lands keeping it here
-# for reference. find_package(range-v3)
+# Range-v3 will be enable when the codegen code actually lands keeping it here for reference.
+# find_package(range-v3)
 
 find_package(gflags CONFIG REQUIRED)
 # set_source(gflags) resolve_dependency(gflags COMPONENTS shared)
 if(NOT TARGET gflags::gflags)
-  # This is a bit convoluted, but we want to be able to use gflags::gflags as a
-  # target even when bolt is built as a subproject which uses
-  # `find_package(gflags)` which does not create a globally imported target that
-  # we can ALIAS.
+  # This is a bit convoluted, but we want to be able to use gflags::gflags as a target even when
+  # bolt is built as a subproject which uses `find_package(gflags)` which does not create a globally
+  # imported target that we can ALIAS.
   add_library(gflags_gflags INTERFACE)
   target_link_libraries(gflags_gflags INTERFACE gflags)
   add_library(gflags::gflags ALIAS gflags_gflags)
 endif()
 
-# if(${gflags_SOURCE} STREQUAL "BUNDLED") # we force glog from source to avoid
-# issues with a system version built # against another gflags version (which is
-# likely) set(glog_SOURCE BUNDLED) else() set(glog_SOURCE SYSTEM) endif()
-# resolve_dependency(glog)
+# if(${gflags_SOURCE} STREQUAL "BUNDLED") # we force glog from source to avoid issues with a system
+# version built # against another gflags version (which is likely) set(glog_SOURCE BUNDLED) else()
+# set(glog_SOURCE SYSTEM) endif() resolve_dependency(glog)
 
-# if(${BOLT_ENABLE_DUCKDB}) set_source(DuckDB) resolve_dependency(DuckDB)
-# endif()
+# if(${BOLT_ENABLE_DUCKDB}) set_source(DuckDB) resolve_dependency(DuckDB) endif()
 
 # set_source(fmt) resolve_dependency(fmt)
 
@@ -606,15 +593,14 @@ find_package(simdjson CONFIG REQUIRED)
 find_package(sonic-cpp CONFIG REQUIRED)
 find_package(folly CONFIG REQUIRED)
 
-# We should just use Folly::folly, all the dependencies should be managed by
-# target Folly::folly But, there is an issue in folly recipe:
-# transitive_headers=True doesn't work in conan 1.x bug? Note: it is not elegant
-# solution, just a workaround. It should be ok in conan 2.x
+# We should just use Folly::folly, all the dependencies should be managed by target Folly::folly
+# But, there is an issue in folly recipe: transitive_headers=True doesn't work in conan 1.x bug?
+# Note: it is not elegant solution, just a workaround. It should be ok in conan 2.x
 set(FOLLY_WITH_DEPENDENCIES Folly::folly fmt::fmt)
 
 if(BOLT_ENABLE_REMOTE_FUNCTIONS)
-  # TODO: Move this to use resolve_dependency(). For some reason, FBThrift
-  # requires clients to explicitly install fizz and wangle.
+  # TODO: Move this to use resolve_dependency(). For some reason, FBThrift requires clients to
+  # explicitly install fizz and wangle.
   find_package(fizz CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)
   find_package(FBThrift CONFIG REQUIRED)
@@ -631,15 +617,13 @@ if(KERNEL_SUPPORTS_IO_URING)
 endif()
 
 if(DEFINED FOLLY_BENCHMARK_STATIC_LIB)
-  set(FOLLY_BENCHMARK ${FOLLY_BENCHMARK_STATIC_LIB} GTest::gtest
-                      GTest::gtest_main)
+  set(FOLLY_BENCHMARK ${FOLLY_BENCHMARK_STATIC_LIB} GTest::gtest GTest::gtest_main)
 else()
   set(FOLLY_BENCHMARK Folly::follybenchmark GTest::gtest GTest::gtest_main)
 endif()
 
-# if(NOT ${BOLT_BUILD_MINIMAL}) # Locate or build protobuf.
-# set_source(Protobuf) resolve_dependency(Protobuf 3.21 EXACT)
-# include_directories(${Protobuf_INCLUDE_DIRS}) endif()
+# if(NOT ${BOLT_BUILD_MINIMAL}) # Locate or build protobuf. set_source(Protobuf)
+# resolve_dependency(Protobuf 3.21 EXACT) include_directories(${Protobuf_INCLUDE_DIRS}) endif()
 
 find_package(Protobuf CONFIG REQUIRED)
 
@@ -649,8 +633,7 @@ if("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
 
   # Ensure we have gcc at least 9+.
   if(CMAKE_CXX_COMPILER_VERSION LESS 9.0)
-    message(
-      FATAL_ERROR "BOLT requires gcc > 9. Found ${CMAKE_CXX_COMPILER_VERSION}")
+    message(FATAL_ERROR "BOLT requires gcc > 9. Found ${CMAKE_CXX_COMPILER_VERSION}")
   endif()
 
   # Find Threads library
@@ -681,17 +664,17 @@ if(BOLT_ENABLE_COLOCATE_FUNCTIONS)
   set(BOLT_ENABLE_ARROW ON)
 endif()
 
-# On macOS, search Homebrew for keg-only versions of Bison and Flex. Xcode does
-# not provide new enough versions for us to use.
+# On macOS, search Homebrew for keg-only versions of Bison and Flex. Xcode does not provide new
+# enough versions for us to use.
 if(CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
   execute_process(
     COMMAND brew --prefix bison
     RESULT_VARIABLE BREW_BISON
     OUTPUT_VARIABLE BREW_BISON_PREFIX
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
   if(BREW_BISON EQUAL 0 AND EXISTS "${BREW_BISON_PREFIX}")
-    message(
-      STATUS "Found Bison keg installed by Homebrew at ${BREW_BISON_PREFIX}")
+    message(STATUS "Found Bison keg installed by Homebrew at ${BREW_BISON_PREFIX}")
     set(BISON_EXECUTABLE "${BREW_BISON_PREFIX}/bin/bison")
   endif()
 
@@ -699,10 +682,10 @@ if(CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
     COMMAND brew --prefix flex
     RESULT_VARIABLE BREW_FLEX
     OUTPUT_VARIABLE BREW_FLEX_PREFIX
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+  )
   if(BREW_FLEX EQUAL 0 AND EXISTS "${BREW_FLEX_PREFIX}")
-    message(
-      STATUS "Found Flex keg installed by Homebrew at ${BREW_FLEX_PREFIX}")
+    message(STATUS "Found Flex keg installed by Homebrew at ${BREW_FLEX_PREFIX}")
     set(FLEX_EXECUTABLE "${BREW_FLEX_PREFIX}/bin/flex")
     set(FLEX_INCLUDE_DIR "${BREW_FLEX_PREFIX}/include")
   endif()
@@ -728,8 +711,8 @@ add_library(xsimd::xsimd ALIAS xsimd)
 find_package(gfx-timsort CONFIG REQUIRED)
 
 if(TARGET gfx::timsort)
-    get_target_property(_dirs gfx::timsort INTERFACE_LINK_DIRECTORIES)
-    set_target_properties(gfx::timsort PROPERTIES INTERFACE_LINK_DIRECTORIES "")
+  get_target_property(_dirs gfx::timsort INTERFACE_LINK_DIRECTORIES)
+  set_target_properties(gfx::timsort PROPERTIES INTERFACE_LINK_DIRECTORIES "")
 endif()
 
 find_package(utf8proc REQUIRED)
@@ -737,49 +720,61 @@ find_package(utf8proc REQUIRED)
 find_package(date REQUIRED)
 
 include(CTest) # include after project() but before add_subdirectory()
-# if(BOLT_BUILD_TESTING) set(BUILD_TESTING ON) include(CTest) # include after
-# project() but before add_subdirectory() endif()
+# if(BOLT_BUILD_TESTING) set(BUILD_TESTING ON) include(CTest) # include after project() but before
+# add_subdirectory() endif()
 
 include_directories(.)
 
-# Adding this down here prevents warnings in dependencies from stopping the
-# build
+# Adding this down here prevents warnings in dependencies from stopping the build
 if("${TREAT_WARNINGS_AS_ERRORS}")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 endif()
 
-# It would be better to only expose public headers Currently, just expose all
-# the headers
+# It would be better to only expose public headers Currently, just expose all the headers
 install(
-  DIRECTORY "${CMAKE_SOURCE_DIR}/bolt" # source directory
-  DESTINATION "include" # target directory
+  DIRECTORY
+  "${CMAKE_SOURCE_DIR}/bolt" # source directory
+  DESTINATION
+  "include" # target directory
   FILES_MATCHING # install only matched files
   # PATTERN "test" EXCLUDE
-  PATTERN "benchmarks" EXCLUDE
-  PATTERN "benchmark" EXCLUDE
-  PATTERN "*.h" # select header files
-  PATTERN "*.hpp" # select header files
+  PATTERN
+  "benchmarks"
+  EXCLUDE
+  PATTERN
+  "benchmark"
+  EXCLUDE
+  PATTERN
+  "*.h" # select header files
+  PATTERN
+  "*.hpp" # select header files
 )
 
 install(FILES "${CMAKE_BINARY_DIR}/deps/dep.json" DESTINATION deps)
 
 if(${BOLT_ENABLE_SUBSTRAIT})
   install(
-    DIRECTORY "${CMAKE_BINARY_DIR}/gen_cpp/bolt" # source directory
-    DESTINATION "include" # target directory
+    DIRECTORY
+    "${CMAKE_BINARY_DIR}/gen_cpp/bolt" # source directory
+    DESTINATION
+    "include" # target directory
     FILES_MATCHING # install only matched files
     # PATTERN "test" EXCLUDE
-    PATTERN "benchmarks" EXCLUDE
-    PATTERN "benchmark" EXCLUDE
-    PATTERN "*.h" # select header files
-    PATTERN "*.hpp" # select header files
+    PATTERN
+    "benchmarks"
+    EXCLUDE
+    PATTERN
+    "benchmark"
+    EXCLUDE
+    PATTERN
+    "*.h" # select header files
+    PATTERN
+    "*.hpp" # select header files
   )
 endif()
 
-file(GLOB_RECURSE SHARED_LIBS
-     "${CMAKE_BINARY_DIR}/bolt/*${CMAKE_SHARED_LIBRARY_SUFFIX}")
-file(GLOB_RECURSE STATIC_LIBS
-     "${CMAKE_BINARY_DIR}/bolt/*${CMAKE_STATIC_LIBRARY_SUFFIX}")
+file(GLOB_RECURSE SHARED_LIBS "${CMAKE_BINARY_DIR}/bolt/*${CMAKE_SHARED_LIBRARY_SUFFIX}")
+file(GLOB_RECURSE STATIC_LIBS "${CMAKE_BINARY_DIR}/bolt/*${CMAKE_STATIC_LIBRARY_SUFFIX}")
 
 list(APPEND ALL_LIBS ${SHARED_LIBS} ${STATIC_LIBS})
 
@@ -790,32 +785,27 @@ install(FILES ${ALL_LIBS} DESTINATION "lib")
 
 find_package(cityhash REQUIRED CONFIG)
 
-# Adding this down here prevents warnings in dependencies from stopping the
-# build
+# Adding this down here prevents warnings in dependencies from stopping the build
 if("${TREAT_WARNINGS_AS_ERRORS}")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
 endif()
 
 find_package(duckdb REQUIRED CONFIG)
 
-# if both JIT and TORCH are enabled, torch includes
-# a llvm header as a transitive header included by jit.
-# Therefore, LLVM definitions need to be available to
-# torch module and not just the jit module.
-if (ENABLE_BOLT_JIT)
+# if both JIT and TORCH are enabled, torch includes a llvm header as a transitive header included by
+# jit. Therefore, LLVM definitions need to be available to torch module and not just the jit module.
+if(ENABLE_BOLT_JIT)
   find_package(LLVM CONFIG REQUIRED)
 endif()
 
-if (BOLT_ENABLE_TORCH)
+if(BOLT_ENABLE_TORCH)
   find_package(Torch CONFIG REQUIRED)
 endif()
 
-
-if (BOLT_ENABLE_CUDF)
+if(BOLT_ENABLE_CUDF)
   set(BOLT_ENABLE_ARROW ON)
   find_package(cudf CONFIG REQUIRED)
-endif ()
-
+endif()
 
 # print all configs
 
@@ -826,58 +816,42 @@ foreach(var ${vars})
 endforeach()
 message("-------------------------------------------------")
 
-# Function: Generate template specialization files
-# Parameters:
-#   OUTPUT_VAR - Output variable name that will store the list of generated files
-#   TEMPLATE_FILE - Template file path (.cpp.in)
-#   TYPES - List of types to specialize
-function(specialize_template OUTPUT_VAR TEMPLATE_FILE)
-    # Parse remaining arguments as type list
-    set(TYPES ${ARGN})
-    
-    # Extract class name from template file path (remove path and .cpp.in)
-    get_filename_component(TEMPLATE_NAME "${TEMPLATE_FILE}" NAME)
-    string(REGEX REPLACE "\\.cpp\\.in$" "" CLASS_NAME "${TEMPLATE_NAME}")
-    
-    # Get template file's relative path (relative to source directory)
-    file(RELATIVE_PATH REL_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
-    
-    # Build output directory path (in build/gen_cpp/ while maintaining the same relative path)
-    set(OUTPUT_DIR "${CMAKE_BINARY_DIR}/gen_cpp/${REL_PATH}")
-    
-    # Ensure output directory exists
-    file(MAKE_DIRECTORY ${OUTPUT_DIR})
-    
-    # Initialize output file list
-    set(GENERATED_FILES "")
-    
-    # Generate specialization files for each type
-    foreach(TYPE ${TYPES})
-        # Process special characters in type names, replace with file-friendly forms
-        string(REPLACE " " "_" SAFE_TYPE "${TYPE}")
-        string(REPLACE "<" "_" SAFE_TYPE "${SAFE_TYPE}")
-        string(REPLACE ">" "_" SAFE_TYPE "${SAFE_TYPE}")
-        string(REPLACE "::" "_" SAFE_TYPE "${SAFE_TYPE}")
-        
-        # Set output file path
-        set(OUTPUT_FILE "${OUTPUT_DIR}/${CLASS_NAME}_${SAFE_TYPE}.cpp")
-        
-        # Configure file generation
-        configure_file(
-            "${TEMPLATE_FILE}"
-            "${OUTPUT_FILE}"
-            @ONLY
-        )
-        
-        # Add to generated files list
-        list(APPEND GENERATED_FILES "${OUTPUT_FILE}")
-    endforeach()
-    
-    # Set output variable in parent scope
-    set(${OUTPUT_VAR} ${GENERATED_FILES} PARENT_SCOPE)
-    
-    # Print generation info (optional)
-    message(STATUS "Generated ${CLASS_NAME} specializations in ${OUTPUT_DIR}")
+# Function: Generate template specialization files Parameters: output_var - Output variable name
+# that will store the list of generated files template_file - Template file path (.cpp.in) types -
+# List of types to specialize
+function(specialize_template output_var template_file)
+  set(types ${ARGN})
+
+  get_filename_component(TEMPLATE_NAME "${template_file}" NAME)
+  string(REGEX REPLACE "\\.cpp\\.in$" "" CLASS_NAME "${TEMPLATE_NAME}")
+
+  file(RELATIVE_PATH REL_PATH "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
+  set(output_dir "${CMAKE_BINARY_DIR}/gen_cpp/${REL_PATH}")
+
+  set(generated_files "")
+
+  foreach(type ${types})
+    string(REPLACE " " "_" SAFE_TYPE "${type}")
+    string(REPLACE "<" "_" SAFE_TYPE "${SAFE_TYPE}")
+    string(REPLACE ">" "_" SAFE_TYPE "${SAFE_TYPE}")
+    string(REPLACE "::" "_" SAFE_TYPE "${SAFE_TYPE}")
+
+    set(output_file "${output_dir}/${CLASS_NAME}_${SAFE_TYPE}.cpp")
+
+    configure_file("${template_file}" "${output_file}.in" @ONLY)
+    file(
+      GENERATE
+      OUTPUT "${output_file}"
+      INPUT "${output_file}.in"
+    )
+
+    list(APPEND generated_files "${output_file}")
+  endforeach()
+
+  set(${output_var}
+      ${generated_files}
+      PARENT_SCOPE
+  )
 endfunction()
 
 add_subdirectory(bolt)

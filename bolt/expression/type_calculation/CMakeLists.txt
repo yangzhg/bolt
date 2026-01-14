@@ -25,30 +25,25 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-# find_package(BISON REQUIRED)
-# find_package(FLEX REQUIRED)
-# set(BISON_VARS
-#     BISON_FOUND
-#     BISON_EXECUTABLE
-#     BISON_VERSION
-# )
+# find_package(BISON REQUIRED) find_package(FLEX REQUIRED) set(BISON_VARS BISON_FOUND
+# BISON_EXECUTABLE BISON_VERSION )
 
 bison_target(
-  TypeCalculationParser TypeCalculation.yy
-  ${CMAKE_CURRENT_BINARY_DIR}/TypeCalculation.yy.cc
-  DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/TypeCalculation.yy.h)
+  TypeCalculationParser TypeCalculation.yy ${CMAKE_CURRENT_BINARY_DIR}/TypeCalculation.yy.cc
+  DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/TypeCalculation.yy.h
+)
 
 flex_target(
-  TypeCalculationScanner TypeCalculation.ll
-  ${CMAKE_CURRENT_BINARY_DIR}/Scanner.cpp COMPILE_FLAGS "-Cf --prefix=bolttc")
+  TypeCalculationScanner TypeCalculation.ll ${CMAKE_CURRENT_BINARY_DIR}/Scanner.cpp
+  COMPILE_FLAGS "-Cf --prefix=bolttc"
+)
 
 add_flex_bison_dependency(TypeCalculationScanner TypeCalculationParser)
 
 include_directories(${PROJECT_BINARY_DIR})
 include_directories(${FLEX_INCLUDE_DIRS})
 add_library(
-  bolt_type_calculation
-  ${BISON_TypeCalculationParser_OUTPUTS} ${FLEX_TypeCalculationScanner_OUTPUTS}
-  Scanner.h TypeCalculation.h)
+  bolt_type_calculation ${BISON_TypeCalculationParser_OUTPUTS}
+                        ${FLEX_TypeCalculationScanner_OUTPUTS} Scanner.h TypeCalculation.h
+)
 target_link_libraries(bolt_type_calculation bolt_common_base)

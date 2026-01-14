@@ -25,11 +25,9 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_fuzzer_connector OBJECT FuzzerConnector.cpp)
 
-target_link_libraries(bolt_fuzzer_connector bolt_connector
-                      bolt_vector_fuzzer)
+target_link_libraries(bolt_fuzzer_connector bolt_connector bolt_vector_fuzzer)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

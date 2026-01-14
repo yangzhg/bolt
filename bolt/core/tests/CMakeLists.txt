@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(
   bolt_core_test
   ConstantTypedExprTest.cpp
@@ -34,7 +33,8 @@ add_executable(
   QueryConfigTest.cpp
   StringTest.cpp
   TypeAnalysisTest.cpp
-  TypedExprSerdeTest.cpp)
+  TypedExprSerdeTest.cpp
+)
 
 add_test(bolt_core_test bolt_core_test)
 
@@ -47,4 +47,5 @@ target_link_libraries(
           bolt_type
           bolt_vector_test_lib
           GTest::gtest
-          GTest::gtest_main)
+          GTest::gtest_main
+)

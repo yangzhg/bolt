@@ -4,16 +4,16 @@ syntax = "proto3";
 package substrait.bolt;
 
 // Possible implementation for ExtensionSingleRel.detail.
-// 
+//
 // This message makes this relation a Torch relation, where one
 // input table is processed as a tensor by a torch function which outputs
 // one tensor. The output is forwarded as a table to the next relation node.
 message TorchRelDetail {
   // The python torch script to execute as a plain string.
-  // 
+  //
   // The last function in the script is the one to be executed.
   // This function must accept one tensor as input and output one tensor.
-  // 
+  //
   // The script is to be compiled and executed on the backend side by libtorch.
   // Consequently, the script specification depends on the specification
   // of the libtorch library version used by the backend.

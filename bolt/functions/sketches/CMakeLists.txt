@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,33 +18,34 @@ find_package(DataSketches REQUIRED)
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
   add_subdirectory(benchmarks)
-endif()  
+endif()
 
 # hll.hpp causes deprecated warning and turning the warning off for now
 add_compile_options(-Wno-deprecated-declarations)
 add_library(
   bolt_sketch_aggregates
+  RegistrationAggregateFunctions.cpp
+  RegistrationFunctions.cpp
   SketchCPC.cpp
   SketchCPCSketch.cpp
+  SketchFI.cpp
+  SketchHLL.cpp
+  SketchHLLEstimate.cpp
+  SketchHLLSketch.cpp
+  SketchHLLUnion.cpp
   SketchKLL.cpp
   SketchKLLSketch.cpp
-  SketchHLL.cpp
-  SketchHLLUnion.cpp
-  SketchHLLSketch.cpp
-  SketchFI.cpp
+  SketchQuantiles.cpp
   SketchREQ.cpp
   SketchTheta.cpp
-  SketchQuantiles.cpp
   SketchVarOpt.cpp
-  SketchHLLEstimate.cpp
-  RegistrationFunctions.cpp
-  RegistrationAggregateFunctions.cpp
 )
 
-target_include_directories(bolt_sketch_aggregates PRIVATE ${FOLLY_INCLUDE_DIRS}
-                            ${DataSketches_INCLUDE_DIRS})
-target_link_libraries(bolt_sketch_aggregates bolt_exec DataSketches::DataSketches
-                      ${FOLLY_WITH_DEPENDENCIES})
+target_include_directories(
+  bolt_sketch_aggregates PRIVATE ${FOLLY_INCLUDE_DIRS} ${DataSketches_INCLUDE_DIRS}
+)
+target_link_libraries(
+  bolt_sketch_aggregates bolt_exec DataSketches::DataSketches ${FOLLY_WITH_DEPENDENCIES}
+)
 
-set_property(TARGET bolt_sketch_aggregates PROPERTY JOB_POOL_COMPILE
-                                                     high_memory_pool)
+set_property(TARGET bolt_sketch_aggregates PROPERTY JOB_POOL_COMPILE high_memory_pool)

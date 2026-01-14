@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_executable(bolt_dwio_paimon_test 
-               PaimonReaderDeduplicateTest.cpp 
-               PaimonReaderAggregateTest.cpp
-               PaimonReaderPartialUpdateTest.cpp)
+add_executable(
+  bolt_dwio_paimon_test PaimonReaderAggregateTest.cpp PaimonReaderDeduplicateTest.cpp
+                        PaimonReaderPartialUpdateTest.cpp
+)
 
 add_test(bolt_dwio_paimon_test bolt_dwio_paimon_test)
 
@@ -31,4 +31,5 @@ target_link_libraries(
   GTest::gmock_main
   glog::glog
   gflags::gflags
-  pthread)
+  pthread
+)

@@ -25,8 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-add_executable(bolt_arrow_bridge_test ArrowBridgeArrayTest.cpp
-                                       ArrowBridgeSchemaTest.cpp)
+add_executable(bolt_arrow_bridge_test ArrowBridgeArrayTest.cpp ArrowBridgeSchemaTest.cpp)
 
 add_test(bolt_arrow_bridge_test bolt_arrow_bridge_test)
 
@@ -41,4 +40,5 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   glog::glog
-  dl)
+  dl
+)

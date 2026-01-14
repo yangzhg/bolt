@@ -25,8 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-add_executable(bolt_hive_partition_function_benchmark
-               HivePartitionFunctionBenchmark.cpp)
+add_executable(bolt_hive_partition_function_benchmark HivePartitionFunctionBenchmark.cpp)
 
 target_link_libraries(
   bolt_hive_partition_function_benchmark
@@ -44,4 +43,5 @@ target_link_libraries(
   bolt_memory
   Folly::folly
   ${FOLLY_BENCHMARK}
-  fmt::fmt)
+  fmt::fmt
+)

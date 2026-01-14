@@ -25,16 +25,21 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-set(PAAGG_TYPES "int8_t" "int16_t" "int32_t" "int64_t" "int128_t" "float" "double" "Timestamp")
-specialize_template(
-  PAAGG_GENERATED_FILES
-  PercentileApproxAggregate.cpp.in
-  ${PAAGG_TYPES}
+set(PAAGG_TYPES
+    "int8_t"
+    "int16_t"
+    "int32_t"
+    "int64_t"
+    "int128_t"
+    "float"
+    "double"
+    "Timestamp"
 )
+specialize_template(PAAGG_GENERATED_FILES PercentileApproxAggregate.cpp.in ${PAAGG_TYPES})
 
 add_library(
   bolt_functions_spark_aggregates
+  ${PAAGG_GENERATED_FILES}
   AverageAggregate.cpp
   BitwiseXorAggregate.cpp
   BloomFilterAggAggregate.cpp
@@ -42,15 +47,17 @@ add_library(
   CollectListAggregate.cpp
   FirstLastAggregate.cpp
   MinMaxByAggregate.cpp
-  SumAggregate.cpp
-  ${PAAGG_GENERATED_FILES}
   PercentileApproxAggregate.cpp
   Register.cpp
   RegrReplacementAggregate.cpp
-  SumAggregate.cpp)
+  SumAggregate.cpp
+  SumAggregate.cpp
+)
 
-target_link_libraries(bolt_functions_spark_aggregates bolt_exec
-                      bolt_expression_functions bolt_aggregates bolt_vector fmt::fmt)
+target_link_libraries(
+  bolt_functions_spark_aggregates bolt_exec bolt_expression_functions bolt_aggregates bolt_vector
+  fmt::fmt
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(
   bolt_query_trace_replayer_base
   AggregationReplayer.cpp
@@ -36,33 +35,33 @@ add_library(
   TableScanReplayer.cpp
   TableWriterReplayer.cpp
   TraceReplayRunner.cpp
-  TraceReplayTaskRunner.cpp)
+  TraceReplayTaskRunner.cpp
+)
 
-set(enabled_filesystems "")
+set(ENABLED_FILESYSTEMS "")
 
 if(BOLT_ENABLE_S3)
-    list(APPEND enabled_filesystems "bolt_s3fs")
+  list(APPEND ENABLED_FILESYSTEMS "bolt_s3fs")
 endif()
 if(BOLT_ENABLE_GCS)
-    list(APPEND enabled_filesystems "bolt_gcs")
+  list(APPEND ENABLED_FILESYSTEMS "bolt_gcs")
 endif()
 if(BOLT_ENABLE_HDFS)
-    list(APPEND enabled_filesystems "bolt_hdfs")
+  list(APPEND ENABLED_FILESYSTEMS "bolt_hdfs")
 endif()
 if(BOLT_ENABLE_ABFS)
-    list(APPEND enabled_filesystems "bolt_abfs")
+  list(APPEND ENABLED_FILESYSTEMS "bolt_abfs")
 endif()
 
-set(enabled_fileformats "")
-
+set(ENABLED_FILEFORMATS "")
 
 if(BOLT_ENABLE_PARQUET)
-    list(APPEND enabled_fileformats "bolt_dwio_parquet_reader")
-    list(APPEND enabled_fileformats "bolt_dwio_parquet_writer")
+  list(APPEND ENABLED_FILEFORMATS "bolt_dwio_parquet_reader")
+  list(APPEND ENABLED_FILEFORMATS "bolt_dwio_parquet_writer")
 endif()
 if(BOLT_ENABLE_ORC)
-    list(APPEND enabled_fileformats "bolt_dwio_orc_reader")
-    list(APPEND enabled_fileformats "bolt_dwio_orc_writer")
+  list(APPEND ENABLED_FILEFORMATS "bolt_dwio_orc_reader")
+  list(APPEND ENABLED_FILEFORMATS "bolt_dwio_orc_writer")
 endif()
 
 target_link_libraries(
@@ -73,25 +72,24 @@ target_link_libraries(
   bolt_vector_test_lib
   bolt_exec
   bolt_exec_test_lib
-  ${enabled_fileformats}
+  ${ENABLED_FILEFORMATS}
   bolt_dwio_parquet_reader
   bolt_dwio_parquet_writer
   bolt_hive_connector
   bolt_tpch_connector
   bolt_memory
-  ${enabled_filesystems}
+  ${ENABLED_FILESYSTEMS}
   Folly::folly
   glog::glog
-  gflags::gflags)
+  gflags::gflags
+)
 
 add_executable(bolt_query_replayer TraceReplayerMain.cpp)
 
 target_link_libraries(
-  bolt_query_replayer
-  bolt_query_trace_replayer_base
-  bolt_exec
-  bolt_exec_test_lib
-  bolt_tpch_connector)
+  bolt_query_replayer bolt_query_trace_replayer_base bolt_exec bolt_exec_test_lib
+  bolt_tpch_connector
+)
 
 add_library(bolt_trace_file_tool_base TraceFileToolRunner.cpp)
 
@@ -104,11 +102,11 @@ target_link_libraries(
   bolt_hive_connector
   Folly::folly
   glog::glog
-  gflags::gflags)
+  gflags::gflags
+)
 
 add_executable(bolt_trace_file_tool TraceFileToolMain.cpp)
 
-target_link_libraries(
-  bolt_trace_file_tool bolt_trace_file_tool_base)
+target_link_libraries(bolt_trace_file_tool bolt_trace_file_tool_base)
 
 add_subdirectory(tests)

@@ -25,11 +25,9 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_serialization DeserializationRegistry.cpp)
 
-target_link_libraries(bolt_serialization PUBLIC bolt_exception Folly::folly
-                                                 glog::glog)
+target_link_libraries(bolt_serialization PUBLIC bolt_exception Folly::folly glog::glog)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

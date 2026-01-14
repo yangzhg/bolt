@@ -25,15 +25,13 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 # for generated headers
 
 add_library(bolt_gcs RegisterGCSFileSystem.cpp)
 
 if(BOLT_ENABLE_GCS)
   target_sources(bolt_gcs PRIVATE GCSFileSystem.cpp GCSUtil.cpp)
-  target_link_libraries(bolt_gcs bolt_exception Folly::folly
-                        google-cloud-cpp::storage)
+  target_link_libraries(bolt_gcs bolt_exception Folly::folly google-cloud-cpp::storage)
 
   if(${BOLT_BUILD_TESTING})
     add_subdirectory(tests)

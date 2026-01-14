@@ -25,10 +25,10 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(
-  bolt_hdfs_file_test HdfsFileSystemTest.cpp InsertIntoHdfsTest.cpp
-                       HdfsMiniCluster.cpp HdfsUtilTest.cpp)
+  bolt_hdfs_file_test HdfsFileSystemTest.cpp HdfsMiniCluster.cpp HdfsUtilTest.cpp
+                      InsertIntoHdfsTest.cpp
+)
 
 add_test(bolt_hdfs_file_test bolt_hdfs_file_test)
 target_link_libraries(
@@ -42,4 +42,5 @@ target_link_libraries(
   bolt_exec
   GTest::gtest
   GTest::gtest_main
-  GTest::gmock)
+  GTest::gmock
+)

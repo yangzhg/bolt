@@ -27,7 +27,7 @@
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
-  #  add_subdirectory(sparksql/tests)
+  # add_subdirectory(sparksql/tests)
 endif()
 
 add_library(
@@ -40,29 +40,30 @@ add_library(
   HashStringAllocator.cpp
   MallocAllocator.cpp
   Memory.cpp
+  MemoryAllocationListener.cpp
   MemoryAllocator.cpp
   MemoryArbitrator.cpp
   MemoryPool.cpp
   MemoryPoolForGluten.cpp
+  MemoryUtils.cpp
   MmapAllocator.cpp
   MmapArena.cpp
-  MemoryAllocationListener.cpp
-  MemoryUtils.cpp
   RawVector.cpp
   SharedArbitrator.cpp
-  StreamArena.cpp
-  # file for sparksql
+  sparksql/AllocationListener.cpp
   sparksql/ExecutionMemoryPool.cpp
   sparksql/MemoryConsumer.cpp
-  sparksql/TaskMemoryManager.cpp
   sparksql/MemoryTarget.cpp
+  sparksql/MemoryUsageStats.cpp
+  sparksql/NativeMemoryManagerFactory.cpp
   sparksql/OomPrinter.cpp
   sparksql/Spiller.cpp
-  sparksql/AllocationListener.cpp
-  sparksql/NativeMemoryManagerFactory.cpp
-  sparksql/MemoryUsageStats.cpp)
+  sparksql/TaskMemoryManager.cpp
+  StreamArena.cpp
+  # file for sparksql
+)
 
-if (NOT APPLE)
+if(NOT APPLE)
   include_directories(${JEMALLOC_INCLUDE_DIRS})
 endif()
 
@@ -81,4 +82,5 @@ target_link_libraries(
          gflags::gflags
          glog::glog
          arrow::arrow
-  PRIVATE bolt_test_util re2::re2)
+  PRIVATE bolt_test_util re2::re2
+)

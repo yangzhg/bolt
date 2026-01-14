@@ -12,6 +12,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
-        
+
       - name: Check Licenses
         uses: apache/skywalking-eyes/header@v0.8.0

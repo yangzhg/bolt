@@ -25,9 +25,9 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_executable(bolt_dwio_dwrf_utils_test
-               ProtoUtilsTests.cpp BitIteratorTests.cpp BufferedWriterTest.cpp)
+add_executable(
+  bolt_dwio_dwrf_utils_test BitIteratorTests.cpp BufferedWriterTest.cpp ProtoUtilsTests.cpp
+)
 
 add_test(bolt_dwio_dwrf_utils_test bolt_dwio_dwrf_utils_test)
 
@@ -40,4 +40,5 @@ target_link_libraries(
   gflags::gflags
   GTest::gtest
   GTest::gtest_main
-  glog::glog)
+  glog::glog
+)

@@ -25,71 +25,70 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 set(APAGG_TYPES "int8_t" "int16_t" "int32_t" "int64_t" "float" "double")
-specialize_template(
-  APAGG_GENERATED_FILES
-  ApproxPercentileAggregate.cpp.in
-  ${APAGG_TYPES}
-)
+specialize_template(APAGG_GENERATED_FILES ApproxPercentileAggregate.cpp.in ${APAGG_TYPES})
 
-set(MIN_MAX_BY_TYPES "bool" "int8_t" "int16_t" "int32_t" "int64_t" "float" "double" "StringView" "Timestamp" "ComplexType")
-specialize_template(
-  MAX_BY_NARG_GENERATED_FILES
-  MaxByAggregatesNArg.cpp.in
-  ${MIN_MAX_BY_TYPES}
+set(MIN_MAX_BY_TYPES
+    "bool"
+    "int8_t"
+    "int16_t"
+    "int32_t"
+    "int64_t"
+    "float"
+    "double"
+    "StringView"
+    "Timestamp"
+    "ComplexType"
 )
-specialize_template(
-  MIN_BY_NARG_GENERATED_FILES
-  MinByAggregatesNArg.cpp.in
-  ${MIN_MAX_BY_TYPES}
-)
+specialize_template(MAX_BY_NARG_GENERATED_FILES MaxByAggregatesNArg.cpp.in ${MIN_MAX_BY_TYPES})
+specialize_template(MIN_BY_NARG_GENERATED_FILES MinByAggregatesNArg.cpp.in ${MIN_MAX_BY_TYPES})
 
 add_library(
   bolt_aggregates
+  ${APAGG_GENERATED_FILES}
+  ${MAX_BY_NARG_GENERATED_FILES}
+  ${MIN_BY_NARG_GENERATED_FILES}
   ApproxDistinctAggregate.cpp
   ApproxMostFrequentAggregate.cpp
-  ${APAGG_GENERATED_FILES}
   ApproxPercentileAggregate.cpp
   ArbitraryAggregate.cpp
-  ArrayAggAggregate.cpp
   ArrayAdditionAggregate.cpp
+  ArrayAggAggregate.cpp
   ArrayCountAggregate.cpp
   AverageAggregate.cpp
   BitwiseAggregates.cpp
   BitwiseXorAggregate.cpp
   BoolAggregates.cpp
   CentralMomentsAggregates.cpp
+  ChecksumAggregate.cpp
   Compare.cpp
+  CountAggregate.cpp
   CountIfAggregate.cpp
   CovarianceAggregates.cpp
-  ChecksumAggregate.cpp
   EntropyAggregates.cpp
   FirstLastAggregate.cpp
   GeometricMeanAggregate.cpp
   HistogramAggregate.cpp
+  HiveUDAFPercentileAggregate.cpp
   MapAggAggregate.cpp
   MapSumAggregate.cpp
   MapUnionAggregate.cpp
-  MapUnionSumAggregate.cpp
   MapUnionAvgAggregate.cpp
+  MapUnionCountAggregate.cpp
+  MapUnionMinMaxAggregates.cpp
+  MapUnionSumAggregate.cpp
+  MaxSizeForStatsAggregate.cpp
   MinMaxAggregates.cpp
-  ${MAX_BY_NARG_GENERATED_FILES}
-  ${MIN_BY_NARG_GENERATED_FILES}
   MinMaxByAggregates.cpp
   MultiMapAggAggregate.cpp
-  CountAggregate.cpp
   PrestoHasher.cpp
   ReduceAgg.cpp
+  RegisterAggregateFunctions.cpp
   SetAggregates.cpp
   SumAggregate.cpp
   SumDataSizeForStatsAggregate.cpp
   VarianceAggregates.cpp
-  MaxSizeForStatsAggregate.cpp
-  RegisterAggregateFunctions.cpp
-  MapUnionCountAggregate.cpp
-  MapUnionMinMaxAggregates.cpp
-  HiveUDAFPercentileAggregate.cpp)
+)
 
 target_link_libraries(
   bolt_aggregates
@@ -100,7 +99,8 @@ target_link_libraries(
   bolt_functions_aggregates
   bolt_functions_lib
   bolt_functions_util
-  Folly::folly)
+  Folly::folly
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

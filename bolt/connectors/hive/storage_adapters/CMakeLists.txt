@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 if(BOLT_ENABLE_S3)
   add_subdirectory(s3fs)
 endif()

@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,11 @@ add_library(bolt_arrow_connector ArrowMemoryConnector.cpp)
 target_link_libraries(bolt_arrow_connector bolt_connector)
 
 # Force export this library
-add_custom_target(dummy_arrow_connector_target DEPENDS bolt_arrow_connector)
+add_custom_target(
+  dummy_arrow_connector_target
+  DEPENDS bolt_arrow_connector
+  COMMENT "Exporting arrow connector library"
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

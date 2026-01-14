@@ -25,13 +25,14 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(bolt_type_fbhive_test HiveTypeParserTests.cpp)
 
 add_test(
   NAME bolt_type_fbhive_test
   COMMAND bolt_type_fbhive_test
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
-target_link_libraries(bolt_type_fbhive_test bolt_type_fbhive
-                      bolt_type GTest::gtest GTest::gtest_main GTest::gmock)
+target_link_libraries(
+  bolt_type_fbhive_test bolt_type_fbhive bolt_type GTest::gtest GTest::gtest_main GTest::gmock
+)

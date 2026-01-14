@@ -28,8 +28,8 @@
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
 endif()
-add_library(bolt_type_tz TimeZoneMap.h TimeZoneDatabase.cpp TimeZoneMap.cpp TimeZoneNames.cpp)
+add_library(bolt_type_tz TimeZoneDatabase.cpp TimeZoneMap.cpp TimeZoneMap.h TimeZoneNames.cpp)
 
-target_link_libraries(bolt_type_tz ${Boost_REGEX_LIBRARIES} ${FMT}
-                      ${FOLLY_WITH_DEPENDENCIES} date::date
-                      bolt_test_util)
+target_link_libraries(
+  bolt_type_tz ${Boost_REGEX_LIBRARIES} ${FMT} ${FOLLY_WITH_DEPENDENCIES} date::date bolt_test_util
+)

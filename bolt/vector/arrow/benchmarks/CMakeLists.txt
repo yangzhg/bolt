@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-add_executable(export_bolt_arrow_bridge_benchmark
-               ExportBoltToArrowBenchmark.cpp)
+add_executable(export_bolt_arrow_bridge_benchmark ExportBoltToArrowBenchmark.cpp)
 target_link_libraries(
   export_bolt_arrow_bridge_benchmark
   bolt_arrow_bridge
@@ -22,7 +21,8 @@ target_link_libraries(
   bolt_vector_test_lib
   bolt_exec_test_lib
   arrow::arrow
-  ${FOLLY_BENCHMARK})
+  ${FOLLY_BENCHMARK}
+)
 
 add_executable(arrow_bolt_bridge_benchmark ArrowToBoltBenchmark.cpp)
 target_link_libraries(
@@ -32,10 +32,10 @@ target_link_libraries(
   bolt_vector_test_lib
   bolt_exec_test_lib
   arrow::arrow
-  ${FOLLY_BENCHMARK})
+  ${FOLLY_BENCHMARK}
+)
 
-add_executable(arrow_bolt_array_bridge_benchmark
-               ArrowToBoltArrayBenchmark.cpp)
+add_executable(arrow_bolt_array_bridge_benchmark ArrowToBoltArrayBenchmark.cpp)
 target_link_libraries(
   arrow_bolt_array_bridge_benchmark
   bolt_arrow_bridge
@@ -43,10 +43,10 @@ target_link_libraries(
   bolt_vector_test_lib
   bolt_exec_test_lib
   arrow::arrow
-  ${FOLLY_BENCHMARK})
+  ${FOLLY_BENCHMARK}
+)
 
-add_executable(import_arrow_bolt_bridge_benchmark
-               ImportArrowToBoltBenchmark.cpp)
+add_executable(import_arrow_bolt_bridge_benchmark ImportArrowToBoltBenchmark.cpp)
 target_link_libraries(
   import_arrow_bolt_bridge_benchmark
   bolt_arrow_bridge
@@ -55,4 +55,5 @@ target_link_libraries(
   bolt_exec_test_lib
   arrow::arrow
   arrow::libarrow_testing
-  ${FOLLY_BENCHMARK})
+  ${FOLLY_BENCHMARK}
+)

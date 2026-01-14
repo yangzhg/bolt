@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 # ORC Reader setup
 if(BOLT_ENABLE_ORC)
   add_library(bolt_dwio_orc_reader OrcReader.cpp RegisterOrcReader.cpp)

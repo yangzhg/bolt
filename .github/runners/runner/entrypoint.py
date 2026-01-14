@@ -39,23 +39,23 @@ def main():
     repo_name = os.environ["REPOSITORY_NAME"]
     runner_labels = os.environ["RUNNER_LABELS"]
     docker_data_dir = os.environ["DOCKER_DATA_DIR"]
-    
+
     # allow running as root
     os.environ["RUNNER_ALLOW_RUNASROOT"] = "1"
-    
+
     # starting docker - each runner replica needs a unique /var/lib/docker directory
     # compose isn't capable of editing mounts after startup, so we need to create
     # the directory and symlink it to /var/lib/docker
     os.system(f"mkdir -p {docker_data_dir}/{runner_hostname}")
     os.system(f"ln -s {docker_data_dir}/{runner_hostname} /var/lib/docker")
     os.system("service docker start")
-    
+
     # create a registration token for the runner
     registration_token = create_registration_token(gh_auth_token, org_name, repo_name)
     print(f"Configuring the runner with name {runner_name}")
     config_command = f"/actions-runner/config.sh --url https://github.com/{org_name}/{repo_name} --token {registration_token} --name {runner_name} --replace --labels {runner_labels} --unattended"
     os.system(config_command)
-    
+
     print("Starting the runner...")
     os.execv("/bin/bash", ["/bin/bash", "/actions-runner/run.sh"])
 

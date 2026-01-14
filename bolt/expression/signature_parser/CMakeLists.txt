@@ -25,26 +25,27 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
 endif()
 
 bison_target(
-  SignatureParser SignatureParser.yy
-  ${CMAKE_CURRENT_BINARY_DIR}/SignatureParser.yy.cc
+  SignatureParser SignatureParser.yy ${CMAKE_CURRENT_BINARY_DIR}/SignatureParser.yy.cc
   DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/SignatureParser.yy.h
-  COMPILE_FLAGS "-Werror -Wno-deprecated")
+  COMPILE_FLAGS "-Werror -Wno-deprecated"
+)
 
 flex_target(
-  SignatureParserScanner SignatureParser.ll
-  ${CMAKE_CURRENT_BINARY_DIR}/Scanner.cpp COMPILE_FLAGS "-Cf --prefix=boltsp")
+  SignatureParserScanner SignatureParser.ll ${CMAKE_CURRENT_BINARY_DIR}/Scanner.cpp
+  COMPILE_FLAGS "-Cf --prefix=boltsp"
+)
 
 add_flex_bison_dependency(SignatureParserScanner SignatureParser)
 
 include_directories(${PROJECT_BINARY_DIR})
 include_directories(${FLEX_INCLUDE_DIRS})
 add_library(
-  bolt_signature_parser ${BISON_SignatureParser_OUTPUTS}
-                         ${FLEX_SignatureParserScanner_OUTPUTS} ParseUtil.cpp)
+  bolt_signature_parser ${BISON_SignatureParser_OUTPUTS} ${FLEX_SignatureParserScanner_OUTPUTS}
+                        ParseUtil.cpp
+)
 target_link_libraries(bolt_signature_parser bolt_common_base bolt_type_base)

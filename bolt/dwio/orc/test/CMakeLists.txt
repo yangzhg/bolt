@@ -25,12 +25,12 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(bolt_dwio_orc_test OrcReaderTest.cpp OrcWriterTest.cpp)
 add_test(
   NAME bolt_dwio_orc_test
   COMMAND bolt_dwio_orc_test
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_link_libraries(
   bolt_dwio_orc_test
@@ -42,16 +42,17 @@ target_link_libraries(
   bolt_vector_test_lib
   GTest::gtest
   GTest::gtest_main
-  GTest::gmock)
+  GTest::gmock
+)
 
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/examples
-     DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/examples DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 add_executable(bolt_dwio_orc_tpch_test OrcTpchTest.cpp)
 add_test(
   NAME bolt_dwio_orc_tpch_test
   COMMAND bolt_dwio_orc_tpch_test
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 target_link_libraries(
   bolt_dwio_orc_tpch_test
   bolt_dwio_orc_reader
@@ -62,4 +63,5 @@ target_link_libraries(
   bolt_tpch_connector
   bolt_aggregates
   bolt_tpch_gen
-  ${TEST_LINK_LIBS})
+  ${TEST_LINK_LIBS}
+)

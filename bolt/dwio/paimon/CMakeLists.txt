@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,6 @@
 
 add_subdirectory(deletionvectors)
 
- if(${BOLT_BUILD_TESTING})
-     add_subdirectory(reader/tests)
- endif()
+if(${BOLT_BUILD_TESTING})
+  add_subdirectory(reader/tests)
+endif()

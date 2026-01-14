@@ -25,10 +25,10 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(bolt_type_parser_test TypeParserTest.cpp)
 
 add_test(NAME bolt_type_parser_test COMMAND bolt_type_parser_test)
 
-target_link_libraries(bolt_type_parser_test bolt_type_parser bolt_type GTest::gtest
-                      GTest::gtest_main GTest::gmock)
+target_link_libraries(
+  bolt_type_parser_test bolt_type_parser bolt_type GTest::gtest GTest::gtest_main GTest::gmock
+)

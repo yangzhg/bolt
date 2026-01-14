@@ -74,7 +74,7 @@ body:
         ```text
         2023-01-02
         ```
-        
+
         ### Actual Behavior (Bolt Result)
         ```text
         2023-01-01  <-- Wrong result
@@ -103,7 +103,7 @@ body:
     attributes:
       label: Important Configurations (Critical)
       description: |
-        Some configs affect results significantly. 
+        Some configs affect results significantly.
         - **Timezone**: (e.g. Asia/Shanghai vs UTC)
         - **SQL Mode**: (e.g. `spark.sql.ansi.enabled=true`)
       placeholder: |

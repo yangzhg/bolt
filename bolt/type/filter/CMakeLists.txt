@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,29 +21,18 @@ add_library(
   FloatingPointMultiRange.cpp
   FloatingPointRange.cpp
   FloatingPointValues.cpp
+  MapSubscriptFilter.cpp
   NegatedFloatingPointRange.cpp
   NegatedFloatingPointValue.cpp
-  MapSubscriptFilter.cpp
 )
 
-target_include_directories(
-  bolt_filter
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/filter>
-)
+target_include_directories(bolt_filter PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/filter>)
 
 find_package(xxHash CONFIG REQUIRED)
 find_package(ryu CONFIG REQUIRED)
 
 target_link_libraries(
   bolt_filter
-  PUBLIC
-    bolt_type_headers
-  PRIVATE
-    bolt_common_base
-    bolt_token_extractor
-    bolt_exception
-    re2::re2
-    xxHash::xxhash
-    ryu::ryu
+  PUBLIC bolt_type_headers
+  PRIVATE bolt_common_base bolt_token_extractor bolt_exception re2::re2 xxHash::xxhash ryu::ryu
 )

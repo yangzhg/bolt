@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,4 +24,5 @@ target_link_libraries(
   bolt_vector_test_lib
   bolt_exec_test_lib
   bolt_aggregates
-  GTest::gtest)
+  GTest::gtest
+)

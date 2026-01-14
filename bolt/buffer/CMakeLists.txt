@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_buffer Buffer.cpp StringViewBufferHolder.cpp)
 
 target_link_libraries(bolt_buffer bolt_memory bolt_common_base Folly::folly)
@@ -34,9 +33,12 @@ if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
 endif()
 
-# Currently we install all the header files in project_dir/CMakeLists.txt
-# It would be better to have a fine-grained control like this:
-target_sources(bolt_buffer
-    PUBLIC FILE_SET HEADERS
-    BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-    FILES Buffer.h StringViewBufferHolder.h)
+# Currently we install all the header files in project_dir/CMakeLists.txt It would be better to have
+# a fine-grained control like this:
+target_sources(
+  bolt_buffer
+  PUBLIC
+  FILE_SET HEADERS
+           BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
+           FILES Buffer.h StringViewBufferHolder.h
+)

@@ -25,24 +25,25 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(
   bolt_plan_conversion_test
-  Substrait2BoltPlanConversionTest.cpp
-  Substrait2BoltValuesNodeConversionTest.cpp
+  BoltSubstraitRoundTripTest.cpp
+  BoltSubstraitSignatureTest.cpp
+  BoltToSubstraitTypeTest.cpp
   FunctionTest.cpp
   JsonToProtoConverter.cpp
-  BoltSubstraitRoundTripTest.cpp
-  BoltToSubstraitTypeTest.cpp
-  BoltSubstraitSignatureTest.cpp
-  SubstraitExtensionCollectorTest.cpp)
+  Substrait2BoltPlanConversionTest.cpp
+  Substrait2BoltValuesNodeConversionTest.cpp
+  SubstraitExtensionCollectorTest.cpp
+)
 
 add_dependencies(bolt_plan_conversion_test bolt_substrait_plan_converter)
 
 add_test(
   NAME bolt_plan_conversion_test
   COMMAND bolt_plan_conversion_test
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_link_libraries(
   bolt_plan_conversion_test
@@ -75,7 +76,8 @@ target_link_libraries(
   gflags::gflags
   glog::glog
   fmt::fmt
-  ${FILESYSTEM})
+  ${FILESYSTEM}
+)
 
 if(${BOLT_ENABLE_TORCH})
   target_compile_definitions(bolt_plan_conversion_test PRIVATE BOLT_HAS_TORCH=1)

@@ -38,6 +38,8 @@ using namespace bytedance::bolt::exec;
 using namespace bytedance::bolt::exec::CastUtils;
 namespace bytedance::bolt::exec::CastUtils {
 
+constexpr size_t kStackBufSize = 64;
+
 #ifdef SPARK_COMPATIBLE
 constexpr bool isInSpark = true;
 #else
@@ -587,10 +589,14 @@ class Converter {
             from, fromScale_, StringView::kInlineSize, inlined);
         to.setNoCopy(std::string_view(inlined, strSize));
       } else {
-        std::vector<char> cached(fromDecimalMaxSize_);
+        BOLT_DCHECK_LE(
+            fromDecimalMaxSize_,
+            kStackBufSize,
+            "DecimalSize must be less than 64");
+        char cached[kStackBufSize];
         auto strSize = DecimalUtil::convertToString(
-            from, fromScale_, fromDecimalMaxSize_, cached.data());
-        to.set(std::string_view(cached.data(), strSize));
+            from, fromScale_, fromDecimalMaxSize_, cached);
+        to.set(std::string_view(cached, strSize));
       }
     } else if constexpr (fromKind == PrimitiveKind::DATE) {
       try {

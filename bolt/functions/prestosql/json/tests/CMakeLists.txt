@@ -27,7 +27,8 @@
 
 add_executable(
   bolt_functions_json_test JsonExtractorTest.cpp JsonPathTokenizerTest.cpp
-                            SIMDJsonExtractorTest.cpp)
+                           SIMDJsonExtractorTest.cpp
+)
 
 add_test(bolt_functions_json_test bolt_functions_json_test)
 
@@ -41,4 +42,5 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   gflags::gflags
-  glog::glog)
+  glog::glog
+)

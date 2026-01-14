@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,18 +15,20 @@
 
 # TXT Reader setup
 if(BOLT_ENABLE_TXT)
-    add_library(bolt_dwio_txt_reader TxtReader.cpp RegisterTxtReader.cpp)
-    target_link_libraries(bolt_dwio_txt_reader
-            xsimd::xsimd
-            bolt_type
-            bolt_dwio_common
-            fmt::fmt
-            arrow::arrow
-            Snappy::snappy
-            zstd::libzstd_static
-            protobuf::protobuf
-            Folly::folly)
+  add_library(bolt_dwio_txt_reader RegisterTxtReader.cpp TxtReader.cpp)
+  target_link_libraries(
+    bolt_dwio_txt_reader
+    xsimd::xsimd
+    bolt_type
+    bolt_dwio_common
+    fmt::fmt
+    arrow::arrow
+    Snappy::snappy
+    zstd::libzstd_static
+    protobuf::protobuf
+    Folly::folly
+  )
 else()
-    add_library(bolt_dwio_txt_reader RegisterTxtReader.cpp)
-    # No additional dependencies
+  add_library(bolt_dwio_txt_reader RegisterTxtReader.cpp)
+  # No additional dependencies
 endif()

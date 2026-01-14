@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_dwrf_test_utils E2EWriterTestUtil.cpp)
 
 target_link_libraries(
@@ -40,7 +39,8 @@ target_link_libraries(
   bolt_type
   bolt_vector
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)
 
 # older versions of GCC need it to allow std::filesystem
 if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9)

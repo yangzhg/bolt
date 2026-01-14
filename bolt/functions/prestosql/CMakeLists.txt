@@ -31,19 +31,19 @@ add_subdirectory(window)
 
 add_library(
   bolt_functions_prestosql_impl
+  ArrayAndMapMatch.cpp
   ArrayConstructor.cpp
   ArrayContains.cpp
   ArrayDistinct.cpp
   ArrayDuplicates.cpp
   ArrayIntersectExcept.cpp
-  ArrayAndMapMatch.cpp
   ArrayPosition.cpp
   ArraySort.cpp
   ArraySum.cpp
   Comparisons.cpp
   DecimalVectorFunctions.cpp
-  ElementAt.cpp
   Element.cpp
+  ElementAt.cpp
   FilterFunctions.cpp
   FindFirst.cpp
   FromUnixTime.cpp
@@ -70,15 +70,16 @@ add_library(
   Transform.cpp
   TransformKeys.cpp
   TransformValues.cpp
+  UdfMapArrayCombine.cpp
+  UdfMapFilterKeys.cpp
+  UdfStringToLongArray.cpp
   URLFunctions.cpp
   Utf8Utils.cpp
   VectorArithmetic.cpp
   WidthBucketArray.cpp
   Zip.cpp
   ZipWith.cpp
-  UdfMapFilterKeys.cpp
-  UdfMapArrayCombine.cpp
-  UdfStringToLongArray.cpp)
+)
 
 target_link_libraries(
   bolt_functions_prestosql_impl
@@ -92,10 +93,10 @@ target_link_libraries(
   ${ICU_LIBRARIES}
   utf8proc::utf8proc
   Boost::regex
-  Folly::folly)
+  Folly::folly
+)
 
-set_property(TARGET bolt_functions_prestosql_impl PROPERTY JOB_POOL_COMPILE
-                                                            high_memory_pool)
+set_property(TARGET bolt_functions_prestosql_impl PROPERTY JOB_POOL_COMPILE high_memory_pool)
 
 if(${BOLT_ENABLE_AGGREGATES})
   add_subdirectory(aggregates)
@@ -114,4 +115,3 @@ if(${BOLT_ENABLE_BENCHMARKS})
 endif()
 
 add_subdirectory(registration)
-

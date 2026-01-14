@@ -57,4 +57,3 @@ services:
         limits:
           cpus: '1.0'
           memory: 2G
-

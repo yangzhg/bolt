@@ -25,15 +25,15 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_duckdb_conversion DuckConversion.cpp)
 
 target_link_libraries(bolt_duckdb_conversion bolt_core bolt_vector duckdb::duckdb)
 
 add_library(bolt_duckdb_parser DuckParser.cpp)
 
-target_link_libraries(bolt_duckdb_parser bolt_duckdb_conversion
-                      bolt_parse_expression duckdb::duckdb)
+target_link_libraries(
+  bolt_duckdb_parser bolt_duckdb_conversion bolt_parse_expression duckdb::duckdb
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)

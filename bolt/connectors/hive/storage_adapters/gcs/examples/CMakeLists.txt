@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(bolt_gcsfile_example GCSFileSystemExample.cpp)
 target_link_libraries(
   bolt_gcsfile_example
@@ -35,4 +34,5 @@ target_link_libraries(
   bolt_core
   bolt_hive_connector
   bolt_dwio_common_exception
-  bolt_exec)
+  bolt_exec
+)

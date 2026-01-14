@@ -17,6 +17,6 @@
 #include "bolt/functions/prestosql/aggregates/ApproxPercentileAggregate.h"
 namespace bytedance::bolt::aggregate::prestosql {
 
-template class KllSketchAccumulator<@TYPE@>;
+template class KllSketchAccumulator<@type@>;
 
 } // namespace bytedance::bolt::aggregate::prestosql

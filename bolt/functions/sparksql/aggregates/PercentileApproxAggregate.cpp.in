@@ -16,5 +16,5 @@
 
 #include "bolt/functions/sparksql/aggregates/PercentileApproxAggregate.h"
 namespace bytedance::bolt::functions::aggregate::sparksql {
-template class PercentileApproxAggregate<@TYPE@>;
+template class PercentileApproxAggregate<@type@>;
 } // namespace bytedance::bolt::functions::aggregate::sparksql

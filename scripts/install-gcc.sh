@@ -24,7 +24,7 @@ if [ "$(id -u)" -ne 0 ]; then
   exit 1
 fi
 
-    
+
 if [ $# -lt 1 ]; then
   GCC_VERSION=12.5.0
   echo "by default GCC_VERSION=12.5.0"
@@ -39,15 +39,15 @@ if [[ "$ID" = "centos" || "$ID" = "fedora" ]]; then
   dnf updateinfo -y && dnf --refresh -y install gcc gcc-c++ make bzip2 autoconf automake
 fi
 if [[ "$ID" = "debian" || "$ID" = "ubuntu" ]]; then
-  apt update && apt install -y gcc g++ make bzip2 autoconf automake 
+  apt update && apt install -y gcc g++ make bzip2 autoconf automake
 fi
 
 rm -rf /tmp/gcc-${GCC_VERSION}*
 wget  https://mirrors.aliyun.com/gnu/gcc/gcc-${GCC_VERSION}/gcc-${GCC_VERSION}.tar.gz -P /tmp
 tar -xzvf /tmp/gcc-${GCC_VERSION}.tar.gz -C /tmp && cd $(realpath /tmp/gcc-${GCC_VERSION})
-./contrib/download_prerequisites 
-./configure --prefix=/usr/ --enable-checking=release --enable-languages=c,c++ --disable-multilib 
+./contrib/download_prerequisites
+./configure --prefix=/usr/ --enable-checking=release --enable-languages=c,c++ --disable-multilib
 make -j $(nproc) && make install-strip
-ldconfig  
+ldconfig
 rm -rf  /tmp/gcc*
 gcc --version

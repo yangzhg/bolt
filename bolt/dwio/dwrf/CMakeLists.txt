@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_subdirectory(common)
 add_subdirectory(proto)
 add_subdirectory(reader)

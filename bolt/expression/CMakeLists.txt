@@ -25,22 +25,23 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_library(bolt_type_signature TypeSignature.cpp)
 
 target_link_libraries(bolt_type_signature bolt_common_base Boost::headers)
 
 add_library(
-  bolt_expression_functions FunctionSignature.cpp SignatureBinder.cpp
-                             ReverseSignatureBinder.cpp)
+  bolt_expression_functions FunctionSignature.cpp ReverseSignatureBinder.cpp SignatureBinder.cpp
+)
 
 target_link_libraries(
-  bolt_expression_functions bolt_common_base bolt_type_calculation
-  bolt_type_signature bolt_signature_parser)
+  bolt_expression_functions bolt_common_base bolt_type_calculation bolt_type_signature
+  bolt_signature_parser
+)
 
 add_library(
   bolt_expression
   BooleanMix.cpp
+  CastExpr-tpl.cpp
   CastExpr.cpp
   CoalesceExpr.cpp
   ConjunctExpr.cpp
@@ -62,26 +63,23 @@ add_library(
   SwitchExpr.cpp
   TryExpr.cpp
   VectorFunction.cpp
-  CastExpr-tpl.cpp)
+)
 
 target_link_libraries(
-  bolt_expression 
+  bolt_expression
   bolt_common_base
-  bolt_core 
-  bolt_expression_functions 
+  bolt_core
+  bolt_expression_functions
   bolt_filter
   bolt_functions_util
   bolt_vector
   utf8proc::utf8proc
   date::date
-  )
+)
 
-if (${ENABLE_BOLT_EXPR_JIT})
+if(${ENABLE_BOLT_EXPR_JIT})
   find_package(ThrustVector REQUIRED)
-  target_link_libraries(
-    bolt_expression PRIVATE
-    ThrustVector::JIT
-  )
+  target_link_libraries(bolt_expression PRIVATE ThrustVector::JIT)
 endif()
 
 add_subdirectory(type_calculation)

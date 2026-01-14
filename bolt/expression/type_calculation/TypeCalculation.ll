@@ -27,7 +27,7 @@
  * This modified file is released under the same license.
  * --------------------------------------------------------------------------
  */
- 
+
 %{
 #include "bolt/expression/type_calculation/TypeCalculation.yy.h"  // @manual
 #include "bolt/expression/type_calculation/Scanner.h"

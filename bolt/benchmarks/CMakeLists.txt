@@ -28,7 +28,7 @@
 add_subdirectory(basic)
 add_subdirectory(unstable)
 
-set(bolt_benchmark_deps
+set(BOLT_BENCHMARK_DEPS
     bolt_type
     bolt_vector
     bolt_vector_fuzzer
@@ -40,17 +40,17 @@ set(bolt_benchmark_deps
     ${FOLLY_BENCHMARK}
     ${DOUBLE_CONVERSION}
     gflags::gflags
-    glog::glog)
+    glog::glog
+)
 
 add_library(bolt_benchmark_builder ExpressionBenchmarkBuilder.cpp)
-target_link_libraries(bolt_benchmark_builder ${bolt_benchmark_deps})
+target_link_libraries(bolt_benchmark_builder ${BOLT_BENCHMARK_DEPS})
 # This is a workaround for the use of VectorTestBase.h which includes gtest.h
 target_link_libraries(bolt_benchmark_builder GTest::gtest)
 
 if(${BOLT_ENABLE_BENCHMARKS})
   add_subdirectory(tpch)
 endif()
-
 
 add_library(bolt_query_benchmark QueryBenchmarkBase.cpp)
 target_link_libraries(
@@ -74,4 +74,5 @@ target_link_libraries(
   bolt_vector_test_lib
   Folly::folly
   Folly::follybenchmark
-  fmt::fmt)
+  fmt::fmt
+)

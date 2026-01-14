@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_executable(
   bolt_functions_spark_test
   ArithmeticTest.cpp
@@ -35,68 +34,69 @@ add_executable(
   ArrayInsertTest.cpp
   ArrayMaxTest.cpp
   ArrayMinTest.cpp
-  ArraySliceSumTest.cpp
   ArrayPrependTest.cpp
-  SparkArraySortTest.cpp
+  ArrayShuffleTest.cpp
+  ArraySliceSumTest.cpp
   ArrayUnionTest.cpp
   AtLeastNNonNullsTest.cpp
-  ArrayShuffleTest.cpp
   Base64Test.cpp
   BitwiseTest.cpp
   ComparisonsTest.cpp
-  SparkSqlDateTimeFunctionsTest.cpp
   DecimalArithmeticFuncTest.cpp
   DecimalArithmeticTest.cpp
   DecimalCompareTest.cpp
   DecimalRoundTest.cpp
   DecimalUtilTest.cpp
-  MakeDecimalTest.cpp
-  MakeTimestampTest.cpp
   ElementAtTest.cpp
+  FactorialTest.cpp
+  FromJsonTest.cpp
   FromJsonTest.cpp
   GetArrayStructFieldsTest.cpp
-  FactorialTest.cpp
+  GetStructFieldTest.cpp
   HashTest.cpp
+  HiveHashTest.cpp
   ICURegexFunctionsTest.cpp
   InTest.cpp
+  JsonFunctionSonicOnDemandPerfTest.cpp
+  JsonFunctionTest.cpp
+  JsonObjectKeysTest.cpp
+  JsonSplitTest.cpp
   JsonToMapTest.cpp
   JsonTupleTest.cpp
-  JsonObjectKeysTest.cpp
   LeastGreatestTest.cpp
+  MakeDecimalTest.cpp
+  MakeTimestampTest.cpp
   MapConcatTest.cpp
   MapTest.cpp
   MaskTest.cpp
+  MightContainTest.cpp
   MightContainTest.cpp
   RaiseErrorTest.cpp
   RandTest.cpp
   RegexFunctionsTest.cpp
   SizeTest.cpp
   SortArrayTest.cpp
+  SparkArraySortTest.cpp
   SparkCastExprTest.cpp
   SparkPartitionIdTest.cpp
+  SparkSqlDateTimeFunctionsTest.cpp
   SplitFunctionsTest.cpp
   StringTest.cpp
+  UdfMapArrayCombineTest.cpp
+  UdfMapFilterKeysTest.cpp
+  UdfMapUpdateTest.cpp
+  UdfStringToLongArrayTest.cpp
   UnBase64Test.cpp
   UnscaledValueFunctionTest.cpp
   URLFunctionsTest.cpp
   XxHash64Test.cpp
-  MightContainTest.cpp
-  JsonFunctionTest.cpp
-  JsonFunctionSonicOnDemandPerfTest.cpp
-  UdfStringToLongArrayTest.cpp
-  UdfMapUpdateTest.cpp
-  HiveHashTest.cpp
-  JsonSplitTest.cpp
-  FromJsonTest.cpp
-  UdfMapFilterKeysTest.cpp
-  UdfMapArrayCombineTest.cpp
-  GetStructFieldTest.cpp
 )
 
 add_test(
   NAME bolt_functions_spark_test
   COMMAND bolt_functions_spark_test
-  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
 
 target_link_libraries(
   bolt_functions_spark_test
@@ -107,4 +107,5 @@ target_link_libraries(
   GTest::gtest
   GTest::gtest_main
   GTest::gmock
-  gflags::gflags)
+  gflags::gflags
+)

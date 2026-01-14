@@ -25,19 +25,20 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_library(bolt_exception Exceptions.cpp BoltException.cpp Exceptions.h)
+add_library(bolt_exception BoltException.cpp Exceptions.cpp Exceptions.h)
 target_link_libraries(
-  bolt_exception PUBLIC bolt_flag_definitions bolt_process Folly::folly
-                         fmt::fmt gflags::gflags glog::glog)
+  bolt_exception PUBLIC bolt_flag_definitions bolt_process Folly::folly fmt::fmt gflags::gflags
+                        glog::glog
+)
 
 add_library(
   bolt_common_base
   BitUtil.cpp
-  Counters.cpp
   BloomFilter.cpp
-  Md5.cpp
+  BoltLibSignalHandler.cpp
+  Counters.cpp
   Fs.cpp
+  Md5.cpp
   RandomUtil.cpp
   RuntimeMetrics.cpp
   SimdUtil.cpp
@@ -45,8 +46,8 @@ add_library(
   SpillStats.cpp
   StatsReporter.cpp
   SuccinctPrinter.cpp
-  BoltLibSignalHandler.cpp
-  Uuid.cpp)
+  Uuid.cpp
+)
 
 find_package(ryu CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED)
@@ -63,7 +64,8 @@ target_link_libraries(
          ryu::ryu
          date::date
          openssl::openssl
-  PRIVATE bolt_common_compression bolt_process bolt_test_util glog::glog)
+  PRIVATE bolt_common_compression bolt_process bolt_test_util glog::glog
+)
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tests)
@@ -82,10 +84,12 @@ target_link_libraries(
   glog::glog
   Folly::folly
   ${FMT}
-  gflags::gflags)
+  gflags::gflags
+)
 
 add_library(bolt_status Status.cpp)
 target_link_libraries(
   bolt_status
   PUBLIC fmt::fmt Folly::folly
-  PRIVATE glog::glog)
+  PRIVATE glog::glog
+)

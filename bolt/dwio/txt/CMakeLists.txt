@@ -17,5 +17,5 @@ add_subdirectory(reader)
 add_subdirectory(writer)
 
 if(${BOLT_BUILD_TESTING} AND BOLT_ENABLE_TXT)
-    add_subdirectory(tests)
+  add_subdirectory(tests)
 endif()

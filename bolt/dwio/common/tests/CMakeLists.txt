@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_subdirectory(utils)
 
 add_executable(
@@ -41,12 +40,13 @@ add_executable(
   LoggedExceptionTest.cpp
   ParallelForTest.cpp
   RangeTests.cpp
-  ReadFileInputStreamTests.cpp
   ReaderTest.cpp
+  ReadFileInputStreamTests.cpp
   RetryTests.cpp
   TestBufferedInput.cpp
   TypeTests.cpp
-  WriterTest.cpp)
+  WriterTest.cpp
+)
 add_test(bolt_dwio_common_test bolt_dwio_common_test)
 target_link_libraries(
   bolt_dwio_common_test
@@ -62,17 +62,20 @@ target_link_libraries(
   GTest::gtest_main
   GTest::gmock
   glog::glog
-  fmt::fmt)
+  fmt::fmt
+)
 
 add_executable(bolt_dwio_common_data_buffer_benchmark DataBufferBenchmark.cpp)
 
 target_link_libraries(
-  bolt_dwio_common_data_buffer_benchmark bolt_dwio_common bolt_memory
+  bolt_dwio_common_data_buffer_benchmark
+  bolt_dwio_common
+  bolt_memory
   bolt_dwio_common_exception
   ${FOLLY}
   ${FOLLY_BENCHMARK}
   arrow::arrow
-  )
+)
 
 add_executable(bolt_dwio_common_int_decoder_benchmark IntDecoderBenchmark.cpp)
 target_link_libraries(
@@ -82,7 +85,8 @@ target_link_libraries(
   bolt_dwio_dwrf_common
   ${FOLLY}
   ${FOLLY_BENCHMARK}
-  arrow::arrow)
+  arrow::arrow
+)
 
 add_library(bolt_e2e_filter_test_base E2EFilterTestBase.cpp)
 
@@ -99,15 +103,16 @@ target_link_libraries(
   ${LZO}
   ${ZSTD}
   ${ZLIB_LIBRARIES}
-  ${TEST_LINK_LIBS})
+  ${TEST_LINK_LIBS}
+)
 
 if(BOLT_ENABLE_ARROW AND BOLT_ENABLE_BENCHMARKS)
   add_subdirectory(Lemire/FastPFor)
-  add_executable(bolt_dwio_common_bitpack_decoder_benchmark
-                 BitPackDecoderBenchmark.cpp)
+  add_executable(bolt_dwio_common_bitpack_decoder_benchmark BitPackDecoderBenchmark.cpp)
 
-  target_compile_options(bolt_dwio_common_bitpack_decoder_benchmark
-                         PRIVATE -Wno-deprecated-declarations)
+  target_compile_options(
+    bolt_dwio_common_bitpack_decoder_benchmark PRIVATE -Wno-deprecated-declarations
+  )
 
   target_link_libraries(
     bolt_dwio_common_bitpack_decoder_benchmark
@@ -116,5 +121,6 @@ if(BOLT_ENABLE_ARROW AND BOLT_ENABLE_BENCHMARKS)
     bolt_fastpforlib
     duckdb::duckdb
     ${FOLLY}
-    ${FOLLY_BENCHMARK})
+    ${FOLLY_BENCHMARK}
+  )
 endif()

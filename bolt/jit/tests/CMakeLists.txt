@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,79 +13,66 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if (${ENABLE_BOLT_JIT})
+if(${ENABLE_BOLT_JIT})
 
-add_executable(
-  bolt_thrustjit_test
-  ThrustJitEngineTest.cpp
-  RowContainerIRTest.cpp
-)
-target_compile_features(bolt_thrustjit_test PUBLIC cxx_std_20)
-target_link_libraries(bolt_thrustjit_test 
-  bolt_process
-  bolt_thrustjit 
-  bolt_exception
-  GTest::gtest  
-  GTest::gtest_main)
+  add_executable(bolt_thrustjit_test ThrustJitEngineTest.cpp RowContainerIRTest.cpp)
+  target_compile_features(bolt_thrustjit_test PUBLIC cxx_std_20)
+  target_link_libraries(
+    bolt_thrustjit_test bolt_process bolt_thrustjit bolt_exception GTest::gtest GTest::gtest_main
+  )
 
-add_executable(
-  bolt_rowEqVectors_test
-  RowEqVectorsIRTest.cpp
-)
-target_link_libraries(bolt_rowEqVectors_test 
-  bolt_process
-  bolt_exec
-  bolt_type
-  bolt_functions_lib
-  bolt_exec_test_lib
-  bolt_functions_prestosql
-  bolt_vector_fuzzer
-  bolt_vector_test_lib
-  Folly::folly
-  bolt_thrustjit 
-  GTest::gtest  
-  GTest::gtest_main)
+  add_executable(bolt_rowEqVectors_test RowEqVectorsIRTest.cpp)
+  target_link_libraries(
+    bolt_rowEqVectors_test
+    bolt_process
+    bolt_exec
+    bolt_type
+    bolt_functions_lib
+    bolt_exec_test_lib
+    bolt_functions_prestosql
+    bolt_vector_fuzzer
+    bolt_vector_test_lib
+    Folly::folly
+    bolt_thrustjit
+    GTest::gtest
+    GTest::gtest_main
+  )
 
-add_executable(
-  bolt_rowEqRow_test
-  RowEqRowIRTest.cpp
-)
+  add_executable(bolt_rowEqRow_test RowEqRowIRTest.cpp)
 
-target_link_libraries(bolt_rowEqRow_test 
-  bolt_process
-  bolt_exec
-  bolt_type
-  bolt_functions_lib
-  bolt_exec_test_lib
-  bolt_functions_prestosql
-  bolt_vector_fuzzer
-  bolt_vector_test_lib
-  Folly::folly
-  bolt_thrustjit 
-  GTest::gtest  
-  GTest::gtest_main)
+  target_link_libraries(
+    bolt_rowEqRow_test
+    bolt_process
+    bolt_exec
+    bolt_type
+    bolt_functions_lib
+    bolt_exec_test_lib
+    bolt_functions_prestosql
+    bolt_vector_fuzzer
+    bolt_vector_test_lib
+    Folly::folly
+    bolt_thrustjit
+    GTest::gtest
+    GTest::gtest_main
+  )
 
-set_target_properties(bolt_thrustjit_test PROPERTIES ENABLE_EXPORTS ON)
+  set_target_properties(bolt_thrustjit_test PROPERTIES ENABLE_EXPORTS ON)
 
-add_test(bolt_thrustjit_test bolt_thrustjit_test)
+  add_test(bolt_thrustjit_test bolt_thrustjit_test)
 
 endif()
 
-
 # TODO: refactor expression codegen
-if (${ENABLE_BOLT_EXPR_JIT})
-  add_executable(
-    bolt_expr_jit_test
-    JitExprTest.cpp
-  )
+if(${ENABLE_BOLT_EXPR_JIT})
+  add_executable(bolt_expr_jit_test JitExprTest.cpp)
   find_package(ThrustVector REQUIRED)
   add_test(
     NAME bolt_expr_jit_test
     COMMAND bolt_expr_jit_test
-    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  )
 
   target_compile_features(bolt_expr_jit_test PUBLIC cxx_std_17)
-
 
   target_link_libraries(
     bolt_expr_jit_test
@@ -120,6 +107,7 @@ if (${ENABLE_BOLT_EXPR_JIT})
     bolt_process
     glog::glog
     ${FMT}
-    ${FILESYSTEM})
+    ${FILESYSTEM}
+  )
 
-endif()  # ENABLE_BOLT_EXPR_JIT
+endif() # ENABLE_BOLT_EXPR_JIT

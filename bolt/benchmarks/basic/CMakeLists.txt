@@ -25,7 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-set(bolt_benchmark_deps
+set(BOLT_BENCHMARK_DEPS
     bolt_type
     bolt_vector
     bolt_vector_fuzzer
@@ -39,61 +39,64 @@ set(bolt_benchmark_deps
     ${FOLLY_BENCHMARK}
     GTest::gtest
     gflags::gflags
-    glog::glog)
+    glog::glog
+)
 
 add_executable(bolt_benchmark_basic_simple_arithmetic SimpleArithmetic.cpp)
-target_link_libraries(bolt_benchmark_basic_simple_arithmetic
-                      ${bolt_benchmark_deps})
+target_link_libraries(bolt_benchmark_basic_simple_arithmetic ${BOLT_BENCHMARK_DEPS})
 
 add_executable(bolt_benchmark_basic_comparison_conjunct ComparisonConjunct.cpp)
-target_link_libraries(bolt_benchmark_basic_comparison_conjunct
-                      ${bolt_benchmark_deps})
+target_link_libraries(bolt_benchmark_basic_comparison_conjunct ${BOLT_BENCHMARK_DEPS})
 
 add_executable(bolt_benchmark_basic_simple_cast SimpleCastExpr.cpp)
-target_link_libraries(bolt_benchmark_basic_simple_cast ${bolt_benchmark_deps})
+target_link_libraries(bolt_benchmark_basic_simple_cast ${BOLT_BENCHMARK_DEPS})
 
 add_executable(bolt_benchmark_basic_decoded_vector DecodedVector.cpp)
-target_link_libraries(bolt_benchmark_basic_decoded_vector
-                      ${bolt_benchmark_deps})
+target_link_libraries(bolt_benchmark_basic_decoded_vector ${BOLT_BENCHMARK_DEPS})
 
 add_executable(bolt_benchmark_basic_selectivity_vector SelectivityVector.cpp)
-target_link_libraries(bolt_benchmark_basic_selectivity_vector
-                      ${bolt_benchmark_deps})
+target_link_libraries(bolt_benchmark_basic_selectivity_vector ${BOLT_BENCHMARK_DEPS})
 
 add_executable(bolt_benchmark_basic_vector_compare VectorCompare.cpp)
-target_link_libraries(bolt_benchmark_basic_vector_compare
-                      ${bolt_benchmark_deps} bolt_vector_test_lib)
+target_link_libraries(
+  bolt_benchmark_basic_vector_compare ${BOLT_BENCHMARK_DEPS} bolt_vector_test_lib
+)
 
 add_executable(bolt_benchmark_basic_vector_slice VectorSlice.cpp)
-target_link_libraries(bolt_benchmark_basic_vector_slice
-                      ${bolt_benchmark_deps} bolt_vector_test_lib)
+target_link_libraries(bolt_benchmark_basic_vector_slice ${BOLT_BENCHMARK_DEPS} bolt_vector_test_lib)
 
 add_executable(bolt_benchmark_feature_normalization FeatureNormalization.cpp)
-target_link_libraries(bolt_benchmark_feature_normalization
-                      ${bolt_benchmark_deps} bolt_functions_prestosql)
+target_link_libraries(
+  bolt_benchmark_feature_normalization ${BOLT_BENCHMARK_DEPS} bolt_functions_prestosql
+)
 
 add_executable(bolt_benchmark_basic_preproc Preproc.cpp)
-target_link_libraries(bolt_benchmark_basic_preproc ${bolt_benchmark_deps}
-                      bolt_functions_prestosql bolt_vector_test_lib)
+target_link_libraries(
+  bolt_benchmark_basic_preproc ${BOLT_BENCHMARK_DEPS} bolt_functions_prestosql bolt_vector_test_lib
+)
 
 add_executable(bolt_like_tpch_benchmark LikeTpchBenchmark.cpp)
-target_link_libraries(bolt_like_tpch_benchmark ${bolt_benchmark_deps}
-                      bolt_functions_lib bolt_tpch_gen bolt_vector_test_lib)
+target_link_libraries(
+  bolt_like_tpch_benchmark ${BOLT_BENCHMARK_DEPS} bolt_functions_lib bolt_tpch_gen
+  bolt_vector_test_lib
+)
 
 add_executable(bolt_like_benchmark LikeBenchmark.cpp)
 target_link_libraries(
-  bolt_like_benchmark ${bolt_benchmark_deps} bolt_functions_lib
-  bolt_functions_prestosql bolt_vector_test_lib)
+  bolt_like_benchmark ${BOLT_BENCHMARK_DEPS} bolt_functions_lib bolt_functions_prestosql
+  bolt_vector_test_lib
+)
 
 add_executable(bolt_benchmark_basic_vector_fuzzer VectorFuzzer.cpp)
-target_link_libraries(bolt_benchmark_basic_vector_fuzzer
-                      ${bolt_benchmark_deps} bolt_vector_test_lib)
+target_link_libraries(
+  bolt_benchmark_basic_vector_fuzzer ${BOLT_BENCHMARK_DEPS} bolt_vector_test_lib
+)
 
 add_executable(bolt_cast_benchmark CastBenchmark.cpp)
-target_link_libraries(bolt_cast_benchmark ${bolt_benchmark_deps}
-                      bolt_vector_test_lib)
+target_link_libraries(bolt_cast_benchmark ${BOLT_BENCHMARK_DEPS} bolt_vector_test_lib)
 
 add_executable(bolt_format_datetime_benchmark FormatDateTimeBenchmark.cpp)
 target_link_libraries(
-  bolt_format_datetime_benchmark ${bolt_benchmark_deps} bolt_vector_test_lib
-  bolt_functions_spark bolt_functions_prestosql)
+  bolt_format_datetime_benchmark ${BOLT_BENCHMARK_DEPS} bolt_vector_test_lib bolt_functions_spark
+  bolt_functions_prestosql
+)

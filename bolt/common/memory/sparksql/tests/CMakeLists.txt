@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) ByteDance Ltd. and/or its affiliates
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,8 @@
 include(GoogleTest)
 
 add_executable(
-  bolt_memory_sparksql_test
-  MemoryConsumerTest.cpp
-  MemoryTargetTest.cpp
-  NativeMemoryManagerTest.cpp)
+  bolt_memory_sparksql_test MemoryConsumerTest.cpp MemoryTargetTest.cpp NativeMemoryManagerTest.cpp
+)
 
 target_link_libraries(
   bolt_memory_sparksql_test
@@ -28,4 +26,5 @@ target_link_libraries(
   glog::glog
   GTest::gmock
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

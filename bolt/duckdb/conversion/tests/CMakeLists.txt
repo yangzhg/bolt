@@ -25,9 +25,7 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
-add_executable(bolt_duckdb_conversion_test DuckConversionTest.cpp
-                                            DuckParserTest.cpp)
+add_executable(bolt_duckdb_conversion_test DuckConversionTest.cpp DuckParserTest.cpp)
 
 add_test(bolt_duckdb_conversion_test bolt_duckdb_conversion_test)
 
@@ -40,4 +38,5 @@ target_link_libraries(
   bolt_functions_test_lib
   GTest::gtest
   GTest::gtest_main
-  gflags::gflags)
+  gflags::gflags
+)

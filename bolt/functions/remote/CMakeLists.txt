@@ -25,7 +25,6 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-
 add_subdirectory(if)
 add_subdirectory(client)
 add_subdirectory(server)

@@ -27,15 +27,16 @@
 
 add_executable(
   bolt_hive_connector_test
+  FileHandleTest.cpp
+  HiveConfigTest.cpp
+  HiveConnectorSerDeTest.cpp
+  HiveConnectorTest.cpp
   HiveDataSinkTest.cpp
   HivePartitionFunctionTest.cpp
-  FileHandleTest.cpp
   HivePartitionUtilTest.cpp
-  HiveConnectorTest.cpp
-  HiveConnectorSerDeTest.cpp
   PartitionIdGeneratorTest.cpp
   TableHandleTest.cpp
-  HiveConfigTest.cpp)
+)
 add_test(bolt_hive_connector_test bolt_hive_connector_test)
 
 target_link_libraries(
@@ -48,4 +49,5 @@ target_link_libraries(
   bolt_exec
   bolt_exec_test_lib
   GTest::gtest
-  GTest::gtest_main)
+  GTest::gtest_main
+)

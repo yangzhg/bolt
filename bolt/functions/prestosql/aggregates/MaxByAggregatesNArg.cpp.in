@@ -17,5 +17,5 @@
 #include "bolt/functions/prestosql/aggregates/MinMaxByAggregates.h"
 namespace bytedance::bolt::aggregate::prestosql {
 template std::unique_ptr<exec::Aggregate>
-createNArg<MaxByNAggregate, @TYPE@>(TypePtr, TypePtr, const std::string&);
+createNArg<MaxByNAggregate, @type@>(TypePtr, TypePtr, const std::string&);
 } // namespace bytedance::bolt::aggregate::prestosql

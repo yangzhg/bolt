@@ -86,9 +86,9 @@ TEST_F(JitEngineTest, basic) {
   auto tsm = jit->CreateTSModule(fn);
 
   const char* ir = R"IR(
-       ;declare i32 @llvm.bswap.i32(i32) 
+       ;declare i32 @llvm.bswap.i32(i32)
 
-        ;eclare i64 @llvm.bswap.i64(i64) 
+        ;eclare i64 @llvm.bswap.i64(i64)
 
         declare i64 @extern_test_sum(i64 noundef, i64 noundef) local_unnamed_addr
 

@@ -15,23 +15,23 @@
 #
 set -euo pipefail
 
-CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+CUR_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
 cd "${CUR_DIR}"
 
 # Does a shallow checkout of conan-center-index at the given commit id in $1
 checkout_conan_center_index() {
-    rm -rf "${cci_home}"
-    mkdir -p "${cci_home}"
-    pushd "${cci_home}"
-    git init
-    git remote add origin https://github.com/conan-io/conan-center-index.git
-    git fetch --depth 1 origin "${1}"
-    git checkout FETCH_HEAD
-    popd
+  rm -rf "${cci_home}"
+  mkdir -p "${cci_home}"
+  pushd "${cci_home}"
+  git init
+  git remote add origin https://github.com/conan-io/conan-center-index.git
+  git fetch --depth 1 origin "${1}"
+  git checkout FETCH_HEAD
+  popd
 }
 
 if ! conan remote list | grep -q 'bolt-local'; then
-    conan remote add -t local-recipes-index bolt-local "${CUR_DIR}/conan"
+  conan remote add -t local-recipes-index bolt-local "${CUR_DIR}/conan"
 fi
 
 # Clone conan-center-index and apply Bolt's patch
@@ -40,26 +40,26 @@ conan_center_commit_id="bad5c95b810e859c1c31553b92584246fe436d69"
 checkout_conan_center_index ${conan_center_commit_id}
 
 for patch_file in "${CUR_DIR}/conan/patches"/*.patch; do
-    if [ ! -f "$patch_file" ]; then
-        continue
-    fi
-    patch_name=$(basename "$patch_file")
-    if patch -p1 -t -d "$cci_home" -i "$patch_file" >/dev/null 2>&1; then
-        echo "✅ $patch_name has been applied to conan-center-index@${conan_center_commit_id} successfully"
-    else
-        echo "❌ Failed to apply $patch_name" >&2
-        exit 1
-    fi
+  if [ ! -f "$patch_file" ]; then
+    continue
+  fi
+  patch_name=$(basename "$patch_file")
+  if patch -p1 -t -d "$cci_home" -i "$patch_file" > /dev/null 2>&1; then
+    echo "✅ $patch_name has been applied to conan-center-index@${conan_center_commit_id} successfully"
+  else
+    echo "❌ Failed to apply $patch_name" >&2
+    exit 1
+  fi
 done
 
 if ! conan remote list | grep -q 'bolt-cci-local'; then
-    conan remote add -t local-recipes-index bolt-cci-local "${cci_home}"
+  conan remote add -t local-recipes-index bolt-cci-local "${cci_home}"
 fi
 
 # Move conancenter to the end of the list
 if conan remote list | grep -q 'conancenter'; then
-    conan remote remove conancenter
-    conan remote add conancenter https://center2.conan.io
+  conan remote remove conancenter
+  conan remote add conancenter https://center2.conan.io
 else
-    conan remote add conancenter https://center2.conan.io
+  conan remote add conancenter https://center2.conan.io
 fi

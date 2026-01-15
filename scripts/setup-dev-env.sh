@@ -26,91 +26,93 @@
 # This modified file is released under the same license.
 # --------------------------------------------------------------------------
 
-CUR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+CUR_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" > /dev/null && pwd)"
 
 set -e
 
 function check_basic_tools() {
-    local tools=("wget" "make" "cmake" "ninja")
-    local all_installed=true
+  local tools=("wget" "make" "cmake" "ninja")
+  local all_installed=true
 
-    for tool in "${tools[@]}"; do
-        if command -v "$tool" >/dev/null 2>&1; then
-            printf "✅ Already installed $tool\n"
-        else
-            printf "❌ Not installed $tool\n"
-            all_installed=false
-        fi
-    done
-
-    if ! $all_installed; then
-        echo "Bolt require basic tools like ${tools[@]} been installed, please install missing tools!"
-        return 1
+  for tool in "${tools[@]}"; do
+    if command -v "$tool" > /dev/null 2>&1; then
+      printf "✅ Already installed %s\n" "$tool"
     else
-        echo "All required tools have been installed!"
-        return 0
+      printf "❌ Not installed %s\n" "$tool"
+      all_installed=false
     fi
+  done
+
+  if ! $all_installed; then
+    echo "Bolt require basic tools like ${tools[*]} been installed, please install missing tools!"
+    return 1
+  else
+    echo "All required tools have been installed!"
+    return 0
+  fi
 }
 
 function check_compiler() {
-    if command -v gcc &> /dev/null; then
-        gcc_version=$(gcc -dumpversion | cut -f1 -d.)
+  if command -v gcc &> /dev/null; then
+    gcc_version=$(gcc -dumpversion | cut -f1 -d.)
 
-        if [ "$gcc_version" -eq 10 ] || [ "$gcc_version" -eq 11 ] || [ "$gcc_version" -eq 12 ]; then
-            echo "✅ gcc version: $gcc_version"
-            return 0
-        fi
-    else
-        echo "❌ gcc is not installed"
+    if [ "$gcc_version" -eq 10 ] || [ "$gcc_version" -eq 11 ] || [ "$gcc_version" -eq 12 ]; then
+      echo "✅ gcc version: $gcc_version"
+      return 0
     fi
+  else
+    echo "❌ gcc is not installed"
+  fi
 
-    echo "Bolt requires gcc-10/gcc-11/gcc-12/clang-16. Please install the correct compiler version."
-    echo "Install compiler by running(with root user): bash ${CUR_DIR}/install-gcc.sh"
-    return 1
+  echo "Bolt requires gcc-10/gcc-11/gcc-12/clang-16. Please install the correct compiler version."
+  echo "Install compiler by running(with root user): bash ${CUR_DIR}/install-gcc.sh"
+  return 1
 }
 
 function install_python_dep() {
-    if [ ! -d ~/miniconda3 ]; then
-        echo "Installing conda"
-        MINICONDA_VERSION=py310_23.1.0-1
-        MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-$(arch).sh
-        wget --progress=dot:mega  ${MINICONDA_URL} -O /tmp/miniconda.sh
-        chmod +x /tmp/miniconda.sh && /tmp/miniconda.sh -b -u -p ~/miniconda3 && rm -f /tmp/miniconda.sh
-        echo "export PATH=~/miniconda3/bin:\$PATH" >> ~/.bashrc
-        source ~/.bashrc && pip install --upgrade pip || true
-    fi
-    source ~/.bashrc
-    pip install -r "${CUR_DIR}/../requirements.txt"
+  if [ ! -d ~/miniconda3 ]; then
+    echo "Installing conda"
+    MINICONDA_VERSION=py310_23.1.0-1
+    MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-${MINICONDA_VERSION}-Linux-$(arch).sh
+    wget --progress=dot:mega "${MINICONDA_URL}" -O /tmp/miniconda.sh
+    chmod +x /tmp/miniconda.sh && /tmp/miniconda.sh -b -u -p ~/miniconda3 && rm -f /tmp/miniconda.sh
+    echo "export PATH=~/miniconda3/bin:\$PATH" >> ~/.bashrc
+    # shellcheck source=/dev/null
+    source ~/.bashrc && pip install --upgrade pip || true
+  fi
+  # shellcheck source=/dev/null
+  source ~/.bashrc
+  pip install -r "${CUR_DIR}/../requirements.txt"
 }
 
 function check_conan() {
-    if [ -z "${CONAN_HOME:-}" ]; then
-        export CONAN_HOME=~/.conan2
-    fi
+  if [ -z "${CONAN_HOME:-}" ]; then
+    export CONAN_HOME=~/.conan2
+  fi
 
-    if [ ! -f "${CONAN_HOME}/profiles/default" ]; then
-        conan profile detect
-    fi
-    echo "Configuring conan profile to use gnu C++17 standard by default"
-    sed -i 's/gnu14/gnu17/g' ${CONAN_HOME}/profiles/default
+  if [ ! -f "${CONAN_HOME}/profiles/default" ]; then
+    conan profile detect
+  fi
+  echo "Configuring conan profile to use gnu C++17 standard by default"
+  sed -i 's/gnu14/gnu17/g' "${CONAN_HOME}"/profiles/default
 }
 
 function install_git_hooks() {
-    # ensure pre-commit has been installed
-    if ! command -v "pre-commit" >/dev/null 2>&1; then
-        echo "❌ Expect pre-commit has been installed"
-        return 1
-    fi
-    # install hooks
-    cd "${CUR_DIR}/../"
-    if [ -f ".pre-commit-config.yaml" ]; then
-        pre-commit install
-        echo "✅ Installing all git hooks successfully"
-        return 0
-    fi
-    # error handling
-    echo "❌ Expect .pre-commit-config.yaml exists in path ${CUR_DIR}/../"
+  # ensure pre-commit has been installed
+  if ! command -v "pre-commit" > /dev/null 2>&1; then
+    echo "❌ Expect pre-commit has been installed"
     return 1
+  fi
+  # install hooks
+  cd "${CUR_DIR}/../"
+  if [ -f ".pre-commit-config.yaml" ]; then
+    pre-commit install
+    echo "✅ Installing all git hooks successfully"
+    return 0
+  fi
+  # error handling
+  echo "❌ Expect .pre-commit-config.yaml exists in path ${CUR_DIR}/../"
+  return 1
 }
 
 check_basic_tools

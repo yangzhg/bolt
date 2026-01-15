@@ -21,8 +21,7 @@ import re
 from conan import ConanFile
 from conan.tools import files, scm
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
-from conan.tools.env import Environment, VirtualBuildEnv, VirtualRunEnv
-import csv
+from conan.tools.env import VirtualBuildEnv, VirtualRunEnv
 
 # Now, set options of third parties
 postfix = "/*"
@@ -276,7 +275,7 @@ class BoltConan(ConanFile):
                     f"Has minimum kernel required for io_uring: {has_minimum_kernel}"
                 )
                 return has_minimum_kernel
-        self.output.info(f"OS is not Linux. io_uring is not supported.")
+        self.output.info("OS is not Linux. io_uring is not supported.")
         return False
 
     def requirements(self):
@@ -289,10 +288,14 @@ class BoltConan(ConanFile):
             self.requires("llvm-core/13.0.0")
 
         if self.options.get_safe("enable_s3"):
-            self.requires("aws-sdk-cpp/1.11.692", transitive_headers=True, transitive_libs=True)
+            self.requires(
+                "aws-sdk-cpp/1.11.692", transitive_headers=True, transitive_libs=True
+            )
             self.requires("aws-c-common/0.12.5", force=True)
         self.requires("simdjson/3.12.3", transitive_headers=True)
-        self.requires("sonic-cpp/1.0.2-fix", transitive_headers=True, transitive_libs=True)
+        self.requires(
+            "sonic-cpp/1.0.2-fix", transitive_headers=True, transitive_libs=True
+        )
         self.requires(
             f"protobuf/{protobuf_version}",
             transitive_headers=True,
@@ -345,10 +348,13 @@ class BoltConan(ConanFile):
         if self.options.get_safe("python_bind"):
             self.requires("pybind11/2.13.1")
         if self.options.get_safe("enable_colocate"):
-            self.requires(f"grpc/1.50.0")
+            self.requires("grpc/1.50.0")
         # upgrade libcurl from 8.11.1 to 8.12.1 to avoid SIGABRT issue in https://github.com/curl/curl/issues/15725
         self.requires("libcurl/8.12.1", override=True)
-        if self.options.enable_torch != None:
+        if (
+            self.options.enable_torch is not None
+            and self.options.enable_torch.value is not None
+        ):
             self.requires(
                 "libtorch/2.6.0", options={"torch": self.options.enable_torch}
             )
@@ -372,7 +378,10 @@ class BoltConan(ConanFile):
         self.tool_requires("ninja/1.11.1")
         self.tool_requires("protobuf/<host_version>")
         self.tool_requires("thrift/<host_version>")
-        if self.options.get_safe("enable_test") and self.settings.os in ["Linux", "FreeBSD"]:
+        if self.options.get_safe("enable_test") and self.settings.os in [
+            "Linux",
+            "FreeBSD",
+        ]:
             self.test_requires("jemalloc/5.3.0")
 
     def layout(self):
@@ -401,7 +410,7 @@ class BoltConan(ConanFile):
 
         if self.options.get_safe("enable_s3"):
             s3_opt = self.options["aws-sdk-cpp/*"]
-            setattr(s3_opt, 'text-to-speech', False)
+            setattr(s3_opt, "text-to-speech", False)
 
         arrow_simd_level = "default"
         if str(self.settings.arch) in ["x86", "x86_64"]:
@@ -434,7 +443,9 @@ class BoltConan(ConanFile):
         self.options[arrow].with_test = True
         self.options[arrow].with_csv = True
 
-        if self.options.get_safe("enable_hdfs") and self.options.get_safe("use_arrow_hdfs"):
+        if self.options.get_safe("enable_hdfs") and self.options.get_safe(
+            "use_arrow_hdfs"
+        ):
             self.options[arrow].with_hdfs = True
 
         if self.options.get_safe("es_build"):
@@ -499,24 +510,26 @@ class BoltConan(ConanFile):
             flags = f"{self.BOLT_GLOABL_FLAGS} -march=armv8.3-a"
             tc.cache_variables["CMAKE_CXX_FLAGS"] = flags
             tc.cache_variables["CMAKE_C_FLAGS"] = flags
-        elif str(self.settings.arch) in ["armv9"] and not is_msvc(self):
+        elif str(self.settings.arch) in ["armv9"]:
             # gcc 12+ https://www.phoronix.com/news/GCC-12-ARMv9-march-armv9-a
             flags = f"{self.BOLT_GLOABL_FLAGS} -march=armv9-a"
             tc.variables["CMAKE_C_FLAGS"] = flags
             tc.variables["CMAKE_CXX_FLAGS"] = flags
-
-        if self.options.enable_torch != None:
+        if (
+            self.options.enable_torch is not None
+            and self.options.enable_torch.value is not None
+        ):
             tc.cache_variables["BOLT_ENABLE_TORCH"] = "ON"
         else:
             tc.cache_variables["BOLT_ENABLE_TORCH"] = "OFF"
 
         if self.options.enable_asan:
-            tc.cache_variables[
-                "CMAKE_CXX_FLAGS"
-            ] += " -fsanitize=address -fno-omit-frame-pointer "
-            tc.cache_variables[
-                "CMAKE_C_FLAGS"
-            ] += " -fsanitize=address -fno-omit-frame-pointer "
+            tc.cache_variables["CMAKE_CXX_FLAGS"] += (
+                " -fsanitize=address -fno-omit-frame-pointer "
+            )
+            tc.cache_variables["CMAKE_C_FLAGS"] += (
+                " -fsanitize=address -fno-omit-frame-pointer "
+            )
 
         tc.cache_variables["TREAT_WARNINGS_AS_ERRORS"] = "OFF"
         tc.cache_variables["ENABLE_ALL_WARNINGS"] = "ON"
@@ -653,15 +666,15 @@ class BoltConan(ConanFile):
         cmake.configure()
         targets = None
         target_option = self.options.get_safe("targets")
-        if target_option != None:  # target is an internal class with __eq__ override
-            targets = str(target_option).split(",")
+        if target_option is None and target_option.value is not None:
+            targets = str(target_option.value).split(",")
             self.output.info(f"Building targets: {targets}")
         cmake.build(target=targets)
         self.generate_dep_graph()
 
     def generate_dep_graph(self):
         dot_file = os.path.join(self.build_folder, "graph", "bolt.dot")
-        graphviz_command =  f"cmake --graphviz={dot_file} ."
+        graphviz_command = f"cmake --graphviz={dot_file} ."
         self.run(graphviz_command, cwd=self.build_folder)
         # generate dependency graph
         dep_path = os.path.join(self.build_folder, "deps")
@@ -670,7 +683,7 @@ class BoltConan(ConanFile):
             "thirdparties": DepLoader().get_third_party_dep(dot_file),
         }
         os.makedirs(dep_path, exist_ok=True)
-        with open(os.path.join(dep_path, f"dep.json"), "w") as f:
+        with open(os.path.join(dep_path, "dep.json"), "w") as f:
             json.dump(deps, f, indent=4)
 
     def split_name_version(self, pkg_str):
@@ -784,9 +797,9 @@ class BoltConan(ConanFile):
             # Note: instead of dot file,
             # it would be better to generate dependency file using a cmake function
             if "(" in tgt_name and ")" in tgt_name:
-                l = tgt_name.find("(")
-                r = tgt_name.find(")")
-                tgt_name = tgt_name[l + 1 : r]
+                lparen = tgt_name.find("(")
+                rparen = tgt_name.find(")")
+                tgt_name = tgt_name[lparen + 1 : rparen]
 
             # here, conan's API seems a bit weird
             pkg = tgt_name.lower()

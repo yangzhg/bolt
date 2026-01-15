@@ -106,6 +106,7 @@ header:
     - '**/*.patch'
     - '**/*.txt'
     - '.git/**'
+    - '.github/**'
     - '.licenserc.yaml'
     - 'license.header'
     - 'bolt/tpch/gen/dbgen/**'

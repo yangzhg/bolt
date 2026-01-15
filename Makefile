@@ -238,7 +238,7 @@ conan_build:
 	-o bolt/*:enable_exception_trace=${ENABLE_EXCEPTION_TRACE} \
 	-o bolt/*:ldb_build=${LDB_BUILD} \
 	-o bolt/*:enable_crc=${ENABLE_CRC} \
-	-pr ${PROFILE} \
+	-pr ${PROFILE} -pr ../../scripts/conan/bolt.profile \
 	${CONAN_OPTIONS}" > conan.options && \
 	read ALL_CONAN_OPTIONS < conan.options && \
 	conan graph info ../.. $${ALL_CONAN_OPTIONS} --format=html > bolt.conan.graph.html  && \

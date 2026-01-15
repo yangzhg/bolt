@@ -28,7 +28,6 @@
 
 
 import argparse
-from itertools import groupby
 import json
 import regex
 import sys
@@ -103,7 +102,8 @@ TEST_CHECKS = check_list(TEST_CHECKS)
 class Multimap(dict):
     def __setitem__(self, key, value):
         if key not in self:
-            dict.__setitem__(self, key, [value])  # call super method to avoid recursion
+            # call super method to avoid recursion
+            dict.__setitem__(self, key, [value])
         else:
             self[key].append(value)
 

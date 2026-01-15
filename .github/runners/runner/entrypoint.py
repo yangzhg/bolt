@@ -3,6 +3,7 @@ import os
 import subprocess
 import requests
 
+
 def create_registration_token(token, org_name, repo_name):
     url = f"https://api.github.com/repos/{org_name}/{repo_name}/actions/runners/registration-token"
     headers = {
@@ -14,6 +15,7 @@ def create_registration_token(token, org_name, repo_name):
     response.raise_for_status()
     return response.json()["token"]
 
+
 def main():
     # ensure all variables are set, error message should include unset variables
     unset_vars = [
@@ -23,7 +25,7 @@ def main():
             "ORGANIZATION_NAME",
             "REPOSITORY_NAME",
             "RUNNER_LABELS",
-            "DOCKER_DATA_DIR"
+            "DOCKER_DATA_DIR",
         ]
         if not os.environ.get(var)
     ]
@@ -31,7 +33,9 @@ def main():
         raise ValueError(f"Variables {', '.join(unset_vars)} must be set")
 
     # do a reverse DNS lookup to get the hostname:
-    runner_hostname = subprocess.check_output("dig -x $(hostname -i) +short | cut -d'.' -f1", shell=True).strip()
+    runner_hostname = subprocess.check_output(
+        "dig -x $(hostname -i) +short | cut -d'.' -f1", shell=True
+    ).strip()
 
     gh_auth_token = os.environ["GITHUB_RUNNER_TOKEN"]
     runner_name = f"{os.environ['RUNNER_HOSTNAME']}-{runner_hostname}"
@@ -58,6 +62,7 @@ def main():
 
     print("Starting the runner...")
     os.execv("/bin/bash", ["/bin/bash", "/actions-runner/run.sh"])
+
 
 if __name__ == "__main__":
     main()

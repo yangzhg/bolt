@@ -26,21 +26,21 @@ index f24a8abff..777e71f65 100644
 +         link_directories(${CMAKE_PREFIX_PATH}/lib)
 +    endif()
 +endforeach()
-
+ 
  #if (NOT APPLE)
  #    set(Boost_USE_STATIC_RUNTIME ON)
 @@ -120,7 +116,7 @@ find_path(OPT_OPENSSL_DIR NAMES opt/openssl@1.1)
  set(OPENSSL_ROOT_DIR "${OPT_OPENSSL_DIR}/opt/openssl@1.1")
  find_package(OpenSSL REQUIRED)
-
+ 
 -find_package(Protobuf REQUIRED)
 +find_package(protobuf REQUIRED)
-
+ 
  set(CMAKE_MODULE_PATH
          "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
 @@ -130,13 +126,21 @@ find_library(FIZZ fizz REQUIRED)
  find_library(WANGLE wangle REQUIRED)
-
+ 
  find_package(LZ4 REQUIRED)
 +find_package(xxHash CONFIG QUIET)
 +
@@ -56,13 +56,13 @@ index f24a8abff..777e71f65 100644
 -        xxhash
 +        ${XXHASH_LIBRARY}
  )
-
+ 
 -find_library(RE2 re2)
 -
 +find_package(re2 CONFIG REQUIRED)
  find_package(fizz CONFIG REQUIRED)
  find_package(wangle CONFIG REQUIRED)
-
+ 
 diff --git a/cpp/celeborn/utils/CMakeLists.txt b/cpp/celeborn/utils/CMakeLists.txt
 index fa440a730..006fe1d2b 100644
 --- a/cpp/celeborn/utils/CMakeLists.txt
@@ -73,5 +73,5 @@ index fa440a730..006fe1d2b 100644
          ${GFLAGS_LIBRARIES}
 +        ${PROTOBUF_LIBRARY}
  )
-
+ 
  if(CELEBORN_BUILD_TESTS)

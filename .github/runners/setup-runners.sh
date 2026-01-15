@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR=$(dirname "$(readlink -f "$0")")
 cd "$SCRIPT_DIR"
 
+# shellcheck disable=SC2086
 docker compose build ${BUILD_ARGS}
 docker compose up -d
 # wait a few seconds for the registry to start up

@@ -66,9 +66,9 @@ TEST(ByteRle, simpleTest) {
 }
 
 TEST(ByteRle, nullTest) {
-  char buffer[258];
-  uint64_t nulls[5];
-  char result[266];
+  char buffer[258] = {};
+  uint64_t nulls[5] = {};
+  char result[266] = {};
   buffer[0] = -128;
   buffer[129] = -128;
   for (int32_t i = 0; i < 128; ++i) {

@@ -16,6 +16,9 @@
 
 #include "bolt/common/base/tests/GTestUtils.h"
 #include "bolt/functions/flinksql/tests/FlinkFunctionBaseTest.h"
+
+using bytedance::bolt::test::emptyArray;
+
 namespace bytedance::bolt::functions::flinksql::test {
 
 namespace {
@@ -55,7 +58,7 @@ TEST_F(JsonFunctionsTest, jsonStrToMap) {
       evaluateExpr(
           "{\"a\": \"1\", \"b\": {\"c\" : \"2\"}, \"d\": [\"3\", \"4\"]}"),
       {{{"a", "1"}, {"b", "{\"c\":\"2\"}"}, {"d", "[\"3\",\"4\"]"}}});
-  testJsonStrToMap(evaluateExpr("{}"), {{}});
+  testJsonStrToMap(evaluateExpr("{}"), emptyArray);
   testJsonStrToMap(evaluateExpr("{\"a\": null}"), {{{"a", std::nullopt}}});
   BOLT_ASSERT_THROW(
       evaluateExpr("{\"a\": \"1}"), "A string is opened, but never closed");
@@ -70,7 +73,7 @@ TEST_F(JsonFunctionsTest, jsonStrToMap) {
           "{\"a\": \"1\", \"b\": {\"c\" : \"2\"}, \"d\": [\"3\", \"4\"]}",
           false),
       {{{"a", "1"}, {"b", "{\"c\":\"2\"}"}, {"d", "[\"3\",\"4\"]"}}});
-  testJsonStrToMap(evaluateExpr("{}", true), {{}});
+  testJsonStrToMap(evaluateExpr("{}", true), emptyArray);
   testJsonStrToMap(
       evaluateExpr("{\"a\": null}", true), {{{"a", std::nullopt}}});
   testJsonStrToMap(evaluateExpr("{\"a\": \"1}", true), std::nullopt);
@@ -141,7 +144,7 @@ TEST_F(JsonFunctionsTest, jsonStrToArray) {
       evaluateExpr("[\"测试组1\", \"测试组2]"),
       "A string is opened, but never closed");
   assertResult(evaluateExpr("[\"测试组1\", \"测试组2]", true), std::nullopt);
-  assertResult(evaluateExpr("[]", true), {{}});
+  assertResult(evaluateExpr("[]", true), emptyArray);
   assertResult(evaluateExpr("", true), std::nullopt);
   assertResult(
       evaluateExpr("[{\"c\":\"2\"}, {\"f\":2}]"),

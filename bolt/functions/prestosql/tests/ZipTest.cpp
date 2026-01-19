@@ -105,7 +105,7 @@ TEST_F(ZipTest, combineInt) {
 TEST_F(ZipTest, nullEmptyArray) {
   auto firstVector = makeNullableArrayVector<int32_t>({
       {{1, 1, 1, 1}},
-      {{}},
+      emptyArray,
       std::nullopt,
   });
 

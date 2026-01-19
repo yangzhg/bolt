@@ -38,9 +38,14 @@ using namespace bytedance::bolt::exec;
 TEST(SpillConfig, spillLevel) {
   const uint8_t kInitialBitOffset = 16;
   const uint8_t kNumPartitionsBits = 3;
+  static const std::string emptyPath = "";
+  GetSpillDirectoryPathCB getPathCb = [&]() -> const std::string& {
+    return emptyPath;
+  };
+  UpdateAndCheckSpillLimitCB checkLimitCb = [&](uint64_t) {};
   const SpillConfig config(
-      []() { return ""; },
-      [&](uint64_t) {},
+      getPathCb,
+      checkLimitCb,
       "fakeSpillPath",
       0,
       false,
@@ -120,14 +125,19 @@ TEST(SpillConfig, spillLevelLimit) {
       {30, 3, 60, -1, false},
       {30, 3, 63, -1, true},
       {30, 3, 66, -1, true}};
+  static const std::string emptyPath = "";
+  GetSpillDirectoryPathCB getPathCb = [&]() -> const std::string& {
+    return emptyPath;
+  };
+  UpdateAndCheckSpillLimitCB checkLimitCb = [&](uint64_t) {};
   for (const auto& testData : testSettings) {
     SCOPED_TRACE(testData.debugString());
 
     const HashBitRange partitionBits(
         testData.startBitOffset, testData.startBitOffset + testData.numBits);
     const SpillConfig config(
-        []() { return ""; },
-        [&](uint64_t) {},
+        getPathCb,
+        checkLimitCb,
         "fakeSpillPath",
         0,
         false,
@@ -169,13 +179,17 @@ TEST(SpillConfig, spillableReservationPercentages) {
       {1, 50, true},
       {1, 1, false}};
   const std::string emptySpillFolder = "";
+  GetSpillDirectoryPathCB getPathCb = [&]() -> const std::string& {
+    return emptySpillFolder;
+  };
+  UpdateAndCheckSpillLimitCB checkLimitCb = [&](uint64_t) {};
   for (const auto& testData : testSettings) {
     SCOPED_TRACE(testData.debugString());
 
     auto createConfigFn = [&]() {
       const SpillConfig config(
-          [&]() -> const std::string& { return emptySpillFolder; },
-          [&](uint64_t) {},
+          getPathCb,
+          checkLimitCb,
           "spillableReservationPercentages",
           0,
           false,

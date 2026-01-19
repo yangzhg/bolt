@@ -49,6 +49,9 @@
 #include "bolt/vector/TypeAliases.h"
 #include "bolt/vector/VectorTypeUtils.h"
 #include "bolt/vector/tests/utils/VectorTestBase.h"
+
+using bytedance::bolt::test::emptyArray;
+
 namespace bytedance::bolt {
 namespace {
 
@@ -3186,7 +3189,7 @@ TEST_F(VectorTest, containsNullAtArrays) {
   auto data = makeNullableArrayVector<int32_t>({
       {{1, 2}},
       {{1, 2, std::nullopt, 3}},
-      {{}},
+      emptyArray,
       std::nullopt,
       {{1, 2, 3, 4}},
   });
@@ -3203,7 +3206,7 @@ TEST_F(VectorTest, containsNullAtMaps) {
       {{{1, 10}, {2, 20}}},
       {{{3, 30}}},
       {{{1, 10}, {2, 20}, {3, std::nullopt}, {4, 40}}},
-      {{}},
+      emptyArray,
       std::nullopt,
       {{{1, 10}, {2, 20}, {3, 30}, {4, 40}}},
   });
@@ -3239,7 +3242,7 @@ TEST_F(VectorTest, containsNullAtStructs) {
           makeNullableArrayVector<int64_t>({
               {{1, 2}},
               {{1, 2, std::nullopt, 3}},
-              {{}},
+              emptyArray,
               {{1, 2, 3}},
               std::nullopt,
               {{1, 2, 3, 4, 5}},

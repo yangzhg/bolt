@@ -2326,14 +2326,14 @@ TEST_F(CastExprTest, castArrayError) {
       {{{"1"_sv, ""_sv, "3"_sv, "4"_sv}},
        // {{"5a"_sv}},  // it is ok, but it is disabled due to the UT framework
        // issue
-       {{}},
+       emptyArray,
        {{"6"_sv, "7"_sv}},
        std::nullopt});
   auto input = makeRowVector({arrayVector});
   auto expected = makeNullableArrayVector<int64_t>(
       {{{1, std::nullopt, 3, 4}},
        // {{std::nullopt}},  UT framework issue.
-       {{}},
+       emptyArray,
        {{6, 7}},
        std::nullopt});
 
@@ -2742,7 +2742,7 @@ TEST_F(CastExprTest, complexTypeToString) {
   // basic array / map / struct
   {
     auto arrayVector = makeNullableArrayVector<int>(
-        {{{0, 1}}, {{}}, {{2, std::nullopt, 3}}, std::nullopt});
+        {{{0, 1}}, emptyArray, {{2, std::nullopt, 3}}, std::nullopt});
     testCast(
         arrayVector,
         makeNullableFlatVector<StringView>(
@@ -2751,7 +2751,7 @@ TEST_F(CastExprTest, complexTypeToString) {
     auto mapVector = makeNullableMapVector<int32_t, double>(
         {{{{1, 1.25}, {3, std::nullopt}, {2, 4.5}}},
          std::nullopt,
-         {{}},
+         emptyArray,
          {{{5, 13.25}, {6, 1e7}}}},
         MAP(INTEGER(), DOUBLE()));
     testCast(
@@ -2802,7 +2802,7 @@ TEST_F(CastExprTest, complexTypeToString) {
     auto mapVector = makeNullableMapVector<int32_t, double>(
         {{{{1, 1.25}, {2, std::nullopt}, {3, 4.5}}},
          std::nullopt,
-         {{}},
+         emptyArray,
          {{{5, 13.25}, {6, 1e7}}}},
         MAP(INTEGER(), DOUBLE()));
     testCast(
@@ -2838,7 +2838,7 @@ TEST_F(CastExprTest, complexTypeToString) {
     auto mapVector = makeNullableMapVector<int32_t, double>(
         {{{{1, 1.25}, {2, std::nullopt}, {3, 4.5}}},
          std::nullopt,
-         {{}},
+         emptyArray,
          {{{5, 13.25}, {6, 1e7}}}},
         MAP(INTEGER(), DOUBLE()));
     testCast(
@@ -2916,7 +2916,7 @@ TEST_F(CastExprTest, complexTypeToString) {
     // array(array(bigint))
     using array_type = std::optional<std::vector<std::optional<int64_t>>>;
     array_type array1 = {{1, 2}};
-    array_type array2 = {{}};
+    array_type array2 = emptyArray;
     array_type array3 = {{1, 100, 2}};
 
     auto nestedArray =
@@ -2939,7 +2939,7 @@ TEST_F(CastExprTest, complexTypeToString) {
     auto mapOfArray = createMapOfArraysVector<int64_t, int64_t>(
         {{{1, {{2}}}, {2, std::nullopt}},
          {{3, {{4, std::nullopt, 6}}}},
-         {{7, {{8, 9, 10}}}, {11, {{}}}}});
+         {{7, {{8, 9, 10}}}, {11, emptyArray}}});
     testCast(
         mapOfArray,
         makeFlatVector<StringView>(
@@ -3158,7 +3158,7 @@ TEST_F(CastExprTest, mapCastStringFlinkCompatible) {
     auto mapVector = makeNullableMapVector<int32_t, double>(
         {{{{1, 1.25}, {3, std::nullopt}, {2, 4.5}}},
          std::nullopt,
-         {{}},
+         emptyArray,
          {{{5, 13.25}, {6, 1e7}}}},
         MAP(INTEGER(), DOUBLE()));
     testCast(

@@ -344,7 +344,7 @@ index 24a7af89b..27655cdf4 100644
          if self.options.with_jemalloc:
              self.requires("jemalloc/5.3.0")
          if self.options.with_mimalloc:
-@@ -159,7 +315,7 @@ class ArrowConan(ConanFile):
+@@ -159,13 +315,13 @@ class ArrowConan(ConanFile):
          if self.options.with_gflags:
              self.requires("gflags/2.2.2")
          if self.options.with_glog:
@@ -353,6 +353,13 @@ index 24a7af89b..27655cdf4 100644
          if self.options.get_safe("with_gcs"):
              self.requires("google-cloud-cpp/1.40.1")
          if self.options.with_grpc:
+             self.requires("grpc/1.50.0")
+         if self._requires_rapidjson():
+-            self.requires("rapidjson/1.1.0")
++            self.requires("rapidjson/[>=cci.20230929]")
+         if self.options.with_llvm:
+             self.requires("llvm-core/13.0.0")
+         if self.options.with_openssl:
 @@ -178,6 +334,8 @@ class ArrowConan(ConanFile):
              self.requires("opentelemetry-cpp/1.7.0")
          if self.options.with_s3:

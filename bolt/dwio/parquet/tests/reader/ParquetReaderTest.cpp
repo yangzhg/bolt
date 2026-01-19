@@ -41,6 +41,8 @@ using namespace bytedance::bolt::common;
 using namespace bytedance::bolt::dwio::common;
 using namespace bytedance::bolt::parquet;
 
+using bytedance::bolt::test::emptyArray;
+
 class ParquetReaderTest : public ParquetTestBase {
  public:
   std::unique_ptr<dwio::common::RowReader> createRowReader(
@@ -1264,7 +1266,7 @@ TEST_F(ParquetReaderTest, skip) {
               {"guangdongshenzhen", 3}}}}),
        makeNullableArrayVector<int32_t>(
            {{{1, 2, std::nullopt, 4}},
-            {{}},
+            emptyArray,
             std::nullopt,
             {{15, 26, std::nullopt}}}),
        makeRowVector(

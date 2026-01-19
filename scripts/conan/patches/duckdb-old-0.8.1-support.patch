@@ -113,10 +113,10 @@ index bc6bf23a..bb764a9d 100644
 @@ -9,7 +9,7 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain, cmake_layout
  import glob
  import os
-
+ 
 -required_conan_version = ">=2.1"
 +required_conan_version = ">=1.53.0"
-
+ 
  class DuckdbConan(ConanFile):
      name = "duckdb"
 @@ -25,6 +25,7 @@ class DuckdbConan(ConanFile):
@@ -143,11 +143,11 @@ index bc6bf23a..bb764a9d 100644
 -            del self.options.with_odbc
 +        if Version(self.version) >= "0.9.0":
 +            del self.options.with_parquet
-
+ 
      def configure(self):
          if self.options.shared:
 @@ -84,7 +86,7 @@ class DuckdbConan(ConanFile):
-
+ 
      def requirements(self):
          # FIXME: duckdb vendors a bunch of deps by modify the source code to have their own namespace
 -        if self.options.get_safe("with_odbc"):
@@ -239,7 +239,7 @@ index bc6bf23a..bb764a9d 100644
 -        if Version(self.version) >= "0.10.0" and cross_building(self):
 -            tc.variables["DUCKDB_EXPLICIT_PLATFORM"] = f"{self.settings.os}_{self.settings.arch}"
          tc.generate()
-
+ 
          dpes = CMakeDeps(self)
 @@ -197,11 +209,8 @@ class DuckdbConan(ConanFile):
                  "duckdb_fastpforlib",
@@ -252,7 +252,7 @@ index bc6bf23a..bb764a9d 100644
 -                self.cpp_info.libs.append("duckdb_yyjson")
 +            if Version(self.version) >= "0.6.0":
 +                self.cpp_info.libs.append("duckdb_fsst")
-
+ 
              if self.options.with_autocomplete:
                  self.cpp_info.libs.append("autocomplete_extension")
 @@ -219,8 +228,7 @@ class DuckdbConan(ConanFile):
@@ -266,7 +266,7 @@ index bc6bf23a..bb764a9d 100644
              if self.options.with_json:
                  self.cpp_info.libs.append("json_extension")
 @@ -236,5 +244,8 @@ class DuckdbConan(ConanFile):
-
+ 
          if self.settings.os == "Windows":
              self.cpp_info.system_libs.append("ws2_32")
 -            if Version(self.version) >= "0.10.0":
@@ -278,7 +278,7 @@ index bc6bf23a..bb764a9d 100644
 +            self.env_info.PATH.append(binpath)
 diff --git a/recipes/duckdb/all/patches/0.8.1-0001-fix-cmake.patch b/recipes/duckdb/all/patches/0.8.1-0001-fix-cmake.patch
 new file mode 100644
-index 000000000..5cd9417ef
+index 00000000..5cd9417e
 --- /dev/null
 +++ b/recipes/duckdb/all/patches/0.8.1-0001-fix-cmake.patch
 @@ -0,0 +1,87 @@
@@ -371,10 +371,10 @@ index 000000000..5cd9417ef
 +   link_threads(sqlite3_api_wrapper)
 diff --git a/recipes/duckdb/all/patches/0.8.1-0002-fix-clang.patch b/recipes/duckdb/all/patches/0.8.1-0002-fix-clang.patch
 new file mode 100644
-index 00000000..227f7ea0
+index 00000000..8f3fdef9
 --- /dev/null
 +++ b/recipes/duckdb/all/patches/0.8.1-0002-fix-clang.patch
-@@ -0,0 +1,98 @@
+@@ -0,0 +1,110 @@
 +diff --git a/src/core_functions/aggregate/distributive/arg_min_max.cpp b/src/core_functions/aggregate/distributive/arg_min_max.cpp
 +index 2fa9929158..35499878dc 100644
 +--- a/src/core_functions/aggregate/distributive/arg_min_max.cpp
@@ -473,6 +473,18 @@ index 00000000..227f7ea0
 + 	}
 + };
 +
++diff --git a/third_party/fsst/libfsst.hpp b/third_party/fsst/libfsst.hpp
++index a0e4256..5771e83 100644
++--- a/third_party/fsst/libfsst.hpp
+++++ b/third_party/fsst/libfsst.hpp
++@@ -17,6 +17,7 @@
++ // You can contact the authors via the FSST source repository : https://github.com/cwida/fsst 
++ #include <algorithm>
++ #include <cassert>
+++#include <cstdint>
++ #include <cstring>
++ #include <fstream>
++ #include <iostream>
 diff --git a/recipes/duckdb/config.yml b/recipes/duckdb/config.yml
 index edd51719..2eb48353 100644
 --- a/recipes/duckdb/config.yml

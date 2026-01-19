@@ -486,7 +486,7 @@ class VectorTestBase {
   //  Example:
   //   auto arrayVector = makeNullableArrayVector<int64_t>({
   //       {{1, 2, std::nullopt, 4}},
-  //       {{}},
+  //       emptyArray,Array,
   //       std::nullopt,
   //   });
   template <typename T>
@@ -1056,5 +1056,14 @@ class VectorTestBase {
       std::make_shared<folly::CPUThreadPoolExecutor>(
           std::thread::hardware_concurrency())};
 };
+
+struct EmptyArray {
+  template <typename T>
+  operator std::optional<std::vector<T>>() const {
+    return std::make_optional<std::vector<T>>({});
+  }
+};
+
+inline constexpr EmptyArray emptyArray;
 
 } // namespace bytedance::bolt::test

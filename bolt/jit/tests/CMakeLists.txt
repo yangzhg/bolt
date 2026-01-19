@@ -20,6 +20,7 @@ if(${ENABLE_BOLT_JIT})
   target_link_libraries(
     bolt_thrustjit_test bolt_process bolt_thrustjit bolt_exception GTest::gtest GTest::gtest_main
   )
+  target_include_directories(bolt_thrustjit_test PRIVATE SYSTEM ${LLVM_INCLUDE_DIRS})
 
   add_executable(bolt_rowEqVectors_test RowEqVectorsIRTest.cpp)
   target_link_libraries(

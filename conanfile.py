@@ -33,6 +33,7 @@ orc = f"orc{postfix}"
 icu = f"icu{postfix}"
 gperftools = f"gperftools{postfix}"
 liburing = f"liburing{postfix}"
+llvm_core = f"llvm-core{postfix}"
 
 
 class TorchOption:
@@ -442,6 +443,12 @@ class BoltConan(ConanFile):
             self.options[arrow].with_flight_rpc = True
         self.options[arrow].with_test = True
         self.options[arrow].with_csv = True
+        if self.options.get_safe("enable_jit"):
+            self.options[llvm_core].with_libedit = False
+            self.options[llvm_core].with_xml2 = False
+            self.options[llvm_core].with_z3 = False
+            self.options[llvm_core].with_zstd = False
+            self.options[llvm_core].with_ffi = False
 
         if self.options.get_safe("enable_hdfs") and self.options.get_safe(
             "use_arrow_hdfs"

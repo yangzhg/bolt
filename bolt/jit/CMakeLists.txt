@@ -19,10 +19,6 @@ add_library(
                  RowContainer/RowEqVectorsCodeGenerator.cpp
 )
 
-find_package(LLVM CONFIG REQUIRED)
-find_package(fmt CONFIG REQUIRED)
-find_package(Folly CONFIG REQUIRED)
-
 target_link_libraries(bolt_thrustjit PUBLIC llvm-core::llvm-core date::date fmt::fmt Folly::folly)
 
 target_compile_options(

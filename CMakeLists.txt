@@ -697,6 +697,8 @@ find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
 find_package(Arrow CONFIG REQUIRED)
 find_package(xxHash CONFIG REQUIRED)
+find_package(fmt CONFIG REQUIRED)
+
 
 include_directories(SYSTEM bolt)
 

@@ -23,6 +23,7 @@
 using namespace bytedance::bolt::exec;
 using namespace bytedance::bolt::exec::test;
 using namespace bytedance::bolt::functions::aggregate::test;
+using bytedance::bolt::test::emptyArray;
 namespace bytedance::bolt::aggregate::test {
 
 namespace {
@@ -32,7 +33,7 @@ class MapUnionCountTest : public AggregationTestBase {};
 TEST_F(MapUnionCountTest, global) {
   auto data = makeRowVector({
       makeNullableMapVector<int64_t, int64_t>({
-          {{}}, // empty map
+          emptyArray, // empty map
           std::nullopt, // null map
           {{{1, 10}, {2, 20}}},
           {{{1, 11}, {3, 30}, {4, 40}}},
@@ -86,9 +87,9 @@ TEST_F(MapUnionCountTest, nullAndEmptyMaps) {
   auto emptyAndNullMaps = makeRowVector({
       makeNullableMapVector<int64_t, int64_t>({
           std::nullopt,
-          {{}},
+          emptyArray,
           std::nullopt,
-          {{}},
+          emptyArray,
       }),
   });
 

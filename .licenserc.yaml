@@ -103,6 +103,8 @@ header:
     - '**/.gitignore'
     - '**/*.json'
     - '**/*.md'
+    - "**/go.mod"
+    - "**/go.sum"
     - '**/*.patch'
     - '**/*.txt'
     - '.git/**'

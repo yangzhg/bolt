@@ -974,7 +974,7 @@ TEST_F(ParquetReaderTest, filterRowGroups) {
 }
 
 TEST_F(ParquetReaderTest, parseLongTagged) {
-  // This is a case for long with annonation read
+  // This is a case for long with annotation read
   const std::string sample(getExampleFilePath("tagged_long.parquet"));
 
   bytedance::bolt::dwio::common::ReaderOptions readerOptions{leafPool_.get()};

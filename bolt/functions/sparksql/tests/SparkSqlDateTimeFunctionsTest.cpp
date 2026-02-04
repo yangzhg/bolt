@@ -501,7 +501,7 @@ TEST_F(SparkSqlDateTimeFunctionsTest, unixTimestampCustomFormatTimeZone) {
       unixTimestamp(
           "1900-12-31 23:59:59", "yyyy-MM-dd HH:mm:ss", "Asia/Shanghai"));
 
-  // format wiht different timezone
+  // format with different timezone
   // current yyyy-MM-ddTHH:mm:ss.SSZZ  is not support, since Specifier T is not
   // supported. // TODO to be supported
   const std::string ISO_8601_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSZZ";

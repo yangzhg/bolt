@@ -399,7 +399,7 @@ void Driver::enqueueInternal() {
   queueTimeStartMicros_ = getCurrentTimeMicro();
 }
 
-// Call an Oprator method. record silenced throws, but not a query
+// Call an Operator method. record silenced throws, but not a query
 // terminating throw. Annotate exceptions with Operator info.
 #define CALL_OPERATOR(call, operatorPtr, operatorId, operatorMethod)       \
   try {                                                                    \

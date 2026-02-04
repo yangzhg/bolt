@@ -583,7 +583,7 @@ class PageReader {
   int32_t rowNumberBias_{0};
 
   // Manages concatenating null flags read from multiple pages. If a
-  // readWithVisitor is contined in one page, the visitor places the
+  // readWithVisitor is continued in one page, the visitor places the
   // nulls in the reader. If many pages are covered, some with and
   // some without nulls, we must make a a concatenated null flags to
   // return to the caller.

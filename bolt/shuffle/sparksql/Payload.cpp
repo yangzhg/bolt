@@ -362,7 +362,7 @@ void BlockPayload::concatBuffer(
       result.status().message());
   std::shared_ptr<arrow::Buffer> lengthBuffer = result.MoveValueUnsafe();
   auto lengthBufferPtr = (int64_t*)lengthBuffer->mutable_data();
-  // caculate length
+  // calculate length
   int64_t originalLength = std::accumulate(
       sourceBuffers.begin(),
       hasComplexType ? sourceBuffers.end() - 1 : sourceBuffers.end(),
@@ -679,7 +679,7 @@ BlockPayload::deserializeRowVectorModeBuffers(
       uncompressLength != valueBuffer->size(),
       arrow::Status::Invalid(
           "uncompressLength " + std::to_string(uncompressLength) +
-          " stored in lengthBuffer do not equal actual lenght " +
+          " stored in lengthBuffer do not equal actual length " +
           std::to_string(valueBuffer->size())));
   std::vector<std::shared_ptr<arrow::Buffer>> buffers;
   int64_t bufferOffset = 0;

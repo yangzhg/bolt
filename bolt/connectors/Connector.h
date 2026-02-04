@@ -369,7 +369,7 @@ class IndexSource {
   virtual std::unordered_map<std::string, RuntimeCounter> runtimeStats() = 0;
 };
 
-// recored in-flight async threads and wait them done
+// recorded in-flight async threads and wait them done
 class AsyncThreadCtx {
  public:
   explicit AsyncThreadCtx(int64_t memLimit, bool adaptive)

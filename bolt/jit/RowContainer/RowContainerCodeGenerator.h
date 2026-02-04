@@ -89,7 +89,7 @@ class RowContainerCodeGenerator {
     return cmpType == CmpType::CMP_SPILL;
   }
 
-  // For compare non-contigous stringview, which allocated by
+  // For compare non-contiguous stringview, which allocated by
   // HashStringAllocator,  in the RowContainer
   const std::string rowStringViewCompareAsc = "StringViewCompareWrapper";
   const std::string RowBasedStringViewCompare = "RowBasedStringViewCompare";
@@ -141,8 +141,8 @@ class RowContainerCodeGenerator {
   /// \param func:  compare function body
   /// \param curr_blk: block for current key
   /// \param next_blk: block for next key, passed in for branch jump
-  /// \param phi_inputs: for phi node (the return result of this funciton)
-  /// \return: block for value comparasion
+  /// \param phi_inputs: for phi node (the return result of this function)
+  /// \return: block for value comparison
   virtual llvm::BasicBlock* genNullBitCmpIR(
       const llvm::SmallVector<llvm::Value*>& values, // left row, right row
       const size_t idx,

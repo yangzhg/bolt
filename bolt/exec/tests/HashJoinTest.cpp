@@ -5719,7 +5719,7 @@ TEST_F(HashJoinTest, memoryUsage) {
         auto outputBytes = planStats.at(joinNodeId).outputBytes;
         ASSERT_LT(outputBytes, ((40 + 50 + 30) / 3 + 8) * 1000 * 10 * 5);
         // Verify number of memory allocations. Should not be too high if
-        // hash join is able to re-use output vectors that contain
+        // hash join is able to reuse output vectors that contain
         // build-side data.
         ASSERT_GT(40, task->pool()->stats().numAllocs);
       })
@@ -8260,7 +8260,7 @@ TEST_F(HashJoinTest, duplicateLazyNotLoadedProbeVector) {
       .run();
 }
 
-/// a lazy vector cann't be wrapped twice, such as when filtering and get output
+/// a lazy vector can't be wrapped twice, such as when filtering and get output
 TEST_F(HashJoinTest, wrapLazyVectorInFilterAndOutput) {
   // VectorMaker vectorMaker{pool_};
   auto lazyVectorA = vectorMaker_.lazyFlatVector<int32_t>(

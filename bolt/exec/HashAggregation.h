@@ -114,7 +114,7 @@ class HashAggregation : public Operator {
   const volatile int32_t abandonPartialAggregationMinPct_;
 
   // Min unique rows pct for partial aggregation when memory usage reaches
-  // maximun. If more than this many rows are unique, the partial aggregation is
+  // maximum. If more than this many rows are unique, the partial aggregation is
   // not worthwhile.
   const volatile int32_t abandonPartialAggregationMinFinalPct_;
 

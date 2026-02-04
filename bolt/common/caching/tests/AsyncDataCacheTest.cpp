@@ -178,7 +178,7 @@ class AsyncDataCacheTest : public testing::Test {
   // number of entries, then loads the ones that nobody else is
   // loading. Stops after loading 'loadBytes' worth of entries. If
   // 'errorEveryNBatches' is non-0, every nth load batch will have a
-  // bad read and wil be dropped. The entries of the failed batch read
+  // bad read and will be dropped. The entries of the failed batch read
   // will still be accessed one by one. If 'largeEveryNBatches' is
   // non-0, allocates and freees a single allocation of 'largeBytes'
   // every so many batches. This creates extra memory pressure, as

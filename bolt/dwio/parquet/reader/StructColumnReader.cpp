@@ -55,7 +55,7 @@ StructColumnReader::StructColumnReader(
     // scanSpec for DCMap is a map, but we read it as a Struct.
     // manually add Struct type to scanSpec.
     // remove children from previous fileType or original Map type
-    // which may not be appliable to current fileType
+    // which may not be applicable to current fileType
     scanSpec_->removeAllChildFields();
     scanSpec_->addAllChildFields(*(fileType->type()));
   }

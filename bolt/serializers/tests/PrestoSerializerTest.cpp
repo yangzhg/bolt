@@ -544,7 +544,7 @@ TEST_P(PrestoSerializerTest, multiPage) {
   std::ostringstream out;
   std::vector<RowVectorPtr> testVectors;
   // Note: Page of size 1250 is a slight increase in size that initiates string
-  // buffer re-use.
+  // buffer reuse.
   for (int size : {1234, 1250, 538, 2408}) {
     auto vec = makeTestVector(size);
     serialize(vec, &out, nullptr);
@@ -675,7 +675,7 @@ TEST_P(PrestoSerializerTest, scatterEncoded) {
   inner->children()[2] =
       BaseVector::wrapInConstant(numNonNull, 3, inner->childAt(2));
 
-  // i4 is a struct that we wrap in constant. We make ths struct like it was
+  // i4 is a struct that we wrap in constant. We make this struct like it was
   // read from seriailization, needing scatter for struct nulls.
   auto i4 = const_cast<RowVector*>(
       inner->childAt(3)->wrappedVector()->as<RowVector>());

@@ -236,7 +236,7 @@ void EvalCtx::setError(
   addError(index, toBoltException(exceptionPtr), errors_);
 }
 
-// This should be used onlly when exceptionPtr is guranteed to be a
+// This should be used only when exceptionPtr is guaranteed to be a
 // BoltException.
 void EvalCtx::setBoltExceptionError(
     vector_size_t index,

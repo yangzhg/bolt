@@ -398,7 +398,7 @@ class AggregationTest : public OperatorTestBase,
   }
 
   // Makes batches which reference rows in 'rows' via dictionary. The
-  // dictionary indices are given by 'order', wich has values with
+  // dictionary indices are given by 'order', which has values with
   // indices plus random bits so as to create randomly scattered,
   // sometimes repeated values.
   void makeBatches(
@@ -952,7 +952,7 @@ TEST_P(AggregationTest, partialDistinctWithAbandon) {
       // 1st batch will produce 100 distinct groups from 10 rows.
       makeRowVector(
           {makeFlatVector<int32_t>(100, [](auto row) { return row; })}),
-      // 2st batch will trigger abandon partial aggregation event with no new
+      // 2nd batch will trigger abandon partial aggregation event with no new
       // distinct values.
       makeRowVector({makeFlatVector<int32_t>(1, [](auto row) { return row; })}),
       // 3rd batch will not produce any new distinct values.
@@ -1000,7 +1000,7 @@ TEST_P(AggregationTest, toIntermediate) {
       // 1st batch will produce 100 distinct groups from 10 rows.
       makeRowVector(
           {makeFlatVector<int32_t>(100, [](auto row) { return row; })}),
-      // 2st batch will trigger abandon partial aggregation event with no new
+      // 2nd batch will trigger abandon partial aggregation event with no new
       // distinct values.
       makeRowVector({makeFlatVector<int32_t>(1, [](auto row) { return row; })}),
       // 3rd batch will not produce any new distinct values.
@@ -1064,7 +1064,7 @@ TEST_P(AggregationTest, toIntermediateWithFilter) {
   std::vector<VectorPtr> c0 = {
       // 1st batch will produce 100 distinct groups from 10 rows.
       makeFlatVector<int32_t>(100, [](auto row) { return row; }),
-      // 2st batch will trigger abandon partial aggregation event with no new
+      // 2nd batch will trigger abandon partial aggregation event with no new
       // distinct values.
       makeFlatVector<int32_t>(1, [](auto row) { return row; }),
       // 3rd batch will not produce any new distinct values.
@@ -1075,7 +1075,7 @@ TEST_P(AggregationTest, toIntermediateWithFilter) {
   std::vector<VectorPtr> c1 = {
       // 1st batch will produce 100 distinct groups from 10 rows.
       makeFlatVector<int32_t>(100, [](auto row) { return row; }),
-      // 2st batch will trigger abandon partial aggregation event with no new
+      // 2nd batch will trigger abandon partial aggregation event with no new
       // distinct values.
       makeFlatVector<int32_t>(1, [](auto row) { return row; }),
       // 3rd batch will not produce any new distinct values.
@@ -1086,7 +1086,7 @@ TEST_P(AggregationTest, toIntermediateWithFilter) {
   std::vector<VectorPtr> c2 = {
       // 1st batch will produce 100 distinct groups from 10 rows.
       makeFlatVector<bool>(100, [](auto row) { return true; }),
-      // 2st batch will trigger abandon partial aggregation event with no new
+      // 2nd batch will trigger abandon partial aggregation event with no new
       // distinct values.
       makeFlatVector<bool>(1, [](auto row) { return true; }),
       // 3rd batch will not produce any new distinct values.

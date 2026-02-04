@@ -160,7 +160,7 @@ class TpchSpeedTest {
 
       LOG(INFO) << "Current throughput: " << printThroughput(bytesPerSec)
                 << " - " << rowsPerSec << " rows/s - " << totalRows_
-                << " rows cummulative.";
+                << " rows cumulative.";
       intervalStart_ = curTime;
       intervalRows_ = 0;
       intervalBytes_ = 0;

@@ -239,10 +239,10 @@ TEST_F(MemoryConsumerTest, expectWait) {
             std::make_shared<TaskMemoryManager>(memoryPool, 10);
         std::shared_ptr<MemoryConsumer> consumer =
             std::make_shared<TestMemoryConsumer>(taskMemoryManager);
-        // 1. accquire most of pool's memory
-        int64_t accquire = consumer->acquireMemory(capacity / 10 * 9);
-        // 2. expect accquire success, because only 1 task now
-        BOLT_CHECK(accquire == capacity / 10 * 9);
+        // 1. acquire most of pool's memory
+        int64_t acquire = consumer->acquireMemory(capacity / 10 * 9);
+        // 2. expect acquire success, because only 1 task now
+        BOLT_CHECK(acquire == capacity / 10 * 9);
         // 3. set flag, make waitForFreeThread begin
         threadBarrier.store(true, std::memory_order_seq_cst);
         std::this_thread::sleep_for(std::chrono::seconds(threadSleepFor));
@@ -261,17 +261,17 @@ TEST_F(MemoryConsumerTest, expectWait) {
             std::make_shared<TaskMemoryManager>(memoryPool, 99);
         std::shared_ptr<MemoryConsumer> consumer =
             std::make_shared<TestMemoryConsumer>(taskMemoryManager);
-        // 4. begin accquire memory, will wait (because expect at least 1/2N
+        // 4. begin acquire memory, will wait (because expect at least 1/2N
         // memory)
-        int64_t accquire = consumer->acquireMemory(capacity / 2);
-        // 6. will be notified, accquire success
-        BOLT_CHECK(accquire == capacity / 2);
+        int64_t acquire = consumer->acquireMemory(capacity / 2);
+        // 6. will be notified, acquire success
+        BOLT_CHECK(acquire == capacity / 2);
         auto finish = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = finish - start;
         // 7. expect will waiting for threadSleepFor seconds
         BOLT_CHECK(elapsed.count() >= threadSleepFor);
         // clean
-        consumer->freeMemory(accquire);
+        consumer->freeMemory(acquire);
       });
 
   overAccuqireThread.join();
@@ -302,8 +302,8 @@ TEST_F(MemoryConsumerTest, multiConsumer) {
                               this]() {
       for (int64_t j = 0; j < 1000; ++j) {
         int64_t randomConsume = folly::Random::rand32(1, 100, rng_);
-        int64_t accquire = consumer->acquireMemory(randomConsume);
-        *memRecord = *memRecord + accquire;
+        int64_t acquire = consumer->acquireMemory(randomConsume);
+        *memRecord = *memRecord + acquire;
       }
     });
   }

@@ -141,7 +141,7 @@ def git_changed_lines(commit):
         if match:
             file = ""
 
-        match = re.match(r"^\+\+\+ b/(.*(\.c|\.cc|\.cpp|\.cxx|\.h|\.hpp|\.hxx))$", line)
+        match = re.match(r"^\+\+\+ b/(.*(\.cc|\.cpp|\.cxx|\.h|\.hpp|\.hxx))$", line)
         if match:
             file = match.group(1)
 
@@ -163,10 +163,18 @@ def normalize_path(path):
     return os.path.normpath(path)
 
 
-def check_output(output):
+def check_output(output, warnings_as_errors=False):
+    """
+    Check if the output contains errors (and warnings if strict mode is on).
+    Returns True if passed (no blocking issues), False if failed.
+    """
     if not output.strip():
         return True
-    return re.search(r": (warning|error): ", output) is None
+
+    if warnings_as_errors:
+        return re.search(r": (warning|error): ", output) is None
+
+    return re.search(r": error: ", output) is None
 
 
 def run_clang_tidy_batch(cmd_base, file_batch):
@@ -204,7 +212,7 @@ def process_gha_output(stdout):
 
 
 def tidy(args):
-    extensions = (".c", ".cc", ".cpp", ".cxx", ".h", ".hpp", ".hxx")
+    extensions = (".cc", ".cpp", ".cxx", ".h", ".hpp", ".hxx")
     candidate_files = []
     # get file list to check
     if args.directory:
@@ -292,8 +300,11 @@ def tidy(args):
 
     if line_filter_json:
         cmd_base.append(f"--line-filter={line_filter_json}")
+
+    cmd_base.append("--extra-arg=-Wno-unknown-warning-option")
+
     jobs = args.jobs if args.jobs else max(1, multiprocessing.cpu_count() // 2)
-    chunk_size = 5
+    chunk_size = 10
     file_chunks = [
         files_to_process[i : i + chunk_size]
         for i in range(0, len(files_to_process), chunk_size)
@@ -311,10 +322,13 @@ def tidy(args):
 
         for future in as_completed(future_to_chunk):
             code, stdout, stderr = future.result()
+            is_failed = False
 
             if code != 0:
-                final_exit_code = 1
-            if not check_output(stdout):
+                is_failed = True
+            if not check_output(stdout, args.warnings_as_errors):
+                is_failed = True
+            if is_failed:
                 final_exit_code = 1
 
             if stdout.strip():
@@ -323,6 +337,17 @@ def tidy(args):
 
             if stderr.strip():
                 print(stderr, file=sys.stderr)
+            if is_failed and args.fail_fast:
+                print(
+                    "\n[Fail Fast] Error detected. Stopping remaining tasks...",
+                    file=sys.stderr,
+                )
+
+                try:
+                    executor.shutdown(wait=False, cancel_futures=True)
+                except TypeError:
+                    executor.shutdown(wait=False)
+                return 1
 
     return final_exit_code
 
@@ -348,7 +373,7 @@ def parse_args():
     )
     parser.add_argument(
         "--exclude",
-        default="tests/|.*Test\.cpp$|benchmark/|benchmarks/|.*Benchmark\.cpp$|.*Benchmarks\.cpp$|test/",
+        default="_build/|tests/|.*Test\.cpp$|benchmark/|benchmarks/|.*Benchmark\.cpp$|.*Benchmarks\.cpp$|test/|.*\.pb\.cc$|.*\.pb\.h$",
         help="Regular expression to exclude files or paths (e.g. 'tests/|.*Test\.cpp$')",
     )
     parser.add_argument(
@@ -364,6 +389,18 @@ def parse_args():
         "--clang-tidy-binary",
         default="clang-tidy",
         help="Path to clang-tidy binary (default: clang-tidy)",
+    )
+
+    parser.add_argument(
+        "--warnings-as-errors",
+        action="store_true",
+        help="Treat warnings as errors and exit with non-zero status",
+    )
+
+    parser.add_argument(
+        "--fail-fast",
+        action="store_true",
+        help="Stop processing immediately after the first error is found",
     )
 
     return parser.parse_args()

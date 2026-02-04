@@ -416,7 +416,7 @@ bool Cast<SOURCE, TARGET>::testBytes(const char* bytes, int32_t len) const {
         }
 
       } catch (...) {
-        // string -> double conversion failed, treat as UNKNOW.
+        // string -> double conversion failed, treat as UNKNOWN.
         return false;
       }
     } else {

@@ -408,7 +408,7 @@ class ScanSpec {
   // map with numeric key, this is the subscript as defined for array
   // or map.
   int64_t subscript_ = -1;
-  // Column name if this is a struct mamber. String key if this
+  // Column name if this is a struct member. String key if this
   // describes an operation on a map value.
   std::string fieldName_;
   // Ordinal position of the extracted value in the containing

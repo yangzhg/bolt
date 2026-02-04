@@ -17,7 +17,7 @@ repos:
     rev: 'v14.0.6'
     hooks:
       - id: clang-format
-        name: clang-format C++ files
+        name: Format C++ files
         types_or: [c++, c]
 
   - repo: https://github.com/gitleaks/gitleaks
@@ -29,36 +29,46 @@ repos:
     rev: 0.25.1
     hooks:
     - id: gersemi
-      name: Check CMake files
+      name: Format CMake files
       args: ["--no-warn-about-unknown-commands"]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
     hooks:
       - id: trailing-whitespace
+        name: Remove trailing whitespace
         args: [--markdown-linebreak-ext=md]
         exclude: \.(patch|diff)$
       - id: end-of-file-fixer
+        name: Fix end of file
       - id: check-yaml
+        name: Check YAML files
       - id: mixed-line-ending
+        name: Check mixed line ending
         args: [--fix=lf]
       - id: check-toml
+        name: Check TOML files
       - id: check-yaml
+        name: Check YAML files
       - id: check-xml
+        name: Check XML files
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.14.11
     hooks:
       - id: ruff-check
+        name: Check Python files
         types_or: [ python, pyi ]
         args: [ --fix ]
       - id: ruff-format
+        name: Format Python files
         types_or: [ python, pyi ]
 
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: v3.12.0-2
     hooks:
       - id: shfmt
+        name: Format shell scripts
         args: ["-w", "-i", "2", "-bn", "-ci", "-sr"]
   - repo: local
     hooks:
@@ -68,7 +78,7 @@ repos:
           language: golang
           pass_filenames: true
       - id: clang-tidy
-        name: clang-tidy
+        name: Lint C++ files
         description: >-
           Run clang-tidy on C/C++ files, requires 'compile_commands.json'
           to be available in the repo root (e.g. symlinked) or BUILD_PATH
@@ -81,3 +91,9 @@ repos:
         types_or: [c++, c]
         additional_dependencies: [clang-tidy==18.1.8]
         require_serial: true
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+    - id: codespell
+      name: Spell Check
+      args: ["-L", ".codespellrc"]

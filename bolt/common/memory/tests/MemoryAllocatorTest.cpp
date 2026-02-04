@@ -1080,7 +1080,7 @@ TEST_P(MemoryAllocatorTest, allocContiguousFail) {
 
 TEST_P(MemoryAllocatorTest, allocContiguousGrow) {
   // We allocate almost all capacity worth of small allocations, then make a
-  // large continguous allocation with a small initial size.
+  // large contiguous allocation with a small initial size.
   auto largestClass = instance_->sizeClasses().back();
   constexpr int32_t kInitialLarge = 1024;
   constexpr int32_t kMinGrow = 1024;

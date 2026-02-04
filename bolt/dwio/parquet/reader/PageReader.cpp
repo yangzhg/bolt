@@ -844,7 +844,7 @@ void PageReader::decodeRepDefs(int32_t numTopLevelRows) {
     repDefEnd_ = i + numTopLevelRows;
   }
   if (maxRepeat_ > 0 && maxDefine_ > 0) {
-    // definitionLevels_ has been comsumed, decode more if any
+    // definitionLevels_ has been consumed, decode more if any
     while (repDefEnd_ == numLevels && topFound < numTopLevelRows + 1 &&
            !preloadedRepDefs_.empty()) {
       loadMoreRepDefs();

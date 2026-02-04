@@ -348,7 +348,7 @@ class RowEqRowTest : public OperatorTestBase {
     auto [jitMod, funcName] =
         rowContainer->codegenCompare(types, flags, cmpType, nullable);
     if (!rowContainer->JITable(types)) {
-      BOLT_CHECK(false, "ignore run as cann't JIT");
+      BOLT_CHECK(false, "ignore run as can't JIT");
       return;
     }
     auto eqFunc = (exec::RowRowCompare)jitMod->getFuncPtr(funcName);

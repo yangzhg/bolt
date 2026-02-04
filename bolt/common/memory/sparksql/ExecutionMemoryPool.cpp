@@ -150,7 +150,7 @@ int64_t ExecutionMemoryPool::acquireMemory(
       // In Spark's implementation, there is no timeout, but in Gluten's
       // practice, we found that some deadlock issues occurred, so we added a
       // timeout here. deadlock scenario:
-      // 1. task A accquire RESOURCE_REGISTRIES.synchronized.
+      // 1. task A acquire RESOURCE_REGISTRIES.synchronized.
       // 2. task A waiting for 1/2N to be satisfied.
       // 3. task B wants to release memory, but RESOURCE_REGISTRIES is hold by
       // task A.
@@ -290,7 +290,7 @@ std::optional<int64_t> ExecutionMemoryPool::getMinimumFreeMemoryForTask(
   int64_t available = 0;
   {
     MemoryMutexGuard guard(instance()->lock_);
-    // do not consider extened pool to avoid descrease pool size
+    // do not consider extended pool to avoid decrease pool size
     available = instance()->poolSize_.value_or(0) / instance()->maxTaskNumber();
   }
   auto usage = instance()->getMemoryUsageForTask(taskAttemptId);

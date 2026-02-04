@@ -646,7 +646,7 @@ struct FromUtcTimestampFunction {
   const tz::TimeZone* timezone_{nullptr};
 };
 
-/// Converts date string to Timestmap type.
+/// Converts date string to Timestamp type.
 template <typename T>
 struct GetTimestampFunction {
   BOLT_DEFINE_FUNCTION_TYPES(T);
@@ -1365,7 +1365,7 @@ struct PDate2DateFunction {
   // PDate: yyyy-MM-dd, such as 2023-12-21, Date: yyyyMMdd, such as 20231221
 
   bool convert(const std::string& input, out_type<Varchar>& result) {
-    // input is formated by PDate: yyyy-MM-dd
+    // input is formatted by PDate: yyyy-MM-dd
     size_t size = input.size();
     if (size != PDATE_LENGTH) {
       return false;

@@ -373,7 +373,7 @@ class JsonExtractor {
   std::string queryPointer_;
 
   // pre allocated to avoid frequent allocation.
-  // simd parser can expand its capicity if needed.
+  // simd parser can expand its capacity if needed.
   static constexpr size_t INIT_CAPACITY{1024};
 
   // Reuse parser to avoid internal buffer allocation.

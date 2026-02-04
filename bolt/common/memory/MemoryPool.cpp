@@ -377,7 +377,7 @@ std::shared_ptr<MemoryPool> MemoryPool::addLeafChild(
     std::unique_ptr<MemoryReclaimer> _reclaimer) {
   CHECK_POOL_MANAGEMENT_OP(addLeafChild);
   // NOTE: we shall only set reclaimer in a child pool if its parent has also
-  // set. Otherwise it should be mis-configured.
+  // set. Otherwise it should be miss-configured.
   BOLT_CHECK(
       reclaimer() != nullptr || _reclaimer == nullptr,
       "Child memory pool {} shall only set memory reclaimer if its parent {} has also set",
@@ -407,7 +407,7 @@ std::shared_ptr<MemoryPool> MemoryPool::addAggregateChild(
     std::unique_ptr<MemoryReclaimer> _reclaimer) {
   CHECK_POOL_MANAGEMENT_OP(addAggregateChild);
   // NOTE: we shall only set reclaimer in a child pool if its parent has also
-  // set. Otherwise it should be mis-configured.
+  // set. Otherwise it should be miss-configured.
   BOLT_CHECK(
       reclaimer() != nullptr || _reclaimer == nullptr,
       "Child memory pool {} shall only set memory reclaimer if its parent {} has also set",

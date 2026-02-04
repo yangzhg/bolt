@@ -70,7 +70,7 @@ InternalFileDecryptor::InternalFileDecryptor(
       maxEncryptedSize_(maxEncryptedSize) {
   if (properties_->is_utilized()) {
     BOLT_FAIL(
-        "Re-using decryption properties with explicit keys for another file");
+        "Reusing decryption properties with explicit keys for another file");
   }
   properties_->set_utilized();
 }

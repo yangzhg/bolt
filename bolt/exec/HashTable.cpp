@@ -1502,14 +1502,14 @@ void HashTable<ignoreNullKeys>::enableRangeWhereCan(
     return rangeMultipliers[i] < rangeMultipliers[j];
   });
 
-  auto calculateNewMultipler = [&]() {
-    uint64_t multipler = 1;
+  auto calculateNewMultiplier = [&]() {
+    uint64_t multiplier = 1;
     for (auto i = 0; i < rangeSizes.size(); ++i) {
       // NOLINT
-      multipler =
-          safeMul(multipler, useRange[i] ? rangeSizes[i] : distinctSizes[i]);
+      multiplier =
+          safeMul(multiplier, useRange[i] ? rangeSizes[i] : distinctSizes[i]);
     }
-    return multipler;
+    return multiplier;
   };
 
   // Switch distinct to range if the cardinality increase does not overflow
@@ -1517,7 +1517,7 @@ void HashTable<ignoreNullKeys>::enableRangeWhereCan(
   for (auto i = 0; i < rangeSizes.size(); ++i) {
     if (!useRange[indices[i]]) {
       useRange[indices[i]] = true;
-      auto newProduct = calculateNewMultipler();
+      auto newProduct = calculateNewMultiplier();
       if (newProduct == VectorHasher::kRangeTooLarge) {
         useRange[indices[i]] = false;
         return;

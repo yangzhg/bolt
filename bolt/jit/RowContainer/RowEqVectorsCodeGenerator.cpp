@@ -309,7 +309,7 @@ llvm::BasicBlock* RowEqVectorsCodeGenerator::genFloatPointCmpIR(
   // https://stackoverflow.com/questions/8627331/what-does-ordered-unordered-comparison-mean
   // 2. RowContainer::comparePrimitiveAsc
   // ```cpp
-  //  if (leftIsNan != rightIsNan) {  // only one oprand is NaN
+  //  if (leftIsNan != rightIsNan) {  // only one operand is NaN
   //      return false;
   //  }
   //  else if (leftIsNan)  // both is Nan

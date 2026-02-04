@@ -649,7 +649,7 @@ void RowVector::validate(const VectorValidateOptions& options) const {
   }
 
   for (auto& child : children_) {
-    // TODO: Currently we arent checking for null children on ROWs
+    // TODO: Currently we aren't checking for null children on ROWs
     // since there are cases in SelectiveStructReader/DWIO/Koski where
     // ROW Vectors with null children are created.
     if (child != nullptr) {

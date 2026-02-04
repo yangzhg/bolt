@@ -3151,7 +3151,7 @@ TEST_F(TableScanTest, remainingFilterConstantResult) {
   /// batch start with 11. Also, make sure that remaining filter inputs for the
   /// second batch are dictionary encoded and constant. This makes it so that
   /// first batch is producing results using dictionary encoding with indices
-  /// starting at 11 and second batch cannot re-use these indices as they point
+  /// starting at 11 and second batch cannot reuse these indices as they point
   /// past the vector size (5).
   vector_size_t size = 10'000;
   std::vector<RowVectorPtr> data = {

@@ -39,7 +39,7 @@ CompiledModuleSP RowContainerCodeGenerator::codegen() {
     return mod;
   }
 
-  // Only one fuction (RowRowCompare) generated in this module,
+  // Only one function (RowRowCompare) generated in this module,
   // pass function name as module key
   auto tsm = jit->CreateTSModule(fn);
 
@@ -242,7 +242,7 @@ llvm::BasicBlock* RowContainerCodeGenerator::genFloatPointCmpIR(
   // https://stackoverflow.com/questions/8627331/what-does-ordered-unordered-comparison-mean
   // 2. RowContainer::comparePrimitiveAsc
   // ```cpp
-  //  if (leftIsNan != rightIsNan) {  // only one oprand is NaN
+  //  if (leftIsNan != rightIsNan) {  // only one operand is NaN
   //      return asc ?  rightIsNan : leftIsNan;
   //  }
   //  else if (leftIsNan)  // both is Nan
@@ -420,8 +420,8 @@ llvm::BasicBlock* RowContainerCodeGenerator::genIntegerCmpIR(
   // Generate value comparison IR for check nullity
   // && flags[idx].nullsFirst == flags[idx].ascending
   // if we ignore the nullity check, we have to compare Max and Null, a bit
-  // complicated, just ignore this tricky optimzation we can optimize this after
-  // we refactor RowConatiner
+  // complicated, just ignore this tricky optimization we can optimize this
+  // after we refactor RowConatiner
   if (hasNullKeys) {
     curr_blk = genNullBitCmpIR(
         values, idx, func, curr_blk, next_blk, phi_blk, phi_inputs);

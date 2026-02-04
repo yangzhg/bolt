@@ -27,7 +27,7 @@
 
 .PHONY: all cmake build clean debug release unit submodules
 
-# ---------- Conan variables defination starts ----------
+# ---------- Conan variables definition starts ----------
 # If built on SCM use date as version
 # $(shell date '+%Y.%m.%d.00')
 BUILD_VERSION ?= main
@@ -56,7 +56,7 @@ PROFILE=default
 GLUTEN_BOLT_OPTIONS:=" -o *:spark_compatible=True "
 GLUTEN_CONAN_OPTIONS:=$(GLUTEN_BOLT_OPTIONS)
 
-# ---------- Conan variables defination ends ----------
+# ---------- Conan variables definition ends ----------
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)

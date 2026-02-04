@@ -335,7 +335,7 @@ class ConsumerTargetBridgeFactory final {
 };
 
 /* SpillTrigger acts middle-layer between Spark's Consumer and Gluten's
- * MemoryTarget, recive spill signal from Spark's Consumer, then trigge
+ * MemoryTarget, receive spill signal from Spark's Consumer, then trigge
  * MemoryTarget's spill function */
 class SpillTrigger final {
  public:

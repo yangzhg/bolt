@@ -139,7 +139,7 @@ class BoltConan(ConanFile):
         # by default, use main branch
         git.clone(self.scm_url, target=".")
 
-        # if use 'stable" channel, we should use a git relase tag.
+        # if use 'stable" channel, we should use a git release tag.
         # TODO: Remove it since Conan 2.0 is no longer recommending to use
         # variable users and channels
         if self.channel and self.channel == "stable":

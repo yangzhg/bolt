@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BoltFS Web Demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@xterm/xterm/css/xterm.css" />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="layout">
+      <section class="hero">
+        <p class="eyebrow">BoltFS Web Demo</p>
+        <h1>Browser Shell for BoltFS</h1>
+        <p class="subtitle">
+          Open the page and drop directly into the BoltFS REPL. This demo is
+          designed for local or LAN sharing inside the team.
+        </p>
+        <div class="status-row">
+          <span id="status-dot" class="status-dot"></span>
+          <span id="status-text">Connecting...</span>
+        </div>
+      </section>
+      <section class="terminal-card">
+        <div id="terminal"></div>
+      </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/xterm/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@xterm/addon-fit/lib/addon-fit.js"></script>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

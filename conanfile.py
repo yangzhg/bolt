@@ -248,6 +248,7 @@ class BoltConan(ConanFile):
         self.requires("thrift/0.17.0", headers=True, force=True)
         self.requires("roaring/4.3.1", headers=True)
         self.requires("boost/1.85.0", transitive_headers=True, transitive_libs=True)
+        self.requires("readline/8.2", transitive_headers=True, transitive_libs=True)
         self.requires("libxml2/2.13.4", override=True)
         self.requires("double-conversion/3.3.0", override=True)
         self.requires("openssl/1.1.1w")

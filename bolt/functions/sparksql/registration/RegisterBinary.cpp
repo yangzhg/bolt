@@ -30,6 +30,7 @@
 
 #include "bolt/functions/lib/RegistrationHelpers.h"
 #include "bolt/functions/prestosql/BinaryFunctions.h"
+#include "bolt/functions/sparksql/DorisBucketHash.h"
 #include "bolt/functions/sparksql/Hash.h"
 #include "bolt/functions/sparksql/MightContain.h"
 #include "bolt/functions/sparksql/String.h"
@@ -48,6 +49,20 @@ void registerBinaryFunctions(const std::string& prefix) {
       makeXxHash64WithSeed);
   exec::registerStatefulVectorFunction(
       prefix + "hive_hash", hashSignatures(), makeHiveHash);
+  registerFunction<DorisBucketHashInt64Function, int64_t, int64_t>(
+      {prefix + "doris_bucket_hash"});
+  registerFunction<DorisBucketHashInt32Function, int64_t, int32_t>(
+      {prefix + "doris_bucket_hash"});
+  registerFunction<DorisBucketHashInt32Function, int64_t, int16_t>(
+      {prefix + "doris_bucket_hash"});
+  registerFunction<DorisBucketHashInt32Function, int64_t, int8_t>(
+      {prefix + "doris_bucket_hash"});
+  registerFunction<DorisBucketHashFloatFunction, int64_t, float>(
+      {prefix + "doris_bucket_hash"});
+  registerFunction<DorisBucketHashDoubleFunction, int64_t, double>(
+      {prefix + "doris_bucket_hash"});
+  registerFunction<DorisBucketHashStringFunction, int64_t, Varchar>(
+      {prefix + "doris_bucket_hash"});
 
   registerFunction<Md5Function, Varchar, Varbinary>({prefix + "md5"});
   registerFunction<Md5Function, Varchar, Varchar>({prefix + "md5"});

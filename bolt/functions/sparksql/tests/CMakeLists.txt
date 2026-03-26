@@ -47,6 +47,7 @@ add_executable(
   DecimalCompareTest.cpp
   DecimalRoundTest.cpp
   DecimalUtilTest.cpp
+  DorisBucketHashTest.cpp
   ElementAtTest.cpp
   FactorialTest.cpp
   FromJsonTest.cpp

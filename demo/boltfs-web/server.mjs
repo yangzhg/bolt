@@ -13,6 +13,13 @@ import {
   resolveBoltfsBinary,
   resolveStaticDir,
 } from './server-config.mjs';
+import {
+  installProcessErrorHandlers,
+  MessageValidationError,
+  parseClientMessage,
+  sendNotFound,
+  sendStaticFile,
+} from './server-runtime.mjs';
 
 const hereDir = path.dirname(url.fileURLToPath(import.meta.url));
 const staticDir = resolveStaticDir(hereDir);
@@ -24,16 +31,7 @@ const idleTimeoutMs = Number.parseInt(
     10);
 let nextSessionId = 1;
 
-function sendFile(response, filePath, contentType) {
-  const body = fs.readFileSync(filePath);
-  response.writeHead(200, {'content-type': contentType});
-  response.end(body);
-}
-
-function sendNotFound(response) {
-  response.writeHead(404, {'content-type': 'text/plain; charset=utf-8'});
-  response.end('Not found');
-}
+installProcessErrorHandlers(process, console);
 
 function ensureBinaryExists(filePath) {
   try {
@@ -52,42 +50,72 @@ function createServer() {
     const requestUrl = new URL(request.url ?? '/', `http://${request.headers.host ?? 'localhost'}`);
 
     if (requestUrl.pathname === '/' || requestUrl.pathname === '/index.html') {
-      return sendFile(response, path.join(staticDir, 'index.html'), 'text/html; charset=utf-8');
+      return sendStaticFile(
+          response,
+          path.join(staticDir, 'index.html'),
+          'text/html; charset=utf-8');
     }
 
     if (requestUrl.pathname === '/app.js') {
-      return sendFile(response, path.join(staticDir, 'app.js'), 'text/javascript; charset=utf-8');
+      return sendStaticFile(
+          response,
+          path.join(staticDir, 'app.js'),
+          'text/javascript; charset=utf-8');
     }
 
     if (requestUrl.pathname === '/terminal-ui.mjs') {
-      return sendFile(
+      return sendStaticFile(
           response,
           path.join(staticDir, 'terminal-ui.mjs'),
           'text/javascript; charset=utf-8');
     }
 
     if (requestUrl.pathname === '/input-controller.mjs') {
-      return sendFile(
+      return sendStaticFile(
           response,
           path.join(staticDir, 'input-controller.mjs'),
           'text/javascript; charset=utf-8');
     }
 
     if (requestUrl.pathname === '/output-format.mjs') {
-      return sendFile(
+      return sendStaticFile(
           response,
           path.join(staticDir, 'output-format.mjs'),
           'text/javascript; charset=utf-8');
     }
 
     if (requestUrl.pathname === '/style.css') {
-      return sendFile(response, path.join(staticDir, 'style.css'), 'text/css; charset=utf-8');
+      return sendStaticFile(
+          response,
+          path.join(staticDir, 'style.css'),
+          'text/css; charset=utf-8');
     }
 
     return sendNotFound(response);
   });
 
   const wss = new WebSocketServer({server, path: '/ws'});
+
+  function logSession(sessionId, message, error = null) {
+    if (error) {
+      console.error(`[${sessionId}] ${message}`, error);
+      return;
+    }
+    console.log(`[${sessionId}] ${message}`);
+  }
+
+  function sendSocketMessage(socket, payload, sessionId) {
+    if (socket.readyState !== socket.OPEN) {
+      return false;
+    }
+    try {
+      socket.send(JSON.stringify(payload));
+      return true;
+    } catch (error) {
+      logSession(sessionId, 'failed to send websocket message', error);
+      return false;
+    }
+  }
 
   wss.on('connection', (socket) => {
     const sessionId = `boltfs-${String(nextSessionId).padStart(3, '0')}`;
@@ -103,6 +131,9 @@ function createServer() {
     });
     let closed = false;
     let idleTimer = null;
+    let exitSent = false;
+
+    logSession(sessionId, `session started with idle timeout ${idleTimeoutMs}ms`);
 
     function clearIdleTimer() {
       if (idleTimer !== null) {
@@ -117,8 +148,11 @@ function createServer() {
       }
       closed = true;
       clearIdleTimer();
+      logSession(sessionId, `session closing: reason=${reason} exitCode=${exitCode}`);
+      if (!exitSent) {
+        exitSent = sendSocketMessage(socket, {type: 'exit', exitCode, reason}, sessionId) || exitSent;
+      }
       if (socket.readyState === socket.OPEN) {
-        socket.send(JSON.stringify({type: 'exit', exitCode, reason}));
         socket.close();
       }
       if (!child.killed) {
@@ -135,26 +169,29 @@ function createServer() {
 
     resetIdleTimer();
 
-    socket.send(
-        JSON.stringify({
+    sendSocketMessage(
+        socket,
+        {
           type: 'meta',
           sessionId,
           host,
           port,
           binaryPath,
           idleTimeoutMs,
-        }));
+        },
+        sessionId);
 
     child.stdout.on('data', (data) => {
-      if (socket.readyState === socket.OPEN) {
-        socket.send(JSON.stringify({type: 'output', data: String(data)}));
-      }
+      sendSocketMessage(socket, {type: 'output', data: String(data)}, sessionId);
     });
 
     child.stderr.on('data', (data) => {
-      if (socket.readyState === socket.OPEN) {
-        socket.send(JSON.stringify({type: 'output', data: String(data)}));
-      }
+      sendSocketMessage(socket, {type: 'output', data: String(data)}, sessionId);
+    });
+
+    child.on('error', (error) => {
+      logSession(sessionId, 'child process error', error);
+      closeSession('process_error', 1);
     });
 
     child.on('exit', (exitCode) => {
@@ -164,25 +201,48 @@ function createServer() {
     });
 
     socket.on('message', (raw) => {
-      const message = JSON.parse(String(raw));
-      if (message.type === 'input') {
-        resetIdleTimer();
-        child.stdin.write(message.data);
+      try {
+        const message = parseClientMessage(raw);
+        if (message.type === 'input') {
+          resetIdleTimer();
+          child.stdin.write(message.data);
+        }
+      } catch (error) {
+        if (error instanceof MessageValidationError) {
+          logSession(sessionId, `dropping invalid websocket message: ${error.message}`);
+          return;
+        }
+        logSession(sessionId, 'unexpected websocket message handling error', error);
+        closeSession('message_error', 1);
       }
+    });
+
+    socket.on('error', (error) => {
+      logSession(sessionId, 'websocket error', error);
     });
 
     socket.on('close', () => {
       clearIdleTimer();
       closed = true;
+      logSession(sessionId, 'socket closed');
       if (!child.killed) {
         child.kill();
       }
     });
   });
 
+  wss.on('error', (error) => {
+    console.error('BoltFS websocket server error', error);
+  });
+
+  server.on('error', (error) => {
+    console.error('BoltFS web demo server error', error);
+  });
+
   server.listen(port, host, () => {
     console.log(`BoltFS web demo listening on http://${host}:${port}`);
     console.log(`Using BoltFS binary: ${binaryPath}`);
+    console.log(`Session idle timeout: ${idleTimeoutMs}ms`);
   });
 }
 

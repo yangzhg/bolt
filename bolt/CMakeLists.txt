@@ -222,6 +222,8 @@ endif()
 
 if(${BOLT_BUILD_TESTING})
   add_subdirectory(tool)
+elseif(${BOLT_ENABLE_BOLTFS})
+  add_subdirectory(tool/boltfs)
 endif()
 
 if(${BOLT_ENABLE_TORCH})

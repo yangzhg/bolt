@@ -1,5 +1,7 @@
 import path from 'node:path';
 
+const DEFAULT_IDLE_TIMEOUT_MS = 10 * 60 * 1000;
+
 export function projectRootFromHere(hereDir) {
   return path.resolve(hereDir, '..', '..');
 }
@@ -26,4 +28,8 @@ export function createSessionCommand(binaryPath) {
       BOLTFS_CLIENT_MODE: 'human',
     },
   };
+}
+
+export function defaultIdleTimeoutMs() {
+  return DEFAULT_IDLE_TIMEOUT_MS;
 }

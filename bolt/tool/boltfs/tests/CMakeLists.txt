@@ -1,6 +1,7 @@
 add_executable(
   bolt_boltfs_test
   Main.cpp
+  BannerTest.cpp
   BoltFsTest.cpp
   CatalogTest.cpp
   ExecutorTest.cpp

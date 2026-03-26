@@ -1,5 +1,6 @@
 add_library(
   bolt_boltfs
+  Banner.cpp
   BoltFs.cpp
   Catalog.cpp
   Executor.cpp

@@ -15,4 +15,11 @@ Type help to see supported commands.
 )BOLTFS";
 }
 
+bool shouldShowWelcomeBanner(
+    bool interactiveStdin,
+    bool interactiveStdout,
+    bool hasCommandArgs) {
+  return interactiveStdin && interactiveStdout && !hasCommandArgs;
+}
+
 } // namespace bytedance::bolt::tool::boltfs

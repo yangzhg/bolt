@@ -10,15 +10,32 @@
   <body>
     <main class="layout">
       <section class="hero">
-        <p class="eyebrow">BoltFS Web Demo</p>
-        <h1>Browser Shell for BoltFS</h1>
+        <p class="eyebrow">BoltFS Live Demo</p>
+        <h1>BoltFS Live Shell</h1>
         <p class="subtitle">
-          Open the page and drop directly into the BoltFS REPL. This demo is
-          designed for local or LAN sharing inside the team.
+          A browser REPL for filesystem-style data access on Bolt. Open the
+          page and start exploring data as if it were a local workspace.
         </p>
-        <div class="status-row">
-          <span id="status-dot" class="status-dot"></span>
-          <span id="status-text">Connecting...</span>
+        <div class="meta-grid">
+          <div class="meta-card meta-card-status">
+            <span id="status-dot" class="status-dot"></span>
+            <div class="meta-copy">
+              <span class="meta-label">Status</span>
+              <span id="status-text" class="meta-value">Connecting...</span>
+            </div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-copy">
+              <span class="meta-label">Session</span>
+              <span id="session-id" class="meta-value">Pending</span>
+            </div>
+          </div>
+          <div class="meta-card">
+            <div class="meta-copy">
+              <span class="meta-label">Idle Timeout</span>
+              <span id="idle-timeout" class="meta-value">10m</span>
+            </div>
+          </div>
         </div>
       </section>
       <section class="terminal-card">

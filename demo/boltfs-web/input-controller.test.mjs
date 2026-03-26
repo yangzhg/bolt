@@ -55,3 +55,54 @@ test('input controller handles backspace and reset', () => {
   assert.equal(written, 'ab\b \bc\r\n');
   assert.deepEqual(sent, [{type: 'input', data: '\n'}]);
 });
+
+test('input controller supports ctrl-w to delete the previous word', () => {
+  let written = '';
+
+  const terminal = {
+    write(data) {
+      written += data;
+    },
+  };
+
+  const socket = {
+    send() {},
+  };
+
+  const controller = createInputController(terminal, socket);
+  controller.onData('hello world');
+  controller.onData('\u0017');
+  controller.onData('\r');
+
+  assert.equal(
+      written,
+      'hello world' + '\b \b'.repeat('world'.length) + '\r\n');
+});
+
+test('input controller supports ctrl-u to clear the current line', () => {
+  let written = '';
+  const sent = [];
+
+  const terminal = {
+    write(data) {
+      written += data;
+    },
+  };
+
+  const socket = {
+    send(payload) {
+      sent.push(JSON.parse(payload));
+    },
+  };
+
+  const controller = createInputController(terminal, socket);
+  controller.onData('schema orders');
+  controller.onData('\u0015');
+  controller.onData('pwd');
+  controller.onData('\r');
+
+  assert.equal(
+      written,
+      'schema orders' + '\b \b'.repeat('schema orders'.length) + 'pwd\r\n');
+  assert.deepEqual(sent, [{type: 'input', data: 'pwd\n'}]);
+});

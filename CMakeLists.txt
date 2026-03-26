@@ -163,6 +163,7 @@ option(BOLT_ON_TCE "Build Bolt on Bytedance TCE Environment" OFF)
 option(BOLT_ENABLE_TBB "Enable oneTBB support" OFF)
 option(BOLT_ENABLE_TORCH "Enable torch script support" OFF)
 option(BOLT_ENABLE_CUDF "Enable cuDF support" OFF)
+option(BOLT_ENABLE_BOLTFS "Build BoltFS REPL and CLI tool" ON)
 
 # for CI / benchmarkpurpose
 option(BOLT_BUILD_BENCHMARKS "Builds Bolt benchmarks" OFF)
@@ -313,6 +314,16 @@ if(${BOLT_BUILD_PYTHON_PACKAGE})
   set(BOLT_BUILD_BENCHMARKS OFF)
   set(BOLT_ENABLE_PARQUET ON)
   set(BOLT_ENABLE_HDFS ON)
+endif()
+
+if(${BOLT_ENABLE_BOLTFS})
+  set(BOLT_ENABLE_PRESTO_FUNCTIONS ON)
+  set(BOLT_ENABLE_EXPRESSION ON)
+  set(BOLT_ENABLE_PARSE ON)
+  set(BOLT_ENABLE_EXEC ON)
+  set(BOLT_ENABLE_AGGREGATES ON)
+  set(BOLT_ENABLE_TPCH_CONNECTOR ON)
+  set(BOLT_BUILD_TEST_UTILS ON)
 endif()
 
 if(BOLT_ENABLE_CCACHE

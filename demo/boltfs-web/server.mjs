@@ -9,6 +9,7 @@ import {WebSocketServer} from 'ws';
 
 import {
   createSessionCommand,
+  defaultIdleTimeoutMs,
   resolveBoltfsBinary,
   resolveStaticDir,
 } from './server-config.mjs';
@@ -18,6 +19,10 @@ const staticDir = resolveStaticDir(hereDir);
 const binaryPath = resolveBoltfsBinary(hereDir, process.env.BOLTFS_BINARY ?? '');
 const host = process.env.HOST ?? '0.0.0.0';
 const port = Number.parseInt(process.env.PORT ?? '8080', 10);
+const idleTimeoutMs = Number.parseInt(
+    process.env.BOLTFS_IDLE_TIMEOUT_MS ?? String(defaultIdleTimeoutMs()),
+    10);
+let nextSessionId = 1;
 
 function sendFile(response, filePath, contentType) {
   const body = fs.readFileSync(filePath);
@@ -85,6 +90,8 @@ function createServer() {
   const wss = new WebSocketServer({server, path: '/ws'});
 
   wss.on('connection', (socket) => {
+    const sessionId = `boltfs-${String(nextSessionId).padStart(3, '0')}`;
+    nextSessionId += 1;
     const session = createSessionCommand(binaryPath);
     const child = childProcess.spawn(session.file, session.args, {
       cwd: process.cwd(),
@@ -94,13 +101,48 @@ function createServer() {
       },
       stdio: 'pipe',
     });
+    let closed = false;
+    let idleTimer = null;
+
+    function clearIdleTimer() {
+      if (idleTimer !== null) {
+        clearTimeout(idleTimer);
+        idleTimer = null;
+      }
+    }
+
+    function closeSession(reason = 'closed', exitCode = 0) {
+      if (closed) {
+        return;
+      }
+      closed = true;
+      clearIdleTimer();
+      if (socket.readyState === socket.OPEN) {
+        socket.send(JSON.stringify({type: 'exit', exitCode, reason}));
+        socket.close();
+      }
+      if (!child.killed) {
+        child.kill();
+      }
+    }
+
+    function resetIdleTimer() {
+      clearIdleTimer();
+      idleTimer = setTimeout(() => {
+        closeSession('idle_timeout', 0);
+      }, idleTimeoutMs);
+    }
+
+    resetIdleTimer();
 
     socket.send(
         JSON.stringify({
           type: 'meta',
+          sessionId,
           host,
           port,
           binaryPath,
+          idleTimeoutMs,
         }));
 
     child.stdout.on('data', (data) => {
@@ -116,20 +158,22 @@ function createServer() {
     });
 
     child.on('exit', (exitCode) => {
-      if (socket.readyState === socket.OPEN) {
-        socket.send(JSON.stringify({type: 'exit', exitCode: exitCode ?? 0}));
-        socket.close();
+      if (!closed) {
+        closeSession('process_exit', exitCode ?? 0);
       }
     });
 
     socket.on('message', (raw) => {
       const message = JSON.parse(String(raw));
       if (message.type === 'input') {
+        resetIdleTimer();
         child.stdin.write(message.data);
       }
     });
 
     socket.on('close', () => {
+      clearIdleTimer();
+      closed = true;
       if (!child.killed) {
         child.kill();
       }

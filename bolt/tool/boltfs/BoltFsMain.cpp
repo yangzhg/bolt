@@ -1,3 +1,4 @@
+#include "bolt/tool/boltfs/Banner.h"
 #include "bolt/tool/boltfs/BoltFs.h"
 
 #include <folly/init/Init.h>
@@ -142,6 +143,12 @@ int main(int argc, char** argv) {
       std::fflush(stderr);
       std::_Exit(1);
     }
+  }
+
+  if (shouldShowWelcomeBanner(
+          ::isatty(STDIN_FILENO), ::isatty(STDOUT_FILENO), argc > 1)) {
+    std::cout << welcomeBanner();
+    std::cout.flush();
   }
 
   while (true) {

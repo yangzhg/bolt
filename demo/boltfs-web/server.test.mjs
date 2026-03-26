@@ -4,6 +4,7 @@ import path from 'node:path';
 
 import {
   createSessionCommand,
+  defaultIdleTimeoutMs,
   projectRootFromHere,
   resolveBoltfsBinary,
   resolveStaticDir,
@@ -49,4 +50,8 @@ test('createSessionCommand only launches boltfs with fixed environment', () => {
       BOLTFS_CLIENT_MODE: 'human',
     },
   });
+});
+
+test('defaultIdleTimeoutMs exposes the inactivity timeout for sessions', () => {
+  assert.equal(defaultIdleTimeoutMs(), 10 * 60 * 1000);
 });

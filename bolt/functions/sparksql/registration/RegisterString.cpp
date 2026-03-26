@@ -53,6 +53,8 @@ void registerStringFunctions(const std::string& prefix) {
       {prefix + "endswith"});
   registerFunction<ContainsFunction, bool, Varchar, Varchar>(
       {prefix + "contains"});
+  registerFunction<CompareAppVersionFunction, int32_t, Varchar, Varchar>(
+      {prefix + "compare_app_version"});
   registerFunction<LocateFunction, int32_t, Varchar, Varchar>(
       {prefix + "locate"});
   registerFunction<LocateFunction, int32_t, Varchar, Varchar, int32_t>(

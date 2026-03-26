@@ -35,7 +35,9 @@
 #include <boost/locale.hpp>
 #include <charconv>
 #include <codecvt>
+#include <limits>
 #include <string>
+#include <vector>
 #include "bolt/common/base/Uuid.h"
 #include "bolt/expression/StringWriter.h"
 #include "bolt/expression/VectorFunction.h"
@@ -44,6 +46,119 @@
 #include "bolt/functions/lib/string/StringCore.h"
 #include "bolt/functions/lib/string/StringImpl.h"
 namespace bytedance::bolt::functions::sparksql {
+
+namespace detail {
+
+FOLLY_ALWAYS_INLINE std::string_view trimJavaString(std::string_view input) {
+  size_t begin = 0;
+  size_t end = input.size();
+  while (begin < end &&
+         static_cast<unsigned char>(input[begin]) <=
+             static_cast<unsigned char>(' ')) {
+    ++begin;
+  }
+  while (begin < end &&
+         static_cast<unsigned char>(input[end - 1]) <=
+             static_cast<unsigned char>(' ')) {
+    --end;
+  }
+  return input.substr(begin, end - begin);
+}
+
+FOLLY_ALWAYS_INLINE std::vector<std::string_view> splitJavaVersion(
+    std::string_view input) {
+  if (input.find('.') == std::string_view::npos) {
+    return {input};
+  }
+
+  std::vector<std::string_view> parts;
+  size_t partBegin = 0;
+  for (size_t i = 0; i <= input.size(); ++i) {
+    if (i == input.size() || input[i] == '.') {
+      parts.emplace_back(input.data() + partBegin, i - partBegin);
+      partBegin = i + 1;
+    }
+  }
+
+  while (!parts.empty() && parts.back().empty()) {
+    parts.pop_back();
+  }
+  return parts;
+}
+
+FOLLY_ALWAYS_INLINE bool parseJavaInt(std::string_view input, int32_t& out) {
+  if (input.empty()) {
+    return false;
+  }
+
+  bool negative = false;
+  size_t index = 0;
+  if (input[0] == '+' || input[0] == '-') {
+    negative = input[0] == '-';
+    index = 1;
+    if (index == input.size()) {
+      return false;
+    }
+  }
+
+  constexpr uint64_t kPositiveLimit =
+      static_cast<uint64_t>(std::numeric_limits<int32_t>::max());
+  constexpr uint64_t kNegativeLimit =
+      static_cast<uint64_t>(std::numeric_limits<int32_t>::max()) + 1;
+
+  uint64_t value = 0;
+  for (; index < input.size(); ++index) {
+    const unsigned char ch = input[index];
+    if (ch < '0' || ch > '9') {
+      return false;
+    }
+    value = value * 10 + (ch - '0');
+    if ((!negative && value > kPositiveLimit) ||
+        (negative && value > kNegativeLimit)) {
+      return false;
+    }
+  }
+
+  if (negative) {
+    out = value == kNegativeLimit ? std::numeric_limits<int32_t>::min()
+                                  : -static_cast<int32_t>(value);
+  } else {
+    out = static_cast<int32_t>(value);
+  }
+  return true;
+}
+
+FOLLY_ALWAYS_INLINE int32_t subtractJavaInt(int32_t lhs, int32_t rhs) {
+  const uint32_t diff = static_cast<uint32_t>(lhs) - static_cast<uint32_t>(rhs);
+  int32_t result;
+  std::memcpy(&result, &diff, sizeof(result));
+  return result;
+}
+
+FOLLY_ALWAYS_INLINE int32_t
+compareJavaString(std::string_view lhs, std::string_view rhs) {
+  const auto commonSize = std::min(lhs.size(), rhs.size());
+  for (size_t i = 0; i < commonSize; ++i) {
+    const auto left = static_cast<unsigned char>(lhs[i]);
+    const auto right = static_cast<unsigned char>(rhs[i]);
+    if (left != right) {
+      return left - right;
+    }
+  }
+  return static_cast<int32_t>(lhs.size()) - static_cast<int32_t>(rhs.size());
+}
+
+FOLLY_ALWAYS_INLINE int32_t
+compareJavaVersionPart(std::string_view lhs, std::string_view rhs) {
+  int32_t lhsInt;
+  int32_t rhsInt;
+  if (parseJavaInt(lhs, lhsInt) && parseJavaInt(rhs, rhsInt)) {
+    return subtractJavaInt(lhsInt, rhsInt);
+  }
+  return compareJavaString(lhs, rhs);
+}
+
+} // namespace detail
 
 template <typename T, bool lpad>
 struct PadFunctionBase {
@@ -107,6 +222,35 @@ struct AsciiFunction {
       int32_t& result,
       const arg_type<Varchar>& s) {
     result = s.empty() ? 0 : s.data()[0];
+  }
+};
+
+template <typename T>
+struct CompareAppVersionFunction {
+  BOLT_DEFINE_FUNCTION_TYPES(T);
+
+  FOLLY_ALWAYS_INLINE void call(
+      int32_t& result,
+      const arg_type<Varchar>& lhs,
+      const arg_type<Varchar>& rhs) {
+    const auto lhsTrimmed =
+        detail::trimJavaString(std::string_view(lhs.data(), lhs.size()));
+    const auto rhsTrimmed =
+        detail::trimJavaString(std::string_view(rhs.data(), rhs.size()));
+
+    const auto lhsParts = detail::splitJavaVersion(lhsTrimmed);
+    const auto rhsParts = detail::splitJavaVersion(rhsTrimmed);
+    const auto commonSize = std::min(lhsParts.size(), rhsParts.size());
+
+    for (size_t i = 0; i < commonSize; ++i) {
+      result = detail::compareJavaVersionPart(lhsParts[i], rhsParts[i]);
+      if (result != 0) {
+        return;
+      }
+    }
+
+    result = static_cast<int32_t>(lhsParts.size()) -
+        static_cast<int32_t>(rhsParts.size());
   }
 };
 

@@ -91,6 +91,8 @@ void registerStringFunctions(const std::string& prefix) {
 
   registerFunction<FindInSetFunction, int32_t, Varchar, Varchar>(
       {prefix + "find_in_set"});
+  registerFunction<VersionCompareFunction, int32_t, Varchar, Varchar>(
+      {prefix + "version_compare"});
 
   exec::registerStatefulVectorFunction(
       prefix + "instr", instrSignatures(), makeInstr);

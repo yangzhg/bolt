@@ -91,6 +91,7 @@ add_executable(
   UnBase64Test.cpp
   UnscaledValueFunctionTest.cpp
   URLFunctionsTest.cpp
+  VersionCompareTest.cpp
   XxHash64Test.cpp
 )
 

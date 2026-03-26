@@ -1330,6 +1330,126 @@ struct FindInSetFunction {
   }
 };
 
+/// version_compare(v1, v2) -> integer
+///
+/// Returns 1 when v1 > v2, 0 when v1 == v2, -1 when v1 < v2.
+/// Invalid numeric tokens return null. Reused scratch buffers intentionally
+/// preserve the Java UDF's row-order-sensitive behavior within one instance.
+template <typename T>
+struct VersionCompareFunction {
+  BOLT_DEFINE_FUNCTION_TYPES(T);
+
+  FOLLY_ALWAYS_INLINE bool call(
+      int32_t& result,
+      const arg_type<Varchar>& left,
+      const arg_type<Varchar>& right) {
+    auto leftTrimmed = trimJavaWhitespace(left);
+    auto rightTrimmed = trimJavaWhitespace(right);
+    auto endIndex =
+        std::max(countMatches(leftTrimmed), countMatches(rightTrimmed));
+    auto maxSubVersions = endIndex + 1;
+
+    if (leftVersions_.size() < maxSubVersions) {
+      leftVersions_.assign(maxSubVersions, 0);
+      rightVersions_.assign(maxSubVersions, 0);
+    }
+
+    if (!buildSubVersions(leftTrimmed, leftVersions_, endIndex) ||
+        !buildSubVersions(rightTrimmed, rightVersions_, endIndex)) {
+      return false;
+    }
+
+    result = compareSubVersions(leftVersions_, rightVersions_, endIndex);
+    return true;
+  }
+
+ private:
+  static StringView trimJavaWhitespace(const arg_type<Varchar>& input) {
+    auto begin = 0;
+    auto end = input.size();
+
+    while (begin < end &&
+           static_cast<unsigned char>(input.data()[begin]) <= 0x20) {
+      ++begin;
+    }
+    while (end > begin &&
+           static_cast<unsigned char>(input.data()[end - 1]) <= 0x20) {
+      --end;
+    }
+
+    return StringView(input.data() + begin, end - begin);
+  }
+
+  static int32_t countMatches(const StringView& input) {
+    int32_t count = 0;
+    for (auto i = 0; i < input.size(); ++i) {
+      if (input.data()[i] == '.') {
+        ++count;
+      }
+    }
+    return count;
+  }
+
+  static void clearLikeJava(std::vector<int32_t>& versions, int32_t endIndex) {
+    auto toIndex =
+        versions.size() - 1 > endIndex ? endIndex : versions.size() - 1;
+    std::fill(versions.begin(), versions.begin() + toIndex, 0);
+  }
+
+  static bool buildSubVersions(
+      const StringView& input,
+      std::vector<int32_t>& versions,
+      int32_t endIndex) {
+    clearLikeJava(versions, endIndex);
+    if (input.empty()) {
+      return true;
+    }
+
+    auto tokenIndex = 0;
+    auto i = 0;
+    while (i < input.size()) {
+      while (i < input.size() && input.data()[i] == '.') {
+        ++i;
+      }
+      if (i >= input.size()) {
+        break;
+      }
+
+      auto j = i;
+      while (j < input.size() && input.data()[j] != '.') {
+        ++j;
+      }
+
+      int32_t value;
+      auto [ptr, ec] =
+          std::from_chars(input.data() + i, input.data() + j, value);
+      if (ec != std::errc() || ptr != input.data() + j) {
+        return false;
+      }
+      versions[tokenIndex++] = value;
+      i = j;
+    }
+    return true;
+  }
+
+  static int32_t compareSubVersions(
+      const std::vector<int32_t>& left,
+      const std::vector<int32_t>& right,
+      int32_t endIndex) {
+    int32_t value = 0;
+    for (auto i = 0; i < left.size() && i <= endIndex; ++i) {
+      value = left[i] < right[i] ? -1 : (left[i] > right[i] ? 1 : 0);
+      if (value != 0) {
+        return value;
+      }
+    }
+    return value;
+  }
+
+  std::vector<int32_t> leftVersions_;
+  std::vector<int32_t> rightVersions_;
+};
+
 /// repeat function
 /// repeat(str, n) -> str
 /// returns the string which repeats the given string value n times

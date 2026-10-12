@@ -21,6 +21,7 @@
 #include <unicode/utf8.h>
 #include <algorithm>
 #include <charconv>
+#include <cmath>
 #include <limits>
 #include <memory>
 #include <string>
@@ -560,7 +561,7 @@ struct StringToTimestampFunction : LegacyTimestampContext {
   }
 };
 
-template <typename T, bool ToUtc>
+template <typename T, bool ToUtc, bool LaterOffset = false>
 struct TimestampZoneFunction {
   BOLT_DEFINE_FUNCTION_TYPES(T);
   const tz::TimeZone* zone_ = nullptr;
@@ -586,7 +587,15 @@ struct TimestampZoneFunction {
       return;
     }
     result = input;
-    if constexpr (ToUtc) {
+    if constexpr (ToUtc && LaterOffset) {
+      const std::chrono::seconds seconds(input.getSeconds());
+      tz::validateRange(tz::time_point<std::chrono::seconds>(seconds));
+      // Calendar shifts gaps forward and chooses the later overlap offset.
+      const auto local = zone_->correct_nonexistent_time(seconds);
+      result = Timestamp(
+          zone_->to_sys(local, tz::TimeZone::TChoose::kLatest).count(),
+          input.getNanos());
+    } else if constexpr (ToUtc) {
       result.toGMT(*zone_, TimestampGapPolicy::kShiftForward);
     } else {
       result.toTimezone(*zone_);
@@ -596,7 +605,66 @@ struct TimestampZoneFunction {
 template <typename T>
 struct TimestampToUtcFunction : TimestampZoneFunction<T, true> {};
 template <typename T>
+struct TimestampToUtcLaterOffsetFunction
+    : TimestampZoneFunction<T, true, true> {};
+template <typename T>
 struct TimestampFromUtcFunction : TimestampZoneFunction<T, false> {};
+
+template <typename T, typename In>
+struct FloatingSecondsToTimestampFunction {
+  BOLT_DEFINE_FUNCTION_TYPES(T);
+
+  void call(out_type<Timestamp>& result, const arg_type<In>& seconds) {
+    const In millis = seconds * 1000;
+    int64_t epochMillis;
+    // Flink uses (long) (seconds * 1000), including Java's NaN and overflow
+    // rules.
+    if (std::isnan(millis)) {
+      epochMillis = 0;
+    } else if (millis >= std::numeric_limits<int64_t>::max()) {
+      epochMillis = std::numeric_limits<int64_t>::max();
+    } else if (millis <= std::numeric_limits<int64_t>::min()) {
+      epochMillis = std::numeric_limits<int64_t>::min();
+    } else {
+      epochMillis = static_cast<int64_t>(millis);
+    }
+    result = Timestamp::fromMillis(epochMillis);
+  }
+};
+template <typename T>
+struct FloatSecondsToTimestampFunction
+    : FloatingSecondsToTimestampFunction<T, float> {};
+template <typename T>
+struct DoubleSecondsToTimestampFunction
+    : FloatingSecondsToTimestampFunction<T, double> {};
+
+// The input has already been shifted into the session's local time zone.
+template <typename T>
+struct TimestampToLocalDateFunction {
+  BOLT_DEFINE_FUNCTION_TYPES(T);
+
+  void call(out_type<Date>& result, const arg_type<Timestamp>& timestamp) {
+    const auto seconds = timestamp.getSeconds();
+    result = static_cast<int32_t>(
+        seconds / util::kSecsPerDay - (seconds % util::kSecsPerDay < 0));
+  }
+};
+
+template <typename T>
+struct TimeExtractFunction {
+  BOLT_DEFINE_FUNCTION_TYPES(T);
+
+  void call(
+      out_type<int32_t>& result,
+      const arg_type<int32_t>& millis,
+      const arg_type<int32_t>& modulus,
+      const arg_type<int32_t>& divisor) {
+    BOLT_USER_CHECK_GT(modulus, 0);
+    BOLT_USER_CHECK_GT(divisor, 0);
+    // Flink TIME extraction retains the sign of its millisecond remainder.
+    result = (millis % modulus) / divisor;
+  }
+};
 
 template <typename T>
 struct TimeToTimestampFunction {
@@ -674,8 +742,21 @@ void registerTemporalFunctions(const std::string& prefix) {
       makeTimestampPrecision);
   registerFunction<TimestampToUtcFunction, Timestamp, Timestamp, Varchar>(
       {prefix + "flink_timestamp_to_utc"});
+  registerFunction<
+      TimestampToUtcLaterOffsetFunction,
+      Timestamp,
+      Timestamp,
+      Varchar>({prefix + "flink_timestamp_to_utc_later_offset"});
   registerFunction<TimestampFromUtcFunction, Timestamp, Timestamp, Varchar>(
       {prefix + "flink_timestamp_from_utc"});
+  registerFunction<FloatSecondsToTimestampFunction, Timestamp, float>(
+      {prefix + "flink_float_seconds_to_timestamp"});
+  registerFunction<DoubleSecondsToTimestampFunction, Timestamp, double>(
+      {prefix + "flink_double_seconds_to_timestamp"});
+  registerFunction<TimestampToLocalDateFunction, Date, Timestamp>(
+      {prefix + "flink_timestamp_to_local_date"});
+  registerFunction<TimeExtractFunction, int32_t, int32_t, int32_t, int32_t>(
+      {prefix + "flink_time_extract"});
   registerFunction<TimeToTimestampFunction, Timestamp, int32_t>(
       {prefix + "flink_time_to_timestamp"});
   registerFunction<TimestampToTimeFunction, int32_t, Timestamp>(

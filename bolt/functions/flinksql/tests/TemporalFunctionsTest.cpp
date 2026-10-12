@@ -389,11 +389,14 @@ TEST_F(TemporalFunctionsTest, fixedTimeZones) {
           int64_t{-1},
           int64_t{0},
           int64_t{253402300799}}) {
-      EXPECT_EQ(
-          Timestamp(seconds - offset, 123456789),
-          evaluateTimestamp(
-              fmt::format("flink_timestamp_to_utc(c0, '{}')", zone),
-              Timestamp(seconds, 123456789)));
+      for (const auto* function :
+           {"flink_timestamp_to_utc", "flink_timestamp_to_utc_later_offset"}) {
+        EXPECT_EQ(
+            Timestamp(seconds - offset, 123456789),
+            evaluateTimestamp(
+                fmt::format("{}(c0, '{}')", function, zone),
+                Timestamp(seconds, 123456789)));
+      }
       EXPECT_EQ(
           Timestamp(seconds + offset, 123456789),
           evaluateTimestamp(
@@ -490,6 +493,135 @@ TEST_F(TemporalFunctionsTest, regionTimeZonesAndDst) {
           Timestamp(0, 1)));
 }
 
+TEST_F(TemporalFunctionsTest, laterOverlapOffset) {
+  struct Case {
+    std::string zone;
+    std::string local;
+    std::string utc;
+  };
+  const std::vector<Case> cases = {
+      {"America/New_York", "2024-11-03 01:30:00", "2024-11-03 06:30:00"},
+      {"America/New_York", "2024-03-10 02:30:00", "2024-03-10 07:30:00"},
+      {"America/New_York", "2024-01-01 12:00:00", "2024-01-01 17:00:00"},
+      {"Europe/Berlin", "2024-10-27 02:30:00", "2024-10-27 01:30:00"},
+      {"Australia/Lord_Howe", "2024-04-07 01:45:00", "2024-04-06 15:15:00"},
+      {"Australia/Lord_Howe", "2024-10-06 02:15:00", "2024-10-05 15:45:00"}};
+  for (const auto& c : cases) {
+    SCOPED_TRACE(c.zone + " " + c.local);
+    EXPECT_EQ(
+        timestamp(c.utc + ".123456789"),
+        evaluateTimestamp(
+            fmt::format(
+                "flink_timestamp_to_utc_later_offset(c0, '{}')", c.zone),
+            timestamp(c.local + ".123456789")));
+  }
+  EXPECT_EQ(
+      std::nullopt,
+      evaluateTimestamp(
+          "flink_timestamp_to_utc_later_offset(c0, 'America/New_York')",
+          std::nullopt));
+  EXPECT_EQ(
+      std::nullopt,
+      evaluateTimestamp(
+          "flink_timestamp_to_utc_later_offset(c0, cast(null as varchar))",
+          Timestamp(0, 1)));
+}
+
+TEST_F(TemporalFunctionsTest, localDateBeforeEpoch) {
+  const auto input = makeRowVector({makeNullableFlatVector<Timestamp>(
+      {Timestamp(0, 0),
+       Timestamp(-1, 999999999),
+       Timestamp(-86400, 0),
+       Timestamp(-86401, 999999999),
+       Timestamp(86400, 1),
+       std::nullopt})});
+  assertEqualVectors(
+      makeNullableFlatVector<int32_t>({0, -1, -1, -2, 1, std::nullopt}, DATE()),
+      evaluate("flink_timestamp_to_local_date(c0)", input));
+  assertEqualVectors(
+      makeNullableFlatVector<int32_t>({0, 0, -1, -1, 1, std::nullopt}, DATE()),
+      evaluate(
+          "flink_timestamp_to_local_date(flink_timestamp_from_utc(c0, '+08:00'))",
+          input));
+}
+
+TEST_F(TemporalFunctionsTest, timeExtractionPreservesSign) {
+  const auto input = makeRowVector({makeNullableFlatVector<int32_t>(
+      {std::nullopt,
+       std::numeric_limits<int32_t>::min(),
+       -3726789,
+       -1001,
+       -1,
+       0,
+       45296789,
+       std::numeric_limits<int32_t>::max()})});
+  struct Case {
+    int32_t modulus;
+    int32_t divisor;
+    std::vector<std::optional<int32_t>> expected;
+  };
+  const std::vector<Case> cases{
+      {86400000, 3600000, {std::nullopt, -20, -1, 0, 0, 0, 12, 20}},
+      {3600000, 60000, {std::nullopt, -31, -2, 0, 0, 0, 34, 31}},
+      {60000, 1000, {std::nullopt, -23, -6, -1, 0, 0, 56, 23}},
+      {1000, 1, {std::nullopt, -648, -789, -1, -1, 0, 789, 647}}};
+  for (const auto& c : cases) {
+    SCOPED_TRACE(c.divisor);
+    assertEqualVectors(
+        makeNullableFlatVector<int32_t>(c.expected),
+        evaluate(
+            fmt::format(
+                "flink_time_extract(c0, cast({} as integer), cast({} as integer))",
+                c.modulus,
+                c.divisor),
+            input));
+  }
+  for (const auto* expression :
+       {"flink_time_extract(c0, cast(0 as integer), cast(1 as integer))",
+        "flink_time_extract(c0, cast(1000 as integer), cast(0 as integer))"}) {
+    EXPECT_THROW(evaluate(expression, input), BoltUserError);
+  }
+}
+
+TEST_F(TemporalFunctionsTest, floatingSecondsToTimestamp) {
+  const auto expected = makeNullableFlatVector<Timestamp>(
+      {Timestamp(1, 789000000),
+       Timestamp(-2, 211000000),
+       Timestamp(0, 0),
+       Timestamp(0, 0),
+       Timestamp(0, 0),
+       Timestamp::fromMillis(std::numeric_limits<int64_t>::max()),
+       Timestamp::fromMillis(std::numeric_limits<int64_t>::min()),
+       std::nullopt});
+  const std::vector<VectorPtr> inputs{
+      makeNullableFlatVector<float>(
+          {1.789f,
+           -1.789f,
+           0.0009f,
+           -0.0009f,
+           std::numeric_limits<float>::quiet_NaN(),
+           std::numeric_limits<float>::infinity(),
+           -std::numeric_limits<float>::infinity(),
+           std::nullopt}),
+      makeNullableFlatVector<double>(
+          {1.789,
+           -1.789,
+           0.0009,
+           -0.0009,
+           std::numeric_limits<double>::quiet_NaN(),
+           std::numeric_limits<double>::infinity(),
+           -std::numeric_limits<double>::infinity(),
+           std::nullopt})};
+  const std::array<const char*, 2> functions{
+      "flink_float_seconds_to_timestamp", "flink_double_seconds_to_timestamp"};
+  for (size_t i = 0; i < inputs.size(); ++i) {
+    assertEqualVectors(
+        expected,
+        evaluate(
+            fmt::format("{}(c0)", functions[i]), makeRowVector({inputs[i]})));
+  }
+}
+
 TEST_F(TemporalFunctionsTest, timeZoneErrors) {
   for (const auto* zone :
        {"+18:00:01",
@@ -519,7 +651,9 @@ TEST_F(TemporalFunctionsTest, timeZoneErrors) {
 
 TEST_F(TemporalFunctionsTest, timeZoneRange) {
   for (const auto* function :
-       {"flink_timestamp_to_utc", "flink_timestamp_from_utc"}) {
+       {"flink_timestamp_to_utc",
+        "flink_timestamp_to_utc_later_offset",
+        "flink_timestamp_from_utc"}) {
     const auto expression = fmt::format("{}(c0, 'America/New_York')", function);
     BOLT_ASSERT_THROW(
         evaluateTimestamp(expression, Timestamp::min()),
@@ -665,8 +799,13 @@ TEST_F(TemporalFunctionsTest, prefixedRegistration) {
         "flink_string_to_timestamp",
         "flink_timestamp_precision",
         "flink_timestamp_to_utc",
+        "flink_timestamp_to_utc_later_offset",
         "flink_timestamp_from_utc",
+        "flink_float_seconds_to_timestamp",
+        "flink_double_seconds_to_timestamp",
         "flink_time_to_timestamp",
+        "flink_timestamp_to_local_date",
+        "flink_time_extract",
         "flink_timestamp_to_time"}) {
     EXPECT_FALSE(getSignatureStrings("test_" + std::string(name)).empty());
   }

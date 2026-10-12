@@ -33,6 +33,16 @@ namespace bytedance::bolt::functions::flinksql {
 ///   The boolean controls parse failures, not Flink's MySQL zero-date option.
 /// - flink_timestamp_precision(timestamp, precision), with precision in [0, 9].
 /// - flink_timestamp_to_utc(timestamp, zone) and flink_timestamp_from_utc(...).
+///   NTZ-to-LTZ conversion uses the earlier offset at regional overlaps.
+/// - flink_timestamp_to_utc_later_offset(timestamp, zone).
+///   String-to-LTZ parsing uses Calendar's later overlap offset.
+///   Both variants shift gaps forward.
+/// - flink_float_seconds_to_timestamp(seconds) and
+///   flink_double_seconds_to_timestamp(seconds), using Java's millisecond cast.
+/// - flink_timestamp_to_local_date(timestamp), after shifting an LTZ value into
+///   the session's local time zone. Dates before the epoch use floor division.
+/// - flink_time_extract(milliseconds, modulus, divisor), using Java's signed
+///   remainder with positive modulus and divisor.
 /// - flink_time_to_timestamp(milliseconds).
 /// - flink_timestamp_to_time(timestamp [, zone]). The one-argument form uses
 ///   Flink NTZ epoch remainder; the zone form extracts LTZ local clock time.
